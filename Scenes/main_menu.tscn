@@ -1,0 +1,92 @@
+[gd_scene format=3 uid="uid://xqtmm7veo5is"]
+
+[ext_resource type="Script" uid="uid://1ekmx6ik8ojo" path="res://Scripts/MainMenu.cs" id="2_48xlc"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_erv1k"]
+font_size = 52
+font_color = Color(13.863529, 11.277378, 0, 1)
+
+[node name="MainMenu" type="Node3D" unique_id=939230309]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=39507473]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=1365539326]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_48xlc")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control" unique_id=1440872268]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer" unique_id=878957137]
+layout_mode = 2
+
+[node name="GameTitle" type="Label" parent="CanvasLayer/Control/MarginContainer/VBoxContainer" unique_id=557156155]
+layout_mode = 2
+text = "Dexolonists"
+label_settings = SubResource("LabelSettings_erv1k")
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/MarginContainer/VBoxContainer" unique_id=1872691358]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="SinglePlayerBtn" type="Button" parent="CanvasLayer/Control/MarginContainer/VBoxContainer" unique_id=860391046]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_colors/font_focus_color = Color(0.9490196, 0.9490196, 0.3019608, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.5764706, 0.15686275, 1)
+theme_override_font_sizes/font_size = 24
+text = "Single Player"
+
+[node name="MultiplayerBtn" type="Button" parent="CanvasLayer/Control/MarginContainer/VBoxContainer" unique_id=497061501]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_colors/font_focus_color = Color(0.9490196, 0.9490196, 0.3019608, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.5764706, 0.15686275, 1)
+theme_override_font_sizes/font_size = 24
+text = "Multiplayer"
+
+[node name="MapCreatorBtn" type="Button" parent="CanvasLayer/Control/MarginContainer/VBoxContainer" unique_id=1877508114]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_colors/font_focus_color = Color(0.9490196, 0.9490196, 0.3019608, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.5764706, 0.15686275, 1)
+theme_override_font_sizes/font_size = 24
+text = "Map Creator"
+
+[node name="SettingsBtn" type="Button" parent="CanvasLayer/Control/MarginContainer/VBoxContainer" unique_id=402305034]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_colors/font_focus_color = Color(0.9490196, 0.9490196, 0.3019608, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.5764706, 0.15686275, 1)
+theme_override_font_sizes/font_size = 24
+text = "Settings"
+
+[node name="ExitBtn" type="Button" parent="CanvasLayer/Control/MarginContainer/VBoxContainer" unique_id=1319423379]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_colors/font_focus_color = Color(0.9490196, 0.9490196, 0.3019608, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.5764706, 0.15686275, 1)
+theme_override_font_sizes/font_size = 24
+text = "Exit"
+
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/VBoxContainer/SinglePlayerBtn" to="CanvasLayer/Control" method="SinglePlayer"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/VBoxContainer/MultiplayerBtn" to="CanvasLayer/Control" method="MultiplayerFunc"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/VBoxContainer/MapCreatorBtn" to="CanvasLayer/Control" method="MapCreator"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/VBoxContainer/SettingsBtn" to="CanvasLayer/Control" method="Settings"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/VBoxContainer/ExitBtn" to="CanvasLayer/Control" method="Exit"]

@@ -1,0 +1,99 @@
+[gd_scene format=3 uid="uid://ce6i0jtvdqgo0"]
+
+[ext_resource type="PackedScene" uid="uid://bxwxeafeneo7m" path="res://main.tscn" id="1_28flt"]
+[ext_resource type="Script" uid="uid://ctepqlsb2kaek" path="res://Scripts/MainMenu.cs" id="2_48xlc"]
+
+[node name="MainMenu" type="Node3D" unique_id=1427000459]
+
+[node name="Menu" type="CanvasLayer" parent="." unique_id=1073944506]
+
+[node name="Background" type="Node3D" parent="Menu" unique_id=866105671]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Menu/Background" unique_id=776323604]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewport" type="SubViewport" parent="Menu/Background/SubViewportContainer" unique_id=1687690873]
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="Menu/Background/SubViewportContainer/SubViewport" unique_id=2035575249]
+transform = Transform3D(1, 0, 0, 0, 0.4257793, 0.90482706, 0, -0.90482706, 0.4257793, 0, 21.300001, 17.900002)
+
+[node name="Main" parent="Menu/Background" unique_id=955728962 instance=ExtResource("1_28flt")]
+
+[node name="Control" type="Control" parent="Menu" unique_id=1059860102]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_48xlc")
+
+[node name="MarginContainer" type="MarginContainer" parent="Menu/Control" unique_id=1484803759]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 80
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 80
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu/Control/MarginContainer" unique_id=1278756682]
+layout_mode = 2
+
+[node name="GameTitle" type="Label" parent="Menu/Control/MarginContainer/VBoxContainer" unique_id=38070810]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 64
+text = "Woahgicka"
+
+[node name="MarginContainer" type="MarginContainer" parent="Menu/Control/MarginContainer/VBoxContainer" unique_id=1988459648]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="StartGameBtn" type="Button" parent="Menu/Control/MarginContainer/VBoxContainer" unique_id=538819803]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_pressed_color = Color(1, 0.50638646, 0, 1)
+theme_override_colors/font_hover_color = Color(0.9499975, 0.9499975, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "Start Game"
+
+[node name="SettingsBtn" type="Button" parent="Menu/Control/MarginContainer/VBoxContainer" unique_id=405513096]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_pressed_color = Color(1, 0.50638646, 0, 1)
+theme_override_colors/font_hover_color = Color(0.9499975, 0.9499975, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "Settings"
+
+[node name="ExitBtn" type="Button" parent="Menu/Control/MarginContainer/VBoxContainer" unique_id=197329142]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_pressed_color = Color(1, 0.50638646, 0, 1)
+theme_override_colors/font_hover_color = Color(0.9499975, 0.9499975, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "Exit"
+
+[node name="ServerBtn" type="Button" parent="Menu/Control/MarginContainer/VBoxContainer" unique_id=883859446]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_colors/font_pressed_color = Color(1, 0.50638646, 0, 1)
+theme_override_colors/font_hover_color = Color(0.9499975, 0.9499975, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "Server"
+
+[connection signal="pressed" from="Menu/Control/MarginContainer/VBoxContainer/StartGameBtn" to="Menu/Control" method="StartGame"]
+[connection signal="pressed" from="Menu/Control/MarginContainer/VBoxContainer/SettingsBtn" to="Menu/Control" method="Settings"]
+[connection signal="pressed" from="Menu/Control/MarginContainer/VBoxContainer/ExitBtn" to="Menu/Control" method="Exit"]
+[connection signal="pressed" from="Menu/Control/MarginContainer/VBoxContainer/ServerBtn" to="Menu/Control" method="Server"]
