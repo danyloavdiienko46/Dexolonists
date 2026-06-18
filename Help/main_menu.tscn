@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ce6i0jtvdqgo0"]
 
-[ext_resource type="PackedScene" uid="uid://bxwxeafeneo7m" path="res://main.tscn" id="1_28flt"]
-[ext_resource type="Script" uid="uid://ctepqlsb2kaek" path="res://Scripts/MainMenu.cs" id="2_48xlc"]
+[ext_resource type="PackedScene" uid="uid://bnq44g3voaryo" path="res://Scenes/map_creator.tscn" id="1_aydu2"]
+[ext_resource type="Script" uid="uid://1ekmx6ik8ojo" path="res://Scripts/MainMenu.cs" id="2_48xlc"]
 
 [node name="MainMenu" type="Node3D" unique_id=1427000459]
 
@@ -22,9 +22,9 @@ size = Vector2i(1152, 648)
 render_target_update_mode = 4
 
 [node name="Camera3D" type="Camera3D" parent="Menu/Background/SubViewportContainer/SubViewport" unique_id=2035575249]
-transform = Transform3D(1, 0, 0, 0, 0.4257793, 0.90482706, 0, -0.90482706, 0.4257793, 0, 21.300001, 17.900002)
+transform = Transform3D(1, 0, 0, 0, 0.4257793, 0.90482706, 0, -0.90482706, 0.4257793, 0, 21.300001, 5.738594)
 
-[node name="Main" parent="Menu/Background" unique_id=955728962 instance=ExtResource("1_28flt")]
+[node name="MapCreator" parent="Menu/Background" unique_id=733240485 instance=ExtResource("1_aydu2")]
 
 [node name="Control" type="Control" parent="Menu" unique_id=1059860102]
 layout_mode = 3

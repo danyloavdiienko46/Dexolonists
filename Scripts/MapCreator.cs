@@ -4,13 +4,32 @@ using System;
 public partial class MapCreator : Node3D
 {
 	[Export] public PackedScene TileBody;
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
+	[Export] public MapCreatorBase MapCreatorBase;
+	
+	public void AddTileMode(bool enabled)
 	{
+		if (enabled)
+		{
+			GD.Print("Adding enabled!");
+			MapCreatorBase.AddingTilesEnabled();
+		}
+		else
+		{
+			GD.Print("Adding disabled!");
+			MapCreatorBase.AddingTilesDisabled();
+		}
+		
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+	public void DeleteTileMode(bool enabled)
 	{
+		if (enabled)
+		{
+			GD.Print("Deleting enabled!");	
+		}
+		else
+		{
+			GD.Print("Deleting disabled!");
+		}
 	}
 }

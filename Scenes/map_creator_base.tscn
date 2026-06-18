@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://bs03j8insiikt"]
+
+[ext_resource type="Script" uid="uid://dskdnaxx11hi2" path="res://Scripts/MapCreatorBase.cs" id="1_ult23"]
+[ext_resource type="PackedScene" uid="uid://dy1jgelxv7t8d" path="res://Scenes/tile_body.tscn" id="1_ya5e7"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ult23"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m0mlk"]
+albedo_color = Color(0.29097468, 0.17519645, 0.29097468, 1)
+roughness = 0.9
+
+[sub_resource type="HeightMapShape3D" id="HeightMapShape3D_cxaje"]
+map_width = 28
+map_depth = 20
+map_data = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+[node name="MapCreatorBase" type="Node3D" unique_id=127469201 node_paths=PackedStringArray("Tiles")]
+script = ExtResource("1_ult23")
+Tiles = NodePath("Tiles")
+TileBody = ExtResource("1_ya5e7")
+
+[node name="Table" type="Area3D" parent="." unique_id=459419659]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Table" unique_id=1417727864]
+transform = Transform3D(13.161, 0, 0, 0, 1, 0, 0, 0, 9.304, 0, 0, 0)
+mesh = SubResource("PlaneMesh_ult23")
+surface_material_override/0 = SubResource("StandardMaterial3D_m0mlk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Table" unique_id=2122805007]
+shape = SubResource("HeightMapShape3D_cxaje")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=937171553]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -5.4524074, 18.840038, 0)
+
+[node name="Tiles" type="Node3D" parent="." unique_id=428547947]
+
+[node name="TileBody1" parent="Tiles" unique_id=1156758942 instance=ExtResource("1_ya5e7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.13017702, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1247186187]
+transform = Transform3D(1, 0, 0, 0, -0.06975648, 0.9975641, 0, -0.9975641, -0.06975648, 0, 11.265189, 0)

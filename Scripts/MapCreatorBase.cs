@@ -1,0 +1,57 @@
+using Godot;
+using System;
+using System.Collections.Generic;
+using HelperScripts;
+public partial class MapCreatorBase : Node3D
+{
+	[Export] public Node3D Tiles;
+	[Export] public PackedScene TileBody;
+	private List<TileBody> _tile_list = new List<TileBody>();
+	private Dictionaries _dict = new Dictionaries();
+	public override void _Ready()
+	{
+		TileBody tile = Tiles.GetNode<TileBody>("TileBody1");
+		_tile_list.Add(tile);
+	}
+
+    public override void _Process(double delta)
+    {
+        foreach(TileBody tile in _tile_list)
+		{
+			if (tile.new_tile_signal)
+			{
+				int hovered_index = tile.last_hovered_TPP;
+				tile.new_tile_signal = false;
+				TileBody new_tile = TileBody.Instantiate<TileBody>();
+				new_tile.Position = tile.Position + _dict.TPP_ind_to_pos[hovered_index];
+				string new_name = "TileBody" + (_tile_list.Count+1);
+				new_tile.Name = new_name;
+				new_tile.new_tile_created = true;
+
+				Tiles.AddChild(new_tile, true);
+				_tile_list.Add(new_tile);
+
+				var t = Tiles.GetNode<TileBody>(new_name);
+				t.TilePlacePointsChangeMaterial(true);
+				break;
+			}
+		}
+    }
+
+
+	public void AddingTilesEnabled()
+	{
+		foreach(TileBody tile in _tile_list)
+		{
+			tile.TilePlacePointsChangeMaterial(true);
+		}
+	}
+
+	public void AddingTilesDisabled()
+	{
+		foreach(TileBody tile in _tile_list)
+		{
+			tile.TilePlacePointsChangeMaterial(false);
+		}
+	}
+}

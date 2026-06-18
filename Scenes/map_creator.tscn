@@ -1,44 +1,56 @@
 [gd_scene format=3 uid="uid://bnq44g3voaryo"]
 
 [ext_resource type="Script" uid="uid://d0j3wpq74pqji" path="res://Scripts/MapCreator.cs" id="1_iouk7"]
-[ext_resource type="PackedScene" uid="uid://dy1jgelxv7t8d" path="res://Scenes/tile_body.tscn" id="1_y5l5m"]
+[ext_resource type="PackedScene" uid="uid://bs03j8insiikt" path="res://Scenes/map_creator_base.tscn" id="2_iouk7"]
+[ext_resource type="Script" uid="uid://ba7g3b280r6n3" path="res://Scripts/MapCreatorToolBox.cs" id="3_fp0w0"]
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_ig7tw"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0xm2m"]
-albedo_color = Color(0.29097468, 0.17519645, 0.29097468, 1)
-roughness = 0.9
-
-[sub_resource type="HeightMapShape3D" id="HeightMapShape3D_h2yge"]
-map_width = 20
-map_depth = 20
-map_data = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-
-[node name="MapCreator" type="Node3D" unique_id=733240485]
+[node name="MapCreator" type="Node3D" unique_id=733240485 node_paths=PackedStringArray("MapCreatorBase")]
 script = ExtResource("1_iouk7")
+MapCreatorBase = NodePath("CanvasLayer/MapCreatorBase")
 
-[node name="Base" type="Node3D" parent="." unique_id=1349337879]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1317478616]
 
-[node name="Table" type="Area3D" parent="Base" unique_id=723607684]
+[node name="MapCreatorBase" parent="CanvasLayer" unique_id=127469201 instance=ExtResource("2_iouk7")]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Base/Table" unique_id=1693513664]
-transform = Transform3D(9.505602, 0, 0, 0, 1, 0, 0, 0, 9.303502, 0, 0, 0)
-mesh = SubResource("PlaneMesh_ig7tw")
-surface_material_override/0 = SubResource("StandardMaterial3D_0xm2m")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Base/Table" unique_id=1168959111]
-shape = SubResource("HeightMapShape3D_h2yge")
-
-[node name="Camera3D" type="Camera3D" parent="Base" unique_id=887757336]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 12.5, 0)
-
-[node name="TileBody" parent="Base" unique_id=1156758942 instance=ExtResource("1_y5l5m")]
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Base" unique_id=121905377]
-transform = Transform3D(1, 0, 0, 0, -0.06975648, 0.9975641, 0, -0.9975641, -0.06975648, 0, 11.265189, 0)
-
-[node name="Control" type="Control" parent="." unique_id=1818224350]
+[node name="MapCreatorToolBox" type="Control" parent="CanvasLayer" unique_id=1818224350 node_paths=PackedStringArray("AddTileBtn", "DeleteTileBtn")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("3_fp0w0")
+AddTileBtn = NodePath("MarginContainer/VBoxContainer/AddTileBtn")
+DeleteTileBtn = NodePath("MarginContainer/VBoxContainer/DeleteTileBtn")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MapCreatorToolBox" unique_id=364606614]
+layout_mode = 0
+offset_left = 15.0
+offset_right = 244.0
+offset_bottom = 648.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MapCreatorToolBox/MarginContainer" unique_id=1094477026]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="CanvasLayer/MapCreatorToolBox/MarginContainer/VBoxContainer" unique_id=350043706]
+layout_mode = 2
+theme_override_font_sizes/font_size = 52
+text = "ToolBox"
+horizontal_alignment = 1
+
+[node name="AddTileBtn" type="Button" parent="CanvasLayer/MapCreatorToolBox/MarginContainer/VBoxContainer" unique_id=478444975]
+layout_mode = 2
+theme_override_colors/font_pressed_color = Color(1, 0.50638646, 0, 1)
+theme_override_colors/font_hover_color = Color(0.9499975, 0.9499975, 0, 1)
+theme_override_font_sizes/font_size = 30
+toggle_mode = true
+text = "Add New Tile"
+
+[node name="DeleteTileBtn" type="Button" parent="CanvasLayer/MapCreatorToolBox/MarginContainer/VBoxContainer" unique_id=1433817112]
+layout_mode = 2
+theme_override_colors/font_pressed_color = Color(1, 0.50638646, 0, 1)
+theme_override_colors/font_hover_color = Color(0.9499975, 0.9499975, 0, 1)
+theme_override_font_sizes/font_size = 30
+toggle_mode = true
+text = "Delete Tile"
+
+[connection signal="toggled" from="CanvasLayer/MapCreatorToolBox/MarginContainer/VBoxContainer/AddTileBtn" to="CanvasLayer/MapCreatorToolBox" method="AddNewTileBtnPressed"]
+[connection signal="toggled" from="CanvasLayer/MapCreatorToolBox/MarginContainer/VBoxContainer/DeleteTileBtn" to="CanvasLayer/MapCreatorToolBox" method="DeleteTileBtnPressed"]

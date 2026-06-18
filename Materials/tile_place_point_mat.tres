@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dxtueiodgkh1f"]
+
+[resource]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.56078434, 0.48235294, 0.101960786, 0.5529412)
