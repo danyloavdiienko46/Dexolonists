@@ -29,6 +29,7 @@ radius = 0.31054688
 size = Vector3(0.62023926, 0.047668457, 0.600647)
 
 [node name="TileBody" type="StaticBody3D" unique_id=1156758942 node_paths=PackedStringArray("TilePlacePoints", "ItemPlacePoints")]
+collision_mask = 3
 script = ExtResource("1_s4a2y")
 TilePlacePoints = NodePath("TilePlacePoints")
 ItemPlacePoints = NodePath("ItemPlacePoints")
@@ -48,6 +49,8 @@ shape = SubResource("CylinderShape3D_s4a2y")
 
 [node name="Point1" type="Area3D" parent="ItemPlacePoints" unique_id=792570066]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.65, 0, -0.9)
+collision_layer = 2
+collision_mask = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="ItemPlacePoints/Point1" unique_id=1287996928]
 transform = Transform3D(0.62357473, 0, 0, 0, 0.08032228, 0, 0, 0, 0.6230486, 0, 0, 0)
@@ -58,7 +61,9 @@ surface_material_override/0 = SubResource("StandardMaterial3D_xcmit")
 shape = SubResource("CylinderShape3D_kq70j")
 
 [node name="Point2" type="Area3D" parent="ItemPlacePoints" unique_id=994303416]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.9)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.87)
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ItemPlacePoints/Point2" unique_id=362938754]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.008)
@@ -71,6 +76,8 @@ surface_material_override/0 = SubResource("StandardMaterial3D_xcmit")
 
 [node name="Point3" type="Area3D" parent="ItemPlacePoints" unique_id=684208278]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65, 0, -0.9)
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ItemPlacePoints/Point3" unique_id=992525477]
 shape = SubResource("CylinderShape3D_kq70j")
@@ -82,6 +89,8 @@ surface_material_override/0 = SubResource("StandardMaterial3D_xcmit")
 
 [node name="Point4" type="Area3D" parent="ItemPlacePoints" unique_id=360003370]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.65, 0, 0.9)
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ItemPlacePoints/Point4" unique_id=494338529]
 shape = SubResource("CylinderShape3D_kq70j")
@@ -92,7 +101,9 @@ mesh = SubResource("CylinderMesh_s4a2y")
 surface_material_override/0 = SubResource("StandardMaterial3D_xcmit")
 
 [node name="Point5" type="Area3D" parent="ItemPlacePoints" unique_id=2006354941]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.9)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.87)
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ItemPlacePoints/Point5" unique_id=1426665474]
 shape = SubResource("CylinderShape3D_kq70j")
@@ -104,6 +115,8 @@ surface_material_override/0 = SubResource("StandardMaterial3D_xcmit")
 
 [node name="Point6" type="Area3D" parent="ItemPlacePoints" unique_id=572692398]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.65, 0, 0.9)
+collision_layer = 2
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ItemPlacePoints/Point6" unique_id=1708779972]
 shape = SubResource("CylinderShape3D_kq70j")
@@ -117,6 +130,8 @@ surface_material_override/0 = SubResource("StandardMaterial3D_xcmit")
 
 [node name="Point1" type="Area3D" parent="TilePlacePoints" unique_id=1872653430]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -1.75)
+collision_layer = 2
+collision_mask = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="TilePlacePoints/Point1" unique_id=1009383068]
 transform = Transform3D(0.6, 0, 0, 0, 0.06, 0, 0, 0, 0.6, 0, 0, 0)
@@ -129,6 +144,8 @@ shape = SubResource("BoxShape3D_n1fra")
 
 [node name="Point2" type="Area3D" parent="TilePlacePoints" unique_id=2135792812]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1.75)
+collision_layer = 2
+collision_mask = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="TilePlacePoints/Point2" unique_id=1889132181]
 transform = Transform3D(0.6, 0, 0, 0, 0.06, 0, 0, 0, 0.6, 0, 0, 0)
@@ -140,7 +157,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.024963379, 0.03439331, 0.00
 shape = SubResource("BoxShape3D_n1fra")
 
 [node name="Point3" type="Area3D" parent="TilePlacePoints" unique_id=1062718703]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.85, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.92, 0, 0)
+collision_layer = 2
+collision_mask = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="TilePlacePoints/Point3" unique_id=1199398859]
 transform = Transform3D(0.6, 0, 0, 0, 0.06, 0, 0, 0, 0.6, 0, 0, 0)
@@ -153,6 +172,8 @@ shape = SubResource("BoxShape3D_n1fra")
 
 [node name="Point4" type="Area3D" parent="TilePlacePoints" unique_id=1232133033]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1.75)
+collision_layer = 2
+collision_mask = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="TilePlacePoints/Point4" unique_id=1083495378]
 transform = Transform3D(0.6, 0, 0, 0, 0.06, 0, 0, 0, 0.6, 0, 0, 0)
@@ -165,9 +186,11 @@ shape = SubResource("BoxShape3D_n1fra")
 
 [node name="Point5" type="Area3D" parent="TilePlacePoints" unique_id=1125431591]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 1.75)
+collision_layer = 2
+collision_mask = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="TilePlacePoints/Point5" unique_id=887621472]
-transform = Transform3D(0.6, 0, 0, 0, 0.06, 0, 0, 0, 0.6, 0, 0, 0)
+transform = Transform3D(0.6, 0, 0, 0, 0.06, 0, 0, 0, 0.6, -0.022830725, 0, 0.021250248)
 mesh = SubResource("BoxMesh_kq70j")
 surface_material_override/0 = ExtResource("3_j7ktr")
 
@@ -176,7 +199,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.024963379, 0.03439331, 0.00
 shape = SubResource("BoxShape3D_n1fra")
 
 [node name="Point6" type="Area3D" parent="TilePlacePoints" unique_id=1011503613]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.85, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.92, 0, 0)
+collision_layer = 2
+collision_mask = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="TilePlacePoints/Point6" unique_id=1126889915]
 transform = Transform3D(0.6, 0, 0, 0, 0.06, 0, 0, 0, 0.6, 0, 0, 0)

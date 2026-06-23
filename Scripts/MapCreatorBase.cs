@@ -26,10 +26,17 @@ public partial class MapCreatorBase : Node3D
 				new_tile.Position = tile.Position + _dict.TPP_ind_to_pos[hovered_index];
 				string new_name = "TileBody" + (_tile_list.Count+1);
 				new_tile.Name = new_name;
-				new_tile.new_tile_created = true;
+				new_tile.just_created = true;
 
 				Tiles.AddChild(new_tile, true);
 				_tile_list.Add(new_tile);
+
+				foreach(TileBody tile_body in _tile_list) //handling cleaning TPPs
+				{
+					tile_body.new_tile_created = true;
+				}
+
+				
 
 				var t = Tiles.GetNode<TileBody>(new_name);
 				t.TilePlacePointsChangeMaterial(true);

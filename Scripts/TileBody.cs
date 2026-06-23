@@ -17,6 +17,10 @@ public partial class TileBody : StaticBody3D
 	public int last_hovered_TPP = -1;
 	public bool new_tile_signal = false;
 	public bool new_tile_created = false;
+	private bool _cleaning_timer_created = false; //need this for cleaning TPPs
+	public bool just_created = false; //also need for clear cleanance of TPPs
+
+	private Random rnd = new Random();
 	public override void _Ready()
 	{
 		_tile_place_points = TilePlacePoints.GetChildren();
@@ -33,21 +37,31 @@ public partial class TileBody : StaticBody3D
 		}
 	}
 
-    public override void _Process(double delta)
+    public override void _PhysicsProcess(double delta)
     {
 		if (new_tile_created)
 		{
-			GD.Print("Cleaning...");
-			foreach(Area3D TPP in _tile_place_points)
+			if (!_cleaning_timer_created)
 			{
-				GD.Print("Cleaning for particular TPP");
-				if(TPP.GetOverlappingAreas().Count != 0 || TPP.GetOverlappingBodies().Count != 0)
+				_cleaning_timer_created = true;
+				var timer = GetTree().CreateTimer(0.1);
+				timer.Timeout += () => {
+					new_tile_created = false;
+					_cleaning_timer_created = false;
+					if(just_created)just_created = false;
+					};
+			}
+			for(int i = 0; i < _tile_place_points.Count; i++)
+			{
+				if(_tile_place_points[i] is Area3D TPP)
 				{
-					GD.Print("Disabling...");
-					DisableTPP(last_hovered_TPP, true);
+					if (TPP.Monitorable == false) continue;
+					if(TPP.GetOverlappingAreas().Count != 0 || TPP.GetOverlappingBodies().Count != 0)
+					{
+						DisableTPP(i, !just_created);
+					}
 				}
 			}
-			new_tile_created = false;
 		}
     }
 
@@ -66,7 +80,7 @@ public partial class TileBody : StaticBody3D
 		GD.Print("Placing new Tile as a neighbour of point " + _hovered_tile_place_point_index);
 		last_hovered_TPP = _hovered_tile_place_point_index;
 		new_tile_signal = true;
-		DisableTPP(last_hovered_TPP, false);
+		DisableTPP(last_hovered_TPP, true);
 	}
 
 	public void DisableTPP(int index, bool disable_IPPs)
@@ -75,6 +89,8 @@ public partial class TileBody : StaticBody3D
 		{
 			tile_place_point.Visible = false;
 			tile_place_point.InputRayPickable = false;
+			tile_place_point.Monitorable = false;
+			tile_place_point.Monitoring = false;
 
 			if (disable_IPPs)
 			{
