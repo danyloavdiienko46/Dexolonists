@@ -15,7 +15,7 @@ public partial class MapCreatorToolBox : Control
 	public void AddNewTileBtnPressed(bool toggled_on)
 	{
 		AddTileBtn.ButtonPressed = toggled_on;
-		if(toggled_on) DeleteTileBtnPressed(false);
+		if(toggled_on) DeleteTileBtnPressed(false); //todo
 		_map_creator.AddTileMode(toggled_on);
 	}
 
