@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dskdnaxx11hi2" path="res://Scripts/MapCreatorBase.cs" id="1_ult23"]
 [ext_resource type="PackedScene" uid="uid://dy1jgelxv7t8d" path="res://Scenes/tile_body.tscn" id="1_ya5e7"]
+[ext_resource type="Script" uid="uid://dkba35ys1gbdh" path="res://Scripts/CameraPosition.cs" id="3_m0mlk"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ult23"]
 
@@ -30,8 +31,11 @@ surface_material_override/0 = SubResource("StandardMaterial3D_m0mlk")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Table" unique_id=2122805007]
 shape = SubResource("HeightMapShape3D_cxaje")
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=937171553]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, -5.4524074, 18.840038, 0)
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1766341404]
+transform = Transform3D(1, 0, 0, 0, 0.48811865, 0.87277734, 0, -0.87277734, 0.48811865, 0, 10.550799, 7.7654943)
+script = ExtResource("3_m0mlk")
+MoveSpeed = 0.15
+RotateKeysSpeed = 1.2
 
 [node name="Tiles" type="Node3D" parent="." unique_id=428547947]
 
