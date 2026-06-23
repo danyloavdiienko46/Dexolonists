@@ -15,7 +15,7 @@ public partial class MapCreatorToolBox : Control
 	public void AddNewTileBtnPressed(bool toggled_on)
 	{
 		AddTileBtn.ButtonPressed = toggled_on;
-		if(toggled_on) DeleteTileBtnPressed(false); //todo
+		if(toggled_on) DeleteTileBtnPressed(false);
 		_map_creator.AddTileMode(toggled_on);
 	}
 
@@ -25,5 +25,10 @@ public partial class MapCreatorToolBox : Control
 		if(toggled_on) AddNewTileBtnPressed(false);
 		_map_creator.DeleteTileMode(toggled_on);
 		
+	}
+
+	public void SaveMapBtnPressed()
+	{
+		_map_creator.SaveMap("res://Dexolonists_map.bin");
 	}
 }

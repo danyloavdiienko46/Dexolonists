@@ -28,11 +28,12 @@ radius = 0.31054688
 [sub_resource type="BoxShape3D" id="BoxShape3D_n1fra"]
 size = Vector3(0.62023926, 0.047668457, 0.600647)
 
-[node name="TileBody" type="StaticBody3D" unique_id=1156758942 node_paths=PackedStringArray("TilePlacePoints", "ItemPlacePoints")]
+[node name="TileBody" type="StaticBody3D" unique_id=1156758942 node_paths=PackedStringArray("TilePlacePoints", "ItemPlacePoints", "TypeLabel")]
 collision_mask = 3
 script = ExtResource("1_s4a2y")
 TilePlacePoints = NodePath("TilePlacePoints")
 ItemPlacePoints = NodePath("ItemPlacePoints")
+TypeLabel = NodePath("Type")
 TilePlacePointsActiveMat = ExtResource("2_xcmit")
 TilePlacePointsMat = ExtResource("3_j7ktr")
 TilePlacePointsActiveHoverMat = ExtResource("4_n1fra")

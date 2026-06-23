@@ -6,17 +6,17 @@ public partial class MapCreatorBase : Node3D
 {
 	[Export] public Node3D Tiles;
 	[Export] public PackedScene TileBody;
-	private List<TileBody> _tile_list = new List<TileBody>();
+	public List<TileBody> tile_list = new List<TileBody>();
 	private Dictionaries _dict = new Dictionaries();
 	public override void _Ready()
 	{
 		TileBody tile = Tiles.GetNode<TileBody>("TileBody1");
-		_tile_list.Add(tile);
+		tile_list.Add(tile);
 	}
 
     public override void _Process(double delta)
     {
-        foreach(TileBody tile in _tile_list)
+        foreach(TileBody tile in tile_list)
 		{
 			if (tile.new_tile_signal)
 			{
@@ -24,14 +24,14 @@ public partial class MapCreatorBase : Node3D
 				tile.new_tile_signal = false;
 				TileBody new_tile = TileBody.Instantiate<TileBody>();
 				new_tile.Position = tile.Position + _dict.TPP_ind_to_pos[hovered_index];
-				string new_name = "TileBody" + (_tile_list.Count+1);
+				string new_name = "TileBody" + (tile_list.Count+1);
 				new_tile.Name = new_name;
 				new_tile.just_created = true;
 
 				Tiles.AddChild(new_tile, true);
-				_tile_list.Add(new_tile);
+				tile_list.Add(new_tile);
 
-				foreach(TileBody tile_body in _tile_list) //handling cleaning TPPs
+				foreach(TileBody tile_body in tile_list) //handling cleaning TPPs
 				{
 					tile_body.new_tile_created = true;
 				}
@@ -48,7 +48,7 @@ public partial class MapCreatorBase : Node3D
 
 	public void AddingTilesEnabled()
 	{
-		foreach(TileBody tile in _tile_list)
+		foreach(TileBody tile in tile_list)
 		{
 			tile.TilePlacePointsChangeMaterial(true);
 		}
@@ -56,7 +56,7 @@ public partial class MapCreatorBase : Node3D
 
 	public void AddingTilesDisabled()
 	{
-		foreach(TileBody tile in _tile_list)
+		foreach(TileBody tile in tile_list)
 		{
 			tile.TilePlacePointsChangeMaterial(false);
 		}

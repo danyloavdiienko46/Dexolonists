@@ -26,6 +26,7 @@ public partial class MainMenu : Control
 	public void SinglePlayer()
 	{
 		GD.Print("Starting Single Player!");
+		GetTree().ChangeSceneToFile("res://Scenes/normal_game.tscn");
 	}
 
 	public void MultiplayerFunc()

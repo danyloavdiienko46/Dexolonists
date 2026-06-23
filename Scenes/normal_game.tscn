@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://c2jqf26frt2it"]
+
+[ext_resource type="Script" uid="uid://ba0uanf05bw1u" path="res://Scripts/NormalGameScripts/NormalGame.cs" id="1_ju4fg"]
+[ext_resource type="PackedScene" uid="uid://dh4umatsciep6" path="res://Scenes/normal_game_base.tscn" id="2_tqipp"]
+[ext_resource type="Script" uid="uid://cxm8w726o7lnk" path="res://Scripts/NormalGameScripts/NormalGameUi.cs" id="3_tqipp"]
+
+[node name="NormalGame" type="Node3D" unique_id=733240485 node_paths=PackedStringArray("NormalGameBaseNode")]
+script = ExtResource("1_ju4fg")
+NormalGameBaseNode = NodePath("CanvasLayer/NormalGameBase")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1317478616]
+
+[node name="NormalGameBase" parent="CanvasLayer" unique_id=127469201 instance=ExtResource("2_tqipp")]
+
+[node name="NormalGameUI" type="Control" parent="CanvasLayer" unique_id=852288626]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("3_tqipp")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/NormalGameUI" unique_id=1753825797]
+layout_mode = 0
+offset_left = 252.0
+offset_top = 598.0
+offset_right = 887.0
+offset_bottom = 648.0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+alignment = 1
+
+[node name="LoadMapBtn" type="Button" parent="CanvasLayer/NormalGameUI/HBoxContainer" unique_id=602202653]
+layout_mode = 2
+theme_override_colors/font_pressed_color = Color(1, 0.50638646, 0, 1)
+theme_override_colors/font_hover_color = Color(0.9499975, 0.9499975, 0, 1)
+theme_override_font_sizes/font_size = 30
+toggle_mode = true
+text = "LoadMap"
+
+[connection signal="pressed" from="CanvasLayer/NormalGameUI/HBoxContainer/LoadMapBtn" to="CanvasLayer/NormalGameUI" method="LoadGameBtnPressed"]

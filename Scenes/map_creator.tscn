@@ -23,9 +23,9 @@ DeleteTileBtn = NodePath("HBoxContainer/DeleteTileBtn")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MapCreatorToolBox" unique_id=216417118]
 layout_mode = 0
-offset_left = 355.0
+offset_left = 286.0
 offset_top = 596.0
-offset_right = 771.0
+offset_right = 921.0
 offset_bottom = 646.0
 size_flags_horizontal = 4
 size_flags_vertical = 8
@@ -51,5 +51,18 @@ theme_override_font_sizes/font_size = 30
 toggle_mode = true
 text = "Delete Tile"
 
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/MapCreatorToolBox/HBoxContainer" unique_id=1970315515]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="SaveMapBtn" type="Button" parent="CanvasLayer/MapCreatorToolBox/HBoxContainer" unique_id=1640197971]
+layout_mode = 2
+theme_override_colors/font_pressed_color = Color(1, 0.50638646, 0, 1)
+theme_override_colors/font_hover_color = Color(0.9499975, 0.9499975, 0, 1)
+theme_override_font_sizes/font_size = 30
+toggle_mode = true
+text = "Save Map"
+
 [connection signal="toggled" from="CanvasLayer/MapCreatorToolBox/HBoxContainer/AddTileBtn" to="CanvasLayer/MapCreatorToolBox" method="AddNewTileBtnPressed"]
 [connection signal="toggled" from="CanvasLayer/MapCreatorToolBox/HBoxContainer/DeleteTileBtn" to="CanvasLayer/MapCreatorToolBox" method="DeleteTileBtnPressed"]
+[connection signal="pressed" from="CanvasLayer/MapCreatorToolBox/HBoxContainer/SaveMapBtn" to="CanvasLayer/MapCreatorToolBox" method="SaveMapBtnPressed"]

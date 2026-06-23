@@ -7,6 +7,7 @@ public partial class TileBody : StaticBody3D
 {
 	[Export] public Node3D TilePlacePoints {get;set;}
 	[Export] public Node3D ItemPlacePoints {get;set;}
+	[Export] public Label3D TypeLabel;
 	[Export] public Material TilePlacePointsActiveMat;
 	[Export] public Material TilePlacePointsMat;
 	[Export] public Material TilePlacePointsActiveHoverMat;
@@ -20,11 +21,15 @@ public partial class TileBody : StaticBody3D
 	private bool _cleaning_timer_created = false; //need this for cleaning TPPs
 	public bool just_created = false; //also need for clear cleanance of TPPs
 
-	private Random rnd = new Random();
+	public TileType type = 0;
+	private Random _rand = new Random();
 	public override void _Ready()
 	{
 		_tile_place_points = TilePlacePoints.GetChildren();
 		_item_place_points = ItemPlacePoints.GetChildren();
+
+		type = (TileType)_rand.Next(6);
+		TypeLabel.Text = type.ToString();
 
 		for(int i = 0; i < _tile_place_points.Count; i++)
 		{
@@ -147,4 +152,27 @@ public partial class TileBody : StaticBody3D
 			}
 		}
 	}
+
+	public TileSave SaveData()
+    {
+        var data = new TileSave
+        {
+            Position = Position,
+            ScenePath = SceneFilePath,
+			Type = (int)type
+        };
+
+		foreach (Area3D IPP in ItemPlacePoints.GetChildren())
+		{				
+			if (!IPP.Visible) continue;
+			GD.Print("Here is visible IPP!");
+			data.item_place_point_saves.Add(new ItemPlacePointSave
+			{
+				point_node_name = IPP.Name,
+				point_node_position = IPP.Position
+			});
+		}
+
+        return data;
+    }
 }
