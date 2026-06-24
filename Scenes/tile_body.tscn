@@ -28,11 +28,12 @@ radius = 0.31054688
 [sub_resource type="BoxShape3D" id="BoxShape3D_n1fra"]
 size = Vector3(0.62023926, 0.047668457, 0.600647)
 
-[node name="TileBody" type="StaticBody3D" unique_id=1156758942 node_paths=PackedStringArray("TilePlacePoints", "ItemPlacePoints", "TypeLabel")]
+[node name="TileBody" type="StaticBody3D" unique_id=1156758942 node_paths=PackedStringArray("TilePlacePoints", "ItemPlacePoints", "RoadPlacePoints", "TypeLabel")]
 collision_mask = 3
 script = ExtResource("1_s4a2y")
 TilePlacePoints = NodePath("TilePlacePoints")
 ItemPlacePoints = NodePath("ItemPlacePoints")
+RoadPlacePoints = NodePath("RoadPlacePoints")
 TypeLabel = NodePath("Type")
 TilePlacePointsActiveMat = ExtResource("2_xcmit")
 TilePlacePointsMat = ExtResource("3_j7ktr")
@@ -123,6 +124,87 @@ collision_mask = 3
 shape = SubResource("CylinderShape3D_kq70j")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="ItemPlacePoints/Point6" unique_id=1087479579]
+transform = Transform3D(0.62357473, 0, 0, 0, 0.08032228, 0, 0, 0, 0.6230486, 0, 0, 0)
+mesh = SubResource("CylinderMesh_s4a2y")
+surface_material_override/0 = SubResource("StandardMaterial3D_xcmit")
+
+[node name="RoadPlacePoints" type="Node3D" parent="." unique_id=581864601]
+
+[node name="Point1" type="Area3D" parent="RoadPlacePoints" unique_id=885619950]
+transform = Transform3D(0.65, 0, 0, 0, 0.65, 0, 0, 0, 0.65, -0.835, 0, -1.365)
+collision_layer = 4
+collision_mask = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RoadPlacePoints/Point1" unique_id=558971100]
+transform = Transform3D(0.62357473, 0, 0, 0, 0.08032228, 0, 0, 0, 0.6230486, 0, 0, 0)
+mesh = SubResource("CylinderMesh_s4a2y")
+surface_material_override/0 = SubResource("StandardMaterial3D_xcmit")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RoadPlacePoints/Point1" unique_id=653045181]
+shape = SubResource("CylinderShape3D_kq70j")
+
+[node name="Point2" type="Area3D" parent="RoadPlacePoints" unique_id=1114953478]
+transform = Transform3D(0.65, 0, 0, 0, 0.65, 0, 0, 0, 0.65, 0.835, 0, -1.365)
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RoadPlacePoints/Point2" unique_id=931684853]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.008)
+shape = SubResource("CylinderShape3D_kq70j")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RoadPlacePoints/Point2" unique_id=1137648169]
+transform = Transform3D(0.62357473, 0, 0, 0, 0.08032228, 0, 0, 0, 0.6230486, 0, 0, 0)
+mesh = SubResource("CylinderMesh_s4a2y")
+surface_material_override/0 = SubResource("StandardMaterial3D_xcmit")
+
+[node name="Point3" type="Area3D" parent="RoadPlacePoints" unique_id=575517485]
+transform = Transform3D(0.65, 0, 0, 0, 0.65, 0, 0, 0, 0.65, 1.65, 0, 0)
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RoadPlacePoints/Point3" unique_id=1666031749]
+shape = SubResource("CylinderShape3D_kq70j")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RoadPlacePoints/Point3" unique_id=978481268]
+transform = Transform3D(0.62357473, 0, 0, 0, 0.08032228, 0, 0, 0, 0.6230486, 0, 0, 0)
+mesh = SubResource("CylinderMesh_s4a2y")
+surface_material_override/0 = SubResource("StandardMaterial3D_xcmit")
+
+[node name="Point4" type="Area3D" parent="RoadPlacePoints" unique_id=1172368607]
+transform = Transform3D(0.65, 0, 0, 0, 0.65, 0, 0, 0, 0.65, 0.835, 0, 1.365)
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RoadPlacePoints/Point4" unique_id=21729816]
+shape = SubResource("CylinderShape3D_kq70j")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RoadPlacePoints/Point4" unique_id=1383032897]
+transform = Transform3D(0.62357473, 0, 0, 0, 0.08032228, 0, 0, 0, 0.6230486, 0, 0, 0)
+mesh = SubResource("CylinderMesh_s4a2y")
+surface_material_override/0 = SubResource("StandardMaterial3D_xcmit")
+
+[node name="Point5" type="Area3D" parent="RoadPlacePoints" unique_id=1171861245]
+transform = Transform3D(0.65, 0, 0, 0, 0.65, 0, 0, 0, 0.65, -0.835, 0, 1.365)
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RoadPlacePoints/Point5" unique_id=1263530449]
+shape = SubResource("CylinderShape3D_kq70j")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RoadPlacePoints/Point5" unique_id=962465833]
+transform = Transform3D(0.62357473, 0, 0, 0, 0.08032228, 0, 0, 0, 0.6230486, 0, 0, 0)
+mesh = SubResource("CylinderMesh_s4a2y")
+surface_material_override/0 = SubResource("StandardMaterial3D_xcmit")
+
+[node name="Point6" type="Area3D" parent="RoadPlacePoints" unique_id=223628007]
+transform = Transform3D(0.65, 0, 0, 0, 0.65, 0, 0, 0, 0.65, -1.65, 0, 0)
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RoadPlacePoints/Point6" unique_id=533665964]
+shape = SubResource("CylinderShape3D_kq70j")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RoadPlacePoints/Point6" unique_id=1045427061]
 transform = Transform3D(0.62357473, 0, 0, 0, 0.08032228, 0, 0, 0, 0.6230486, 0, 0, 0)
 mesh = SubResource("CylinderMesh_s4a2y")
 surface_material_override/0 = SubResource("StandardMaterial3D_xcmit")

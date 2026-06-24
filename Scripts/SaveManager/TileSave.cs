@@ -7,6 +7,7 @@ public partial class TileSave
 	public int Type {get; set;}
     public string ScenePath { get; set; }
 	public List<ItemPlacePointSave> item_place_point_saves {get; set;} = new List<ItemPlacePointSave>();
+	public List<RoadPlacePointSave> road_place_point_saves {get; set;} = new List<RoadPlacePointSave>();
 
 	public Godot.Collections.Dictionary ToDictionary()
 	{
@@ -16,11 +17,18 @@ public partial class TileSave
             IPPs.Add(item.ToDictionary());
         }
 
+        var RPPs = new Godot.Collections.Array();
+        foreach (var item in road_place_point_saves)
+        {
+            RPPs.Add(item.ToDictionary());
+        }
+
         return new Godot.Collections.Dictionary
         {
             { "position", Position },
             { "scene_path", ScenePath },
             { "IPPs", IPPs },
+            {"RPPs", RPPs},
 			{"type", Type}
         };
 	}
@@ -38,6 +46,12 @@ public partial class TileSave
         foreach (Godot.Collections.Dictionary IPPdict in IPPs)
         {
             data.item_place_point_saves.Add(ItemPlacePointSave.FromDictionary(IPPdict));
+        }
+
+        var RPPs = (Godot.Collections.Array)dict["RPPs"];
+        foreach (Godot.Collections.Dictionary RPPdict in RPPs)
+        {
+            data.road_place_point_saves.Add(RoadPlacePointSave.FromDictionary(RPPdict));
         }
 
         return data;

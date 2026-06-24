@@ -5,6 +5,7 @@ public partial class MapCreator : Node3D
 {
 	[Export] public PackedScene TileBody;
 	[Export] public MapCreatorBase MapCreatorBase;
+	[Export] public PackedScene MainMenuScene;
 	
 	public void AddTileMode(bool enabled)
 	{
@@ -31,6 +32,11 @@ public partial class MapCreator : Node3D
 		{
 			GD.Print("Deleting disabled!");
 		}
+	}
+
+	public void ExitToMainMenu()
+	{
+		GetTree().ChangeSceneToPacked(MainMenuScene);
 	}
 
 	public void SaveMap(string file_path)

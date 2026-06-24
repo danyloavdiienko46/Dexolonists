@@ -2,11 +2,15 @@
 
 [ext_resource type="Script" uid="uid://d0j3wpq74pqji" path="res://Scripts/MapCreator.cs" id="1_iouk7"]
 [ext_resource type="PackedScene" uid="uid://bs03j8insiikt" path="res://Scenes/map_creator_base.tscn" id="2_iouk7"]
+[ext_resource type="PackedScene" uid="uid://dy1jgelxv7t8d" path="res://Scenes/tile_body.tscn" id="2_m8hym"]
+[ext_resource type="PackedScene" uid="uid://xqtmm7veo5is" path="res://Scenes/main_menu.tscn" id="3_f1m21"]
 [ext_resource type="Script" uid="uid://ba7g3b280r6n3" path="res://Scripts/MapCreatorToolBox.cs" id="3_fp0w0"]
 
 [node name="MapCreator" type="Node3D" unique_id=733240485 node_paths=PackedStringArray("MapCreatorBase")]
 script = ExtResource("1_iouk7")
+TileBody = ExtResource("2_m8hym")
 MapCreatorBase = NodePath("CanvasLayer/MapCreatorBase")
+MainMenuScene = ExtResource("3_f1m21")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1317478616]
 
@@ -15,18 +19,25 @@ MapCreatorBase = NodePath("CanvasLayer/MapCreatorBase")
 [node name="MapCreatorToolBox" type="Control" parent="CanvasLayer" unique_id=1818224350 node_paths=PackedStringArray("AddTileBtn", "DeleteTileBtn")]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_top = 599.0
+offset_right = 1152.0
+offset_bottom = 648.0
 script = ExtResource("3_fp0w0")
 AddTileBtn = NodePath("HBoxContainer/AddTileBtn")
 DeleteTileBtn = NodePath("HBoxContainer/DeleteTileBtn")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MapCreatorToolBox" unique_id=216417118]
-layout_mode = 0
-offset_left = 286.0
-offset_top = 596.0
-offset_right = 921.0
-offset_bottom = 646.0
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -413.0
+offset_top = -50.0
+offset_right = 413.0
+grow_horizontal = 2
+grow_vertical = 0
 size_flags_horizontal = 4
 size_flags_vertical = 8
 alignment = 1
@@ -63,6 +74,19 @@ theme_override_font_sizes/font_size = 30
 toggle_mode = true
 text = "Save Map"
 
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/MapCreatorToolBox/HBoxContainer" unique_id=636621407]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="ExitMCBtn" type="Button" parent="CanvasLayer/MapCreatorToolBox/HBoxContainer" unique_id=43501645]
+layout_mode = 2
+theme_override_colors/font_pressed_color = Color(1, 0.50638646, 0, 1)
+theme_override_colors/font_hover_color = Color(0.9499975, 0.9499975, 0, 1)
+theme_override_font_sizes/font_size = 30
+toggle_mode = true
+text = "Exit to Main Menu"
+
 [connection signal="toggled" from="CanvasLayer/MapCreatorToolBox/HBoxContainer/AddTileBtn" to="CanvasLayer/MapCreatorToolBox" method="AddNewTileBtnPressed"]
 [connection signal="toggled" from="CanvasLayer/MapCreatorToolBox/HBoxContainer/DeleteTileBtn" to="CanvasLayer/MapCreatorToolBox" method="DeleteTileBtnPressed"]
 [connection signal="pressed" from="CanvasLayer/MapCreatorToolBox/HBoxContainer/SaveMapBtn" to="CanvasLayer/MapCreatorToolBox" method="SaveMapBtnPressed"]
+[connection signal="pressed" from="CanvasLayer/MapCreatorToolBox/HBoxContainer/ExitMCBtn" to="CanvasLayer/MapCreatorToolBox" method="ExitMCBtnPressed"]

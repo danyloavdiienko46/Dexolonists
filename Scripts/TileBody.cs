@@ -7,12 +7,14 @@ public partial class TileBody : StaticBody3D
 {
 	[Export] public Node3D TilePlacePoints {get;set;}
 	[Export] public Node3D ItemPlacePoints {get;set;}
+	[Export] public Node3D RoadPlacePoints {get;set;}
 	[Export] public Label3D TypeLabel;
 	[Export] public Material TilePlacePointsActiveMat;
 	[Export] public Material TilePlacePointsMat;
 	[Export] public Material TilePlacePointsActiveHoverMat;
 	private Godot.Collections.Array<Node> _tile_place_points;
 	private Godot.Collections.Array<Node> _item_place_points;
+	private Godot.Collections.Array<Node> _road_place_points;
 	private bool _is_adding_new_tile_enabled = false;
 	private int _hovered_tile_place_point_index = -1;
 	public int last_hovered_TPP = -1;
@@ -27,6 +29,7 @@ public partial class TileBody : StaticBody3D
 	{
 		_tile_place_points = TilePlacePoints.GetChildren();
 		_item_place_points = ItemPlacePoints.GetChildren();
+		_road_place_points = RoadPlacePoints.GetChildren();
 
 		type = (TileType)_rand.Next(6);
 		TypeLabel.Text = type.ToString();
@@ -101,6 +104,9 @@ public partial class TileBody : StaticBody3D
 			{
 				(_item_place_points[index] as Area3D).Visible = false; //making item place point invisible
 				(_item_place_points[(index+1)%6] as Area3D).Visible = false; //making second item place point invisible by adding one and operating only on values less than 6
+			
+				//disabling RPPs
+				(_road_place_points[index] as Area3D).Visible = false;
 			}
 		}
 	}
@@ -165,11 +171,20 @@ public partial class TileBody : StaticBody3D
 		foreach (Area3D IPP in ItemPlacePoints.GetChildren())
 		{				
 			if (!IPP.Visible) continue;
-			GD.Print("Here is visible IPP!");
 			data.item_place_point_saves.Add(new ItemPlacePointSave
 			{
 				point_node_name = IPP.Name,
 				point_node_position = IPP.Position
+			});
+		}
+
+		foreach (Area3D RPP in RoadPlacePoints.GetChildren())
+		{				
+			if (!RPP.Visible) continue;
+			data.road_place_point_saves.Add(new RoadPlacePointSave
+			{
+				point_node_name = RPP.Name,
+				point_node_position = RPP.Position
 			});
 		}
 

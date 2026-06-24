@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://blnpy5uh86nr4" path="res://Scripts/Tile.cs" id="1_xsjyq"]
 [ext_resource type="PackedScene" uid="uid://bjrbjynp86amg" path="res://Scenes/item_place_point.tscn" id="2_rvq8p"]
+[ext_resource type="PackedScene" uid="uid://bwavvdydeinr7" path="res://Scenes/road_place_point.tscn" id="3_4kj4d"]
+[ext_resource type="Material" uid="uid://blm6gyqjtpf8l" path="res://Materials/item_place_point_visible_mat.tres" id="4_g7l7l"]
+[ext_resource type="Material" uid="uid://bwc0qfc6rp3sp" path="res://Materials/item_place_point_invisible_mat.tres" id="5_y55j6"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_y18ax"]
 radial_segments = 6
@@ -10,10 +13,14 @@ radial_segments = 6
 height = 0.21679688
 radius = 1.5649414
 
-[node name="Tile" type="StaticBody3D" unique_id=207572208 node_paths=PackedStringArray("ItemPlacePoints", "TypeLabel")]
+[node name="Tile" type="StaticBody3D" unique_id=207572208 node_paths=PackedStringArray("ItemPlacePoints", "RoadPlacePoints", "TypeLabel")]
 script = ExtResource("1_xsjyq")
 ItemPlacePoints = NodePath("ItemPlacePoints")
+RoadPlacePoints = NodePath("RoadPlacePoints")
 ItemPlacePointScene = ExtResource("2_rvq8p")
+RoadPlacePointScene = ExtResource("3_4kj4d")
+ItemPlacePointsVisibleMat = ExtResource("4_g7l7l")
+ItemPlacePointsInvisibleMat = ExtResource("5_y55j6")
 TypeLabel = NodePath("Type")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=972311172]
@@ -25,6 +32,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.009765625, 0)
 shape = SubResource("CylinderShape3D_xsjyq")
 
 [node name="ItemPlacePoints" type="Node3D" parent="." unique_id=1530279375]
+
+[node name="RoadPlacePoints" type="Node3D" parent="." unique_id=517302670]
 
 [node name="Type" type="Label3D" parent="." unique_id=624919296]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.19451833, 0)

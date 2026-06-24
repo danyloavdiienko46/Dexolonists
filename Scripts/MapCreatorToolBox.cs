@@ -31,4 +31,9 @@ public partial class MapCreatorToolBox : Control
 	{
 		_map_creator.SaveMap("res://Dexolonists_map.bin");
 	}
+
+	public void ExitMCBtnPressed()
+	{
+		_map_creator.ExitToMainMenu();
+	}
 }
