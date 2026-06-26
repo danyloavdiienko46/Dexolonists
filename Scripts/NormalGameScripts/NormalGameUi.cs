@@ -3,6 +3,7 @@ using System;
 
 public partial class NormalGameUi : Control
 {
+	[Export] public ItemList ObjectList;
 	private NormalGame _normal_game;
 
     public override void _Ready()
@@ -23,5 +24,11 @@ public partial class NormalGameUi : Control
 	public void ObjectListItemChosen(int index)
 	{
 		GD.Print("Chosen item is " + index);
+		_normal_game.ItemChosen(index);
+	}
+
+	public void ObjectListDeselect()
+	{
+		ObjectList.DeselectAll();
 	}
 }

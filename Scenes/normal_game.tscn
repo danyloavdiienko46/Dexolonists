@@ -7,16 +7,17 @@
 [ext_resource type="Texture2D" uid="uid://dky7j8o67etnc" path="res://Scenes/Objects/ObjectIcons/HouseIcon.png" id="5_w8bi1"]
 [ext_resource type="Texture2D" uid="uid://uokg2an182rp" path="res://Scenes/Objects/ObjectIcons/RoadIcon.png" id="6_1fidm"]
 
-[node name="NormalGame" type="Node3D" unique_id=733240485 node_paths=PackedStringArray("NormalGameBaseNode")]
+[node name="NormalGame" type="Node3D" unique_id=733240485 node_paths=PackedStringArray("NormalGameBaseNode", "NormalGameUI")]
 script = ExtResource("1_ju4fg")
 NormalGameBaseNode = NodePath("CanvasLayer/NormalGameBase")
+NormalGameUI = NodePath("CanvasLayer/NormalGameUI")
 MainMenuScene = ExtResource("2_0cevo")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1317478616]
 
 [node name="NormalGameBase" parent="CanvasLayer" unique_id=127469201 instance=ExtResource("2_tqipp")]
 
-[node name="NormalGameUI" type="Control" parent="CanvasLayer" unique_id=852288626]
+[node name="NormalGameUI" type="Control" parent="CanvasLayer" unique_id=852288626 node_paths=PackedStringArray("ObjectList")]
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
@@ -33,6 +34,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 mouse_filter = 1
 script = ExtResource("3_tqipp")
+ObjectList = NodePath("ObjectList")
 
 [node name="ControlButtons" type="VBoxContainer" parent="CanvasLayer/NormalGameUI" unique_id=639983133]
 layout_mode = 1
@@ -76,6 +78,7 @@ offset_right = 100.0
 grow_horizontal = 2
 grow_vertical = 0
 scale = Vector2(1.0356925, 0.9735987)
+allow_search = false
 item_count = 2
 max_columns = 2
 icon_mode = 0

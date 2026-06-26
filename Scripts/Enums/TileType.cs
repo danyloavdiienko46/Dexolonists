@@ -6,5 +6,6 @@ public enum TileType
     Wheat,
     Sheep,
     Ore,
+    Desert,
     Gold
 }

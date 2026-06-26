@@ -1,11 +1,9 @@
 [gd_scene format=3 uid="uid://bjrbjynp86amg"]
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_s4a2y"]
+[ext_resource type="Script" uid="uid://c11xnywym6sco" path="res://Scripts/ItemPlacePoint.cs" id="1_sdfse"]
+[ext_resource type="Material" uid="uid://bwc0qfc6rp3sp" path="res://Materials/item_place_point_invisible_mat.tres" id="1_uxgxj"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xcmit"]
-transparency = 1
-shading_mode = 0
-albedo_color = Color(1, 1, 1, 0.15686275)
+[sub_resource type="CylinderMesh" id="CylinderMesh_s4a2y"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_kq70j"]
 height = 0.19967651
@@ -14,11 +12,12 @@ radius = 0.31054688
 [node name="ItemPlacePoint" type="Area3D" unique_id=1043497836]
 collision_layer = 2
 collision_mask = 3
+script = ExtResource("1_sdfse")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=228214862]
 transform = Transform3D(0.62357473, 0, 0, 0, 0.08032228, 0, 0, 0, 0.6230486, 0, 0, 0)
 mesh = SubResource("CylinderMesh_s4a2y")
-surface_material_override/0 = SubResource("StandardMaterial3D_xcmit")
+surface_material_override/0 = ExtResource("1_uxgxj")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=220798550]
 shape = SubResource("CylinderShape3D_kq70j")

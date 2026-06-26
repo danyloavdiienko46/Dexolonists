@@ -10,7 +10,7 @@ radial_segments = 6
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_s4a2y"]
 height = 0.21679688
-radius = 1.5649414
+radius = 0.9404297
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_s4a2y"]
 

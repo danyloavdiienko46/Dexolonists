@@ -36,8 +36,6 @@ public partial class MapCreatorBase : Node3D
 					tile_body.new_tile_created = true;
 				}
 
-				
-
 				var t = Tiles.GetNode<TileBody>(new_name);
 				t.TilePlacePointsChangeMaterial(true);
 				break;

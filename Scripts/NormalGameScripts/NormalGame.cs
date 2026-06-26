@@ -4,9 +4,8 @@ using System;
 public partial class NormalGame : Node3D
 {
 	[Export] public NormalGameBase NormalGameBaseNode;
+	[Export] public NormalGameUi NormalGameUI;
 	[Export] public PackedScene MainMenuScene;
-
-	public ItemType? chosen_item = null;
 	
 	public void LoadMapBase(string file_path)
 	{
@@ -17,4 +16,15 @@ public partial class NormalGame : Node3D
 	{
 		GetTree().ChangeSceneToPacked(MainMenuScene);
 	}
+
+	public void ItemChosen(int index)
+	{
+		NormalGameBaseNode.ItemChosenHandler(index);
+	}
+
+	public void ItemsDeselect()
+	{
+		NormalGameUI.ObjectListDeselect();
+	}
+
 }

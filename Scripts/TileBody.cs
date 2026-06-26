@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 
 public partial class TileBody : StaticBody3D
@@ -24,14 +25,12 @@ public partial class TileBody : StaticBody3D
 	public bool just_created = false; //also need for clear cleanance of TPPs
 
 	public TileType type = 0;
-	private Random _rand = new Random();
 	public override void _Ready()
 	{
 		_tile_place_points = TilePlacePoints.GetChildren();
 		_item_place_points = ItemPlacePoints.GetChildren();
 		_road_place_points = RoadPlacePoints.GetChildren();
 
-		type = (TileType)_rand.Next(6);
 		TypeLabel.Text = type.ToString();
 
 		for(int i = 0; i < _tile_place_points.Count; i++)
@@ -178,16 +177,18 @@ public partial class TileBody : StaticBody3D
 			});
 		}
 
-		foreach (Area3D RPP in RoadPlacePoints.GetChildren())
-		{				
+		var RPPs = RoadPlacePoints.GetChildren();
+		for(int i = 0; i < RPPs.Count; i++)
+		{
+			var RPP = RPPs[i] as Area3D;
 			if (!RPP.Visible) continue;
 			data.road_place_point_saves.Add(new RoadPlacePointSave
 			{
 				point_node_name = RPP.Name,
-				point_node_position = RPP.Position
+				point_node_position = RPP.Position,
+				point_node_index = i
 			});
 		}
-
         return data;
     }
 }
