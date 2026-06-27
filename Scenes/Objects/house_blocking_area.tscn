@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://bwslev8s1xsi2"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_i162h"]
+radius = 1.8
+
+[node name="HouseBlockingArea" type="Area3D" unique_id=1497445713]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=420012948]
+shape = SubResource("SphereShape3D_i162h")

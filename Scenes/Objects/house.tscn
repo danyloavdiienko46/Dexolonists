@@ -1,5 +1,8 @@
 [gd_scene format=3 uid="uid://mao2t3fpxpho"]
 
+[ext_resource type="Script" uid="uid://c7fiqxr3e4kcw" path="res://Scripts/Objects/House.cs" id="1_mbimq"]
+[ext_resource type="PackedScene" uid="uid://bwslev8s1xsi2" path="res://Scenes/Objects/house_blocking_area.tscn" id="2_cdwci"]
+
 [sub_resource type="BoxMesh" id="BoxMesh_xg0rf"]
 size = Vector3(0.441, 0.335, 0.441)
 
@@ -18,6 +21,8 @@ data = PackedVector3Array(0, 0.099999994, 0.22049999, 0.22049999, -0.099999994, 
 
 [node name="House" type="StaticBody3D" unique_id=1021000594]
 collision_mask = 3
+script = ExtResource("1_mbimq")
+HouseBlockingAreaScene = ExtResource("2_cdwci")
 
 [node name="Base" type="MeshInstance3D" parent="." unique_id=755510109]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07211387, 0)

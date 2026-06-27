@@ -26,12 +26,13 @@ public partial class Tile : StaticBody3D
 	public int last_hovered_RPP_ind = -1;
 	public bool new_item_signal = false;
 	public Vector3 new_item_pos = new Vector3(-1, -1, -1);
+	public ItemType? last_chosen_item_type = null;
 
 	private Random _rand = new Random();
 
 	private Dictionaries _dict = new Dictionaries();
 	
-	public void ItemPlacePointsChangeMaterial()
+	public void ItemPlacePointsChangeMaterial(ItemType? item_type = null)
 	{
 		if(_is_RPP_active_for_placement)RoadPlacePointsChangeMaterial();
 
@@ -49,7 +50,9 @@ public partial class Tile : StaticBody3D
 
 		foreach(ItemPlacePoint IPP in _item_place_points)
 		{
-			if(!IPP.IsActive && _is_IPP_active_for_placement)continue;
+			if((!IPP.IsActive && _is_IPP_active_for_placement)
+				|| (item_type == ItemType.House && !IPP.IsHousePlacementPermitted 
+					&& _is_IPP_active_for_placement))continue;
 			IPP.GetNode<MeshInstance3D>("MeshInstance3D").MaterialOverride = mat;
 		}
 	}
@@ -79,7 +82,9 @@ public partial class Tile : StaticBody3D
 
 	private void ItemPlacePointMouseHighlight(bool toogle_on, int IPP_ind)
 	{
-		if(!_item_place_points[IPP_ind].IsActive) return;
+		if(!_item_place_points[IPP_ind].IsActive ||
+			(!_item_place_points[IPP_ind].IsHousePlacementPermitted
+				&& last_chosen_item_type == ItemType.House)) return;
 
 		if(IPP_ind >= _item_place_points.Count)
 		{

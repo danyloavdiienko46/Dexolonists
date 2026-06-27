@@ -120,8 +120,12 @@ public partial class NormalGameBase : Node3D
 					new_item.Position = tile.new_item_pos;
 
 					float fluctuation = (float)(_rand.NextDouble()+_rand.Next(4)-_rand.Next(4));
-					new_item.Rotate(new Vector3(0, 1, 0),
-					 Mathf.DegToRad(_dict.RPP_ind_to_rot_degrees[tile.last_hovered_RPP_ind] + fluctuation));
+
+					float rot_degree_val = 0.0f;
+					if(!_dict.RPP_ind_to_rot_degrees.TryGetValue(tile.last_hovered_RPP_ind, out rot_degree_val))
+						rot_degree_val = 0.0f;
+
+					new_item.Rotate(new Vector3(0, 1, 0), Mathf.DegToRad(rot_degree_val + fluctuation));
 
 					PlacedItems.AddChild(new_item);
 
@@ -162,7 +166,8 @@ public partial class NormalGameBase : Node3D
 				{
 					foreach(Tile tile in _tile_list)
 					{
-						tile.ItemPlacePointsChangeMaterial();
+						tile.last_chosen_item_type = ItemType.House;
+						tile.ItemPlacePointsChangeMaterial(ItemType.House);
 					}
 					_chosen_item = 0;
 					break;
@@ -171,6 +176,7 @@ public partial class NormalGameBase : Node3D
 				{
 					foreach(Tile tile in _tile_list)
 					{
+						tile.last_chosen_item_type = ItemType.Road;
 						tile.RoadPlacePointsChangeMaterial();
 					}
 					_chosen_item = 1;
