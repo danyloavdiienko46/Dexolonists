@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c2jqf26frt2it"]
 
 [ext_resource type="Script" uid="uid://ba0uanf05bw1u" path="res://Scripts/NormalGameScripts/NormalGame.cs" id="1_ju4fg"]
-[ext_resource type="PackedScene" uid="uid://xqtmm7veo5is" path="res://Scenes/main_menu.tscn" id="2_0cevo"]
+[ext_resource type="PackedScene" uid="uid://xqtmm7veo5is" path="res://Scenes/Menus/main_menu.tscn" id="2_0cevo"]
 [ext_resource type="PackedScene" uid="uid://dh4umatsciep6" path="res://Scenes/normal_game_base.tscn" id="2_tqipp"]
 [ext_resource type="Script" uid="uid://cxm8w726o7lnk" path="res://Scripts/NormalGameScripts/NormalGameUi.cs" id="3_tqipp"]
 [ext_resource type="Texture2D" uid="uid://dky7j8o67etnc" path="res://Scenes/Objects/ObjectIcons/HouseIcon.png" id="5_w8bi1"]

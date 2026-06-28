@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://d0j3wpq74pqji" path="res://Scripts/MapCreator.cs" id="1_iouk7"]
 [ext_resource type="PackedScene" uid="uid://bs03j8insiikt" path="res://Scenes/map_creator_base.tscn" id="2_iouk7"]
 [ext_resource type="PackedScene" uid="uid://dy1jgelxv7t8d" path="res://Scenes/tile_body.tscn" id="2_m8hym"]
-[ext_resource type="PackedScene" uid="uid://xqtmm7veo5is" path="res://Scenes/main_menu.tscn" id="3_f1m21"]
+[ext_resource type="PackedScene" uid="uid://xqtmm7veo5is" path="res://Scenes/Menus/main_menu.tscn" id="3_f1m21"]
 [ext_resource type="Script" uid="uid://ba7g3b280r6n3" path="res://Scripts/MapCreatorToolBox.cs" id="3_fp0w0"]
 
 [node name="MapCreator" type="Node3D" unique_id=733240485 node_paths=PackedStringArray("MapCreatorBase")]

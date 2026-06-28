@@ -15,6 +15,10 @@ run/main_scene="uid://xqtmm7veo5is"
 config/features=PackedStringArray("4.6", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+NetworkHandler="*uid://dqpmv5v6ckfde"
+
 [dotnet]
 
 project/assembly_name="Dexolonists"

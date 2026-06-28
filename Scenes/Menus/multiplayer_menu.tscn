@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://cnt1lyexo5046"]
+
+[ext_resource type="Script" uid="uid://cnbhnqcwrx0io" path="res://Scripts/Menus/MultiplayerMenu.cs" id="1_mvekd"]
+[ext_resource type="PackedScene" uid="uid://xqtmm7veo5is" path="res://Scenes/Menus/main_menu.tscn" id="2_i5wxu"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_i5wxu"]
+font_size = 52
+font_color = Color(13.863529, 11.277378, 0, 1)
+
+[node name="MultiplayerMenu" type="Node3D" unique_id=1704156120]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=152419565]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=1745402586]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_mvekd")
+MainMenuScene = ExtResource("2_i5wxu")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control" unique_id=926266864]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer" unique_id=1951191066]
+layout_mode = 2
+
+[node name="GameTitle" type="Label" parent="CanvasLayer/Control/MarginContainer/VBoxContainer" unique_id=465293479]
+layout_mode = 2
+text = "Dexolonists"
+label_settings = SubResource("LabelSettings_i5wxu")
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/MarginContainer/VBoxContainer" unique_id=945161629]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="HostServerBtn" type="Button" parent="CanvasLayer/Control/MarginContainer/VBoxContainer" unique_id=1417597179]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_colors/font_focus_color = Color(0.9490196, 0.9490196, 0.3019608, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.5764706, 0.15686275, 1)
+theme_override_font_sizes/font_size = 24
+text = "Host Server"
+
+[node name="JoinServerBtn" type="Button" parent="CanvasLayer/Control/MarginContainer/VBoxContainer" unique_id=1191902318]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_colors/font_focus_color = Color(0.9490196, 0.9490196, 0.3019608, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.5764706, 0.15686275, 1)
+theme_override_font_sizes/font_size = 24
+text = "Join Server"
+
+[node name="MainMenuBtn" type="Button" parent="CanvasLayer/Control/MarginContainer/VBoxContainer" unique_id=267596763]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_colors/font_focus_color = Color(0.9490196, 0.9490196, 0.3019608, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.5764706, 0.15686275, 1)
+theme_override_font_sizes/font_size = 24
+text = "Main Menu"
+
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/VBoxContainer/HostServerBtn" to="CanvasLayer/Control" method="HostServerBtnPressed"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/VBoxContainer/JoinServerBtn" to="CanvasLayer/Control" method="JoinServerBtnPressed"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/VBoxContainer/MainMenuBtn" to="CanvasLayer/Control" method="MainMenuBtn"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/VBoxContainer/MainMenuBtn" to="CanvasLayer/Control" method="MainMenuBtnPressed"]

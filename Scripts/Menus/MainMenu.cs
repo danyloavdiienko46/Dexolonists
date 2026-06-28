@@ -10,12 +10,6 @@ public partial class MainMenu : Control
         _tree = GetTree();
     }
 
-	/*public void Server()
-	{
-		GetNode<HighLvlNetworkHandler>("/root/Network").StartServer();
-		GetTree().ChangeSceneToFile("res://main.tscn");
-	}*/
-
 	public void MapCreator()
 	{
 		GD.Print("Starting Map Creator!");
@@ -32,6 +26,7 @@ public partial class MainMenu : Control
 	public void MultiplayerFunc()
 	{
 		GD.Print("Starting Multiplayer!");
+		GetTree().ChangeSceneToFile("res://Scenes/Menus/multiplayer_menu.tscn");
 	}
 
 	public void Settings()

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://xqtmm7veo5is"]
 
-[ext_resource type="Script" uid="uid://1ekmx6ik8ojo" path="res://Scripts/MainMenu.cs" id="2_48xlc"]
+[ext_resource type="Script" uid="uid://1ekmx6ik8ojo" path="res://Scripts/Menus/MainMenu.cs" id="1_38aua"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_erv1k"]
 font_size = 52
@@ -15,7 +15,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("2_48xlc")
+script = ExtResource("1_38aua")
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control" unique_id=1440872268]
 layout_mode = 0
