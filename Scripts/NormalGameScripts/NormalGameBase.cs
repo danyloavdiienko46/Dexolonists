@@ -21,7 +21,7 @@ public partial class NormalGameBase : Node3D
 
     public override void _Ready()
     {
-        _normal_game = GetOwner<NormalGame>();
+        _normal_game = GetParent<NormalGame>();
     }
 
     public override void _Process(double delta)
@@ -145,14 +145,12 @@ public partial class NormalGameBase : Node3D
 
 		tile.new_item_signal = false;
 		_chosen_item = -1;
-		_normal_game.ItemsDeselect();
 	}
 
 	public override void _Input(InputEvent @event)
     {
 		if (Input.IsActionJustPressed("RMB_click"))
 		{
-			_normal_game.ItemsDeselect();
 			ItemChosenHandler(_chosen_item);
 			_chosen_item = -1;
 		}

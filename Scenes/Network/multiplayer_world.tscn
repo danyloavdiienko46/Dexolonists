@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://btdkxbbmmrrsg"]
+
+[ext_resource type="Script" uid="uid://cjq4x1l0h6u08" path="res://Scripts/Network/MultiplayerWorld.cs" id="1_jmo3y"]
+[ext_resource type="Script" uid="uid://ccwu0x43kw0gs" path="res://Scripts/Network/MultiplayerSpawner.cs" id="2_6ruhp"]
+[ext_resource type="PackedScene" uid="uid://dh4umatsciep6" path="res://Scenes/normal_game_base.tscn" id="2_jmo3y"]
+[ext_resource type="PackedScene" uid="uid://do2p3a8l1w002" path="res://Scenes/normal_game_player.tscn" id="3_0gwti"]
+[ext_resource type="Script" uid="uid://ba0uanf05bw1u" path="res://Scripts/NormalGameScripts/NormalGame.cs" id="4_6ruhp"]
+[ext_resource type="PackedScene" uid="uid://xqtmm7veo5is" path="res://Scenes/Menus/main_menu.tscn" id="5_0gwti"]
+
+[node name="MultiplayerWorld" type="Node3D" unique_id=231822336]
+script = ExtResource("1_jmo3y")
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="." unique_id=200990842]
+_spawnable_scenes = PackedStringArray("uid://do2p3a8l1w002")
+spawn_path = NodePath("../NormalGameMultiplayer")
+script = ExtResource("2_6ruhp")
+network_player = ExtResource("3_0gwti")
+
+[node name="NormalGameMultiplayer" type="Node3D" parent="." unique_id=654280888 node_paths=PackedStringArray("NormalGameBaseNode")]
+script = ExtResource("4_6ruhp")
+NormalGameBaseNode = NodePath("NormalGameBase")
+MainMenuScene = ExtResource("5_0gwti")
+
+[node name="NormalGameBase" parent="NormalGameMultiplayer" unique_id=127469201 instance=ExtResource("2_jmo3y")]

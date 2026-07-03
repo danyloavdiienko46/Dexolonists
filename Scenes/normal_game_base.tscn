@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://bypjwukoxjbgy" path="res://Scripts/NormalGameScripts/NormalGameBase.cs" id="1_24o5e"]
 [ext_resource type="PackedScene" uid="uid://d4bq5mp6xwb54" path="res://Scenes/tile.tscn" id="2_8x201"]
-[ext_resource type="Script" uid="uid://dkba35ys1gbdh" path="res://Scripts/CameraPosition.cs" id="3_0okic"]
 [ext_resource type="PackedScene" uid="uid://mao2t3fpxpho" path="res://Scenes/Objects/house.tscn" id="3_dc0q4"]
 [ext_resource type="PackedScene" uid="uid://b8ftqcaeonp1u" path="res://Scenes/Objects/road.tscn" id="4_i3d34"]
 
@@ -36,12 +35,6 @@ surface_material_override/0 = SubResource("StandardMaterial3D_m0mlk")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Table" unique_id=2122805007]
 shape = SubResource("HeightMapShape3D_cxaje")
-
-[node name="Camera3D" type="Camera3D" parent="." unique_id=1766341404]
-transform = Transform3D(1, 0, 0, 0, 0.48811865, 0.87277734, 0, -0.87277734, 0.48811865, 0, 10.550799, 7.7654943)
-script = ExtResource("3_0okic")
-MoveSpeed = 0.15
-RotateKeysSpeed = 1.2
 
 [node name="Tiles" type="Node3D" parent="." unique_id=428547947]
 

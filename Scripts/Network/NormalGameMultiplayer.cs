@@ -1,14 +1,18 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using HelperScripts;
 
-public partial class NormalGame : Node3D
+public partial class NormalGameMultiplayer : Node3D
 {
 	[Export] public NormalGameBase NormalGameBaseNode;
 	[Export] public PackedScene MainMenuScene;
 
+	//private NormalGameUi _normal_game_ui;
+
     public override void _Ready()
     {
-      //  _normal_game_ui = GetNode("NormalGamePlayer").GetNode<NormalGameUi>("NormalGameUI");
+       // _normal_game_ui = GetNode("NormalGamePlayer").GetNode<NormalGameUi>("NormalGameUI");
     }
 
 	
@@ -27,4 +31,8 @@ public partial class NormalGame : Node3D
 		NormalGameBaseNode.ItemChosenHandler(index);
 	}
 
+	public void ItemsDeselect()
+	{
+		//_normal_game_ui.ObjectListDeselect();
+	}
 }
