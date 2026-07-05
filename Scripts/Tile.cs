@@ -180,23 +180,26 @@ public partial class Tile : StaticBody3D
 
 	public void LoadData(TileSave data)
     {
-        this.Position = data.Position;
-		type = (TileType)_rand.Next(1, 6);
-		while(number == -1 || number == 7) number = _rand.Next(2, 13);
-		int chances = _dict.Tile_number_to_chances[number];
-		string chances_str = ".";
-
-		TypeLabel.Text = type.ToString();
-		TypeLabel.Modulate = new Color(_dict.TileType_to_colour_code[type]);
-
-		NumberLabel.Text = number.ToString();
-
-
-		for(int i = 1; i < chances; i++)
+		if (Multiplayer.IsServer())
 		{
-			chances_str+=".";
+			type = (TileType)_rand.Next(1, 6);
+			while(number == -1 || number == 7) number = _rand.Next(2, 13);
+			int chances = _dict.Tile_number_to_chances[number];
+			string chances_str = ".";
+
+			TypeLabel.Text = type.ToString();
+			TypeLabel.Modulate = new Color(_dict.TileType_to_colour_code[type]);
+
+			NumberLabel.Text = number.ToString();
+
+			for(int i = 1; i < chances; i++)
+			{
+				chances_str+=".";
+			}
+			ChancesLabel.Text = chances_str;
 		}
-		ChancesLabel.Text = chances_str;
+
+		this.Position = data.Position;
 
 		int ind = 0;
         foreach (var IPPSave in data.item_place_point_saves)
@@ -232,4 +235,12 @@ public partial class Tile : StaticBody3D
         }
 
     }
+
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+	public void RpcSyncTileData(Godot.Collections.Dictionary dict)
+	{
+		TileSave data = TileSave.FromDictionary(dict);
+		LoadData(data);
+
+	}
 }

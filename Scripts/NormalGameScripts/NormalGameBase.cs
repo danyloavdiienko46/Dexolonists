@@ -15,6 +15,7 @@ public partial class NormalGameBase : Node3D
 	private NormalGame _normal_game;
 	private List<Tile> _tile_list = new List<Tile>();
 	private int _chosen_item = -1;
+	public bool is_item_placed = false;
 	private Dictionaries _dict = new Dictionaries();
 
 	private Random _rand = new Random();
@@ -22,7 +23,26 @@ public partial class NormalGameBase : Node3D
     public override void _Ready()
     {
         _normal_game = GetParent<NormalGame>();
+
+		Tiles.ChildEnteredTree += OnTileChildEnteredTree;
+    	Tiles.ChildExitingTree += OnTileChildExitingTree;
     }
+
+	private void OnTileChildEnteredTree(Node node)
+	{
+		if (node is Tile tile && !_tile_list.Contains(tile))
+		{
+			_tile_list.Add(tile);
+		}
+	}
+
+	private void OnTileChildExitingTree(Node node)
+	{
+		if (node is Tile tile && _tile_list.Contains(tile))
+		{
+			_tile_list.Remove(tile);
+		}
+	}
 
     public override void _Process(double delta)
     {
@@ -58,6 +78,8 @@ public partial class NormalGameBase : Node3D
 
 	public void LoadMap(string file_path)
 	{
+		if (!Multiplayer.IsServer() && Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer) return;
+
 		ClearAllLists();
 
 		using var file = FileAccess.Open(file_path, FileAccess.ModeFlags.Read);
@@ -68,6 +90,7 @@ public partial class NormalGameBase : Node3D
 		}
 
 		var save_array = (Godot.Collections.Array)file.GetVar(allowObjects: true);
+		int tile_counter = 0;
 
 		foreach (Godot.Collections.Dictionary dict in save_array)
 		{
@@ -75,14 +98,14 @@ public partial class NormalGameBase : Node3D
 
 			if (string.IsNullOrEmpty(data.ScenePath)) continue;
 
-			//var tileScene = GD.Load<PackedScene>(data.ScenePath);
-			//if (tileScene == null) continue;
-
 			Tile new_tile = TileScene.Instantiate<Tile>();
 
-			new_tile.LoadData(data);
+			new_tile.Name = $"Tile_{tile_counter}";
+        	tile_counter++;
+
 			Tiles.AddChild(new_tile);
-			_tile_list.Add(new_tile);
+
+			new_tile.Rpc(nameof(Tile.RpcSyncTileData), dict);
 		}
 
 		GD.Print("Map loaded and spawned successfully!");
@@ -100,16 +123,12 @@ public partial class NormalGameBase : Node3D
 					new_item.Position = tile.new_item_pos;
 
 					PlacedItems.AddChild(new_item);
-					
-					//tile_list.Add(new_item);
 
 					foreach(Tile titile in _tile_list)
 					{
 						titile.ItemPlacePointsChangeMaterial();
 					}
 
-					//var t = Tiles.GetNode<TileBody>(new_name);
-					//t.TilePlacePointsChangeMaterial(true);
 					break;
 				}
 			case 1:
@@ -145,6 +164,8 @@ public partial class NormalGameBase : Node3D
 
 		tile.new_item_signal = false;
 		_chosen_item = -1;
+
+		is_item_placed = true;
 	}
 
 	public override void _Input(InputEvent @event)
@@ -162,8 +183,10 @@ public partial class NormalGameBase : Node3D
 		{
 			case 0:
 				{
+					GD.Print("Choosing house!");
 					foreach(Tile tile in _tile_list)
 					{
+						GD.Print("Choosing house inside tile!");
 						tile.last_chosen_item_type = ItemType.House;
 						tile.ItemPlacePointsChangeMaterial(ItemType.House);
 					}
@@ -172,8 +195,10 @@ public partial class NormalGameBase : Node3D
 				}
 			case 1:
 				{
+					GD.Print("Choosing road!");
 					foreach(Tile tile in _tile_list)
 					{
+						GD.Print("Choosing road inside tile!");
 						tile.last_chosen_item_type = ItemType.Road;
 						tile.RoadPlacePointsChangeMaterial();
 					}

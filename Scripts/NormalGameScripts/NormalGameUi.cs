@@ -13,6 +13,16 @@ public partial class NormalGameUi : Control
 		_multiplayer_world = GetNodeOrNull<MultiplayerWorld>("/root/MultiplayerWorld");
     }
 
+    public override void _PhysicsProcess(double delta)
+    {
+		if (_normal_game.is_item_placed)
+		{
+			_normal_game.is_item_placed = false;
+			ObjectListDeselect();
+		}
+    }
+
+
 	public override void _Input(InputEvent @event)
     {
 		if (Input.IsActionJustPressed("RMB_click"))
@@ -39,7 +49,6 @@ public partial class NormalGameUi : Control
 		{
 			GD.Print("Doing something for server!");
 			_normal_game.ItemChosen(index);
-			//_multiplayer_world.RequestPlaceTile(targetPosition, selectedTileType);
 		}
 		else
 		{
