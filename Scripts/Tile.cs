@@ -52,7 +52,8 @@ public partial class Tile : StaticBody3D
 		{
 			if((!IPP.IsActive && _is_IPP_active_for_placement)
 				|| (item_type == ItemType.House && !IPP.IsHousePlacementPermitted 
-					&& _is_IPP_active_for_placement))continue;
+					&& _is_IPP_active_for_placement))
+					continue;
 			IPP.GetNode<MeshInstance3D>("MeshInstance3D").MaterialOverride = mat;
 		}
 	}
@@ -140,13 +141,18 @@ public partial class Tile : StaticBody3D
 
 	public override void _Input(InputEvent @event)
     {
-        if (Input.IsActionJustPressed("LMB_click") && 
+        if (@event.IsActionPressed("LMB_click") && 
 			(_hovered_IPP_index != -1 || _hovered_RPP_index != -1))
 		{
 			AddNewItem();
 		}
+		else if (@event.IsActionPressed("LMB_click") && 
+			_hovered_IPP_index == -1 && _hovered_RPP_index == -1)
+		{
+			ForceClearAllPlacementMaterials();
+		}
 
-		else if (Input.IsActionJustPressed("RMB_click"))
+		else if (@event.IsActionPressed("RMB_click"))
 		{
 			_hovered_IPP_index = -1;
 			_hovered_RPP_index = -1;
@@ -154,6 +160,7 @@ public partial class Tile : StaticBody3D
 			last_hovered_RPP_ind = -1;
 		}
     }
+	
 	private void AddNewItem()
 	{
 		GD.Print("Placing new Item for Tile: " + this.Name);
@@ -178,26 +185,62 @@ public partial class Tile : StaticBody3D
 		new_item_signal = true;
 	}
 
-	public void LoadData(TileSave data)
-    {
-		if (Multiplayer.IsServer())
+	public void ForceClearAllPlacementMaterials()
+	{
+		_is_IPP_active_for_placement = false;
+		_is_RPP_active_for_placement = false;
+		_hovered_IPP_index = -1;
+		_hovered_RPP_index = -1;
+		last_hovered_point = -1;
+		last_hovered_RPP_ind = -1;
+
+		foreach(ItemPlacePoint IPP in _item_place_points)
 		{
-			type = (TileType)_rand.Next(1, 6);
-			while(number == -1 || number == 7) number = _rand.Next(2, 13);
-			int chances = _dict.Tile_number_to_chances[number];
-			string chances_str = ".";
-
-			TypeLabel.Text = type.ToString();
-			TypeLabel.Modulate = new Color(_dict.TileType_to_colour_code[type]);
-
-			NumberLabel.Text = number.ToString();
-
-			for(int i = 1; i < chances; i++)
-			{
-				chances_str+=".";
-			}
-			ChancesLabel.Text = chances_str;
+			IPP.GetNode<MeshInstance3D>("MeshInstance3D").MaterialOverride = ItemPlacePointsInvisibleMat;
 		}
+		
+		foreach(RoadPlacePoint RPP in _road_place_points)
+		{
+			RPP.GetNode<MeshInstance3D>("MeshInstance3D").MaterialOverride = ItemPlacePointsInvisibleMat;
+		}
+	}
+
+	public void DeactivatePointLocally(bool isItemPoint, int index)
+	{
+		if (isItemPoint)
+		{
+			if (index >= 0 && index < _item_place_points.Count)
+			{
+				_item_place_points[index].IsActive = false;
+			}
+		}
+		else
+		{
+			if (index >= 0 && index < _road_place_points.Count)
+			{
+				_road_place_points[index].IsActive = false;
+			}
+		}
+	}
+
+	public void LoadData(TileSave data, TileType type_of_tile, int number_of_tile)
+    {
+		type = type_of_tile;
+		number = number_of_tile;
+		int chances = _dict.Tile_number_to_chances[number];
+
+		TypeLabel.Text = type.ToString();
+		TypeLabel.Modulate = new Color(_dict.TileType_to_colour_code[type]);
+
+		NumberLabel.Text = number.ToString();
+
+		string chances_str = ".";
+
+		for(int i = 1; i < chances; i++)
+		{
+			chances_str+=".";
+		}
+		ChancesLabel.Text = chances_str;
 
 		this.Position = data.Position;
 
@@ -237,10 +280,10 @@ public partial class Tile : StaticBody3D
     }
 
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
-	public void RpcSyncTileData(Godot.Collections.Dictionary dict)
+	public void RpcSyncTileData(Godot.Collections.Dictionary dict, int type_of_tile, int number_of_tile)
 	{
 		TileSave data = TileSave.FromDictionary(dict);
-		LoadData(data);
+		LoadData(data, (TileType)type_of_tile, number_of_tile);
 
 	}
 }

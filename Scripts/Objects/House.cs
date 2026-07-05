@@ -8,6 +8,7 @@ public partial class House : StaticBody3D
 	private bool _just_created = false;
 	public override void _Ready()
 	{
+		if(!Multiplayer.IsServer()) return;
 		_house_blocking_area = HouseBlockingAreaScene.Instantiate<Area3D>();
 		AddChild(_house_blocking_area);
 		_just_created = true;

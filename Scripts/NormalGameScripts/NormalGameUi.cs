@@ -6,6 +6,7 @@ public partial class NormalGameUi : Control
 	[Export] public ItemList ObjectList;
 	private NormalGame _normal_game;
 	private MultiplayerWorld _multiplayer_world;
+	private bool _is_item_chosen = false;
 
     public override void _Ready()
     {
@@ -13,19 +14,15 @@ public partial class NormalGameUi : Control
 		_multiplayer_world = GetNodeOrNull<MultiplayerWorld>("/root/MultiplayerWorld");
     }
 
-    public override void _PhysicsProcess(double delta)
-    {
-		if (_normal_game.is_item_placed)
-		{
-			_normal_game.is_item_placed = false;
-			ObjectListDeselect();
-		}
-    }
-
 
 	public override void _Input(InputEvent @event)
     {
 		if (Input.IsActionJustPressed("RMB_click"))
+		{
+			ObjectListDeselect();
+		}
+
+		else if (Input.IsActionJustPressed("LMB_click") && _is_item_chosen == true)
 		{
 			ObjectListDeselect();
 		}
@@ -44,21 +41,14 @@ public partial class NormalGameUi : Control
 
 	public void ObjectListItemChosen(int index)
 	{
-		if (Multiplayer.MultiplayerPeer != null && 
-        	Multiplayer.MultiplayerPeer.GetConnectionStatus() == MultiplayerPeer.ConnectionStatus.Connected)
-		{
-			GD.Print("Doing something for server!");
-			_normal_game.ItemChosen(index);
-		}
-		else
-		{
-			GD.Print("Chosen item is " + index);
-			_normal_game.ItemChosen(index);
-		}
+		_is_item_chosen = true;
+		GD.Print("Chosen item is " + index);
+		_normal_game.ItemChosen(index);
 	}
 
 	public void ObjectListDeselect()
 	{
 		ObjectList.DeselectAll();
+		_is_item_chosen = false;	
 	}
 }

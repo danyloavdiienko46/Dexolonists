@@ -3,7 +3,7 @@ using System;
 
 public partial class ItemPlacePoint : Area3D
 {
-	public bool IsActive {get; set;} = true;
+	[Export] public bool IsActive {get; set;} = true;
 
-	public bool IsHousePlacementPermitted {get; set;} = true;
+	[Export] public bool IsHousePlacementPermitted {get; set;} = true;
 }

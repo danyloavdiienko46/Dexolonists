@@ -2,6 +2,7 @@ using Godot;
 using HelperScripts;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 public partial class NormalGameBase : Node3D
 {
@@ -50,6 +51,7 @@ public partial class NormalGameBase : Node3D
 		{
 			if(tile.new_item_signal) 
 			{
+				tile.new_item_signal = false;
 				ItemPlacementHandler(tile);
 				break;
 			}
@@ -103,9 +105,13 @@ public partial class NormalGameBase : Node3D
 			new_tile.Name = $"Tile_{tile_counter}";
         	tile_counter++;
 
-			Tiles.AddChild(new_tile);
+			int tile_type = _rand.Next(1, 6);
+			int tile_number = -1;
+			while(tile_number == -1 || tile_number == 7) tile_number = _rand.Next(2, 13);
 
-			new_tile.Rpc(nameof(Tile.RpcSyncTileData), dict);
+			Tiles.AddChild(new_tile, true);
+
+			new_tile.Rpc(nameof(Tile.RpcSyncTileData), dict, tile_type, tile_number);
 		}
 
 		GD.Print("Map loaded and spawned successfully!");
@@ -113,59 +119,122 @@ public partial class NormalGameBase : Node3D
 
 	private void ItemPlacementHandler(Tile tile)
 	{
-		switch (_chosen_item)
+		NodePath tile_path = tile.GetPath();
+		int item_to_place = _chosen_item;
+		int point_index = tile.last_hovered_point;
+		Vector3 placement_position = tile.new_item_pos;
+		int rpp_index = tile.last_hovered_RPP_ind;
+
+		if (Multiplayer.IsServer())
+		{
+			ServerProcessPlacement(item_to_place, tile_path, point_index, placement_position, rpp_index);
+		}
+		else
+		{
+			RpcId(1, nameof(RpcRequestItemPlacement), item_to_place, tile_path, point_index, placement_position, rpp_index);
+			_chosen_item = -1;
+			LocalClearPlacementUI();
+		}
+	}
+
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false)]
+	public void RpcRequestItemPlacement(int chosen_item, NodePath tile_path, int point_index, Vector3 placement_position, int rpp_index)
+	{
+		if (!Multiplayer.IsServer()) return;
+		ServerProcessPlacement(chosen_item, tile_path, point_index, placement_position, rpp_index);
+	}
+
+	private void ServerProcessPlacement(int chosen_item, NodePath tile_path, int point_index, Vector3 placement_position, int rpp_index)
+	{
+		Tile tile = GetNodeOrNull<Tile>(tile_path);
+		if(tile == null)
+		{
+			GD.Print("Tile is null, aborting...");
+			return;
+		}
+
+		string node_name = "";
+		float final_road_rotation = 0.0f;
+
+		switch (chosen_item)
 		{
 			case 0:
-				{
-					GD.Print("Placing house!");
+			{
+				int index = PlacedItems.GetChildren().Count;
+				node_name = $"House_{index}";
+				break;
+			}
+		case 1:
+			{
+				int index = PlacedRoads.GetChildren().Count;
+				node_name = $"Road_{index}";
 
-					StaticBody3D new_item = HouseScene.Instantiate<StaticBody3D>();
-					new_item.Position = tile.new_item_pos;
+				float fluctuation = (float)(_rand.NextDouble() + _rand.Next(4) - _rand.Next(4));
+				float rot_degree_val = 0.0f;
+				if(!_dict.RPP_ind_to_rot_degrees.TryGetValue(rpp_index, out rot_degree_val))
+					rot_degree_val = 0.0f;
 
-					PlacedItems.AddChild(new_item);
-
-					foreach(Tile titile in _tile_list)
-					{
-						titile.ItemPlacePointsChangeMaterial();
-					}
-
-					break;
-				}
-			case 1:
-				{
-					GD.Print("Placing road!");
-
-					StaticBody3D new_item = RoadScene.Instantiate<StaticBody3D>();
-					new_item.Position = tile.new_item_pos;
-
-					float fluctuation = (float)(_rand.NextDouble()+_rand.Next(4)-_rand.Next(4));
-
-					float rot_degree_val = 0.0f;
-					if(!_dict.RPP_ind_to_rot_degrees.TryGetValue(tile.last_hovered_RPP_ind, out rot_degree_val))
-						rot_degree_val = 0.0f;
-
-					new_item.Rotate(new Vector3(0, 1, 0), Mathf.DegToRad(rot_degree_val + fluctuation));
-
-					PlacedItems.AddChild(new_item);
-
-					foreach(Tile titile in _tile_list)
-					{
-						titile.RoadPlacePointsChangeMaterial();
-					}
-
-					break;
-				}
+				final_road_rotation = rot_degree_val + fluctuation;
+				break;
+			}
 			default:
 				{
 					GD.Print("Wrong index for ItemPlacementHandler");
 					break;
 				}
 		}
+		Rpc(nameof(RpcBroadcastSpawnItem), chosen_item, tile_path, point_index, placement_position, node_name, final_road_rotation);
+		Rpc(nameof(RpcBroadcastClearUI));
 
 		tile.new_item_signal = false;
 		_chosen_item = -1;
 
 		is_item_placed = true;
+	}
+
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)] // CallLocal = true forces host + clients to run this
+	public void RpcBroadcastSpawnItem(int chosen_item, NodePath tile_path, int point_index, Vector3 placement_position, string node_name, float road_rotation)
+	{
+		Tile tile = GetNodeOrNull<Tile>(tile_path);
+		if (tile != null)
+		{
+			tile.DeactivatePointLocally(chosen_item == 0, point_index);
+		}
+
+		if (chosen_item == 0)
+		{
+			StaticBody3D new_item = HouseScene.Instantiate<StaticBody3D>();
+			new_item.Position = placement_position;
+			new_item.Name = node_name;
+
+			PlacedItems.AddChild(new_item);
+		}
+		else if (chosen_item == 1)
+		{
+			StaticBody3D new_item = RoadScene.Instantiate<StaticBody3D>();
+			new_item.Position = placement_position;
+			new_item.Name = node_name;
+			new_item.Rotate(new Vector3(0, 1, 0), Mathf.DegToRad(road_rotation));
+
+			PlacedRoads.AddChild(new_item);
+		}
+	}
+
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+	public void RpcBroadcastClearUI()
+	{
+		LocalClearPlacementUI();
+	}
+
+	private void LocalClearPlacementUI()
+	{
+		foreach(Tile tile in _tile_list)
+		{
+			if (tile != null)
+			{
+				tile.ForceClearAllPlacementMaterials();
+			}
+		}
 	}
 
 	public override void _Input(InputEvent @event)

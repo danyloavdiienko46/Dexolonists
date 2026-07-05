@@ -9,6 +9,14 @@
 height = 0.19967651
 radius = 0.31054688
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_sdfse"]
+properties/0/path = NodePath(".:IsActive")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:IsHousePlacementPermitted")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+
 [node name="ItemPlacePoint" type="Area3D" unique_id=1043497836]
 collision_layer = 2
 collision_mask = 3
@@ -21,3 +29,6 @@ surface_material_override/0 = ExtResource("1_uxgxj")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=220798550]
 shape = SubResource("CylinderShape3D_kq70j")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1932721472]
+replication_config = SubResource("SceneReplicationConfig_sdfse")

@@ -10,3 +10,4 @@ monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=420012948]
 shape = SubResource("SphereShape3D_i162h")
+debug_color = Color(0.86938053, 0.24677208, 0.6341575, 0.41960785)
