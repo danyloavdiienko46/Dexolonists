@@ -117,21 +117,23 @@ item_1/icon = ExtResource("3_es64j")
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1620501494]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.555182)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=781342520]
+[node name="BodyMesh" type="MeshInstance3D" parent="." unique_id=781342520]
 mesh = SubResource("BoxMesh_34grn")
 surface_material_override/0 = SubResource("StandardMaterial3D_34grn")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=1801589541]
+[node name="Eye" type="Node3D" parent="." unique_id=231590766]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Eye" unique_id=1801589541]
 transform = Transform3D(-5.21253e-16, 1.192488e-08, -1, -0.99999994, -4.3711385e-08, 0, -4.3711385e-08, 0.99999994, 1.1924881e-08, 0, 0, -0.5254628)
 mesh = SubResource("TorusMesh_34grn")
 surface_material_override/0 = SubResource("StandardMaterial3D_mrjq0")
 
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="." unique_id=141095886]
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Eye" unique_id=141095886]
 transform = Transform3D(-5.21253e-16, 1.192488e-08, -1, -0.99999994, -4.3711385e-08, 0, -4.3711385e-08, 0.99999994, 1.1924881e-08, 0, 0, -0.56996113)
 mesh = SubResource("SphereMesh_es64j")
 surface_material_override/0 = SubResource("StandardMaterial3D_5atrp")
 
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="." unique_id=1641488656]
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Eye" unique_id=1641488656]
 transform = Transform3D(-5.21253e-16, 1.192488e-08, -1, -0.99999994, -4.3711385e-08, 0, -4.3711385e-08, 0.99999994, 1.1924881e-08, 0, 0, -0.57955855)
 mesh = SubResource("TorusMesh_mrjq0")
 surface_material_override/0 = SubResource("StandardMaterial3D_es64j")

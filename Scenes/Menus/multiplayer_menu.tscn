@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cnbhnqcwrx0io" path="res://Scripts/Menus/MultiplayerMenu.cs" id="1_mvekd"]
 [ext_resource type="PackedScene" uid="uid://xqtmm7veo5is" path="res://Scenes/Menus/main_menu.tscn" id="2_i5wxu"]
-[ext_resource type="PackedScene" uid="uid://btdkxbbmmrrsg" path="res://Scenes/Network/multiplayer_world.tscn" id="3_jusg1"]
+[ext_resource type="PackedScene" uid="uid://xr5gb1g5keo4" path="res://Scenes/Network/multiplayer_lobby.tscn" id="3_jusg1"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_i5wxu"]
 font_size = 52
@@ -19,7 +19,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_mvekd")
 MainMenuScene = ExtResource("2_i5wxu")
-MultiplayerWorldScene = ExtResource("3_jusg1")
+MultiplayerLobbyScene = ExtResource("3_jusg1")
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control" unique_id=926266864]
 layout_mode = 0
@@ -73,5 +73,5 @@ text = "Main Menu"
 
 [connection signal="pressed" from="CanvasLayer/Control/MarginContainer/VBoxContainer/HostServerBtn" to="CanvasLayer/Control" method="HostServerBtnPressed"]
 [connection signal="pressed" from="CanvasLayer/Control/MarginContainer/VBoxContainer/JoinServerBtn" to="CanvasLayer/Control" method="JoinServerBtnPressed"]
-[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/VBoxContainer/MainMenuBtn" to="CanvasLayer/Control" method="MainMenuBtn"]
 [connection signal="pressed" from="CanvasLayer/Control/MarginContainer/VBoxContainer/MainMenuBtn" to="CanvasLayer/Control" method="MainMenuBtnPressed"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/VBoxContainer/MainMenuBtn" to="CanvasLayer/Control" method="MainMenuBtn"]

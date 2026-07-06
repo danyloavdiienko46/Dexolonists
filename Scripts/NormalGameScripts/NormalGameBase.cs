@@ -18,6 +18,7 @@ public partial class NormalGameBase : Node3D
 	private int _chosen_item = -1;
 	public bool is_item_placed = false;
 	private Dictionaries _dict = new Dictionaries();
+	private long _placing_player_id = -1;
 
 	private Random _rand = new Random();
 

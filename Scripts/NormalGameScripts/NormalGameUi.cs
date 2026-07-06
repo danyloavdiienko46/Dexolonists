@@ -12,11 +12,13 @@ public partial class NormalGameUi : Control
     {
         _normal_game = GetParent().GetParent<NormalGame>();
 		_multiplayer_world = GetNodeOrNull<MultiplayerWorld>("/root/MultiplayerWorld");
+
     }
 
 
 	public override void _Input(InputEvent @event)
     {
+		//if(!IsMultiplayerAuthority()) return;
 		if (Input.IsActionJustPressed("RMB_click"))
 		{
 			ObjectListDeselect();

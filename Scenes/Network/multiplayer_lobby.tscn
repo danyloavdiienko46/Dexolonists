@@ -1,0 +1,112 @@
+[gd_scene format=3 uid="uid://xr5gb1g5keo4"]
+
+[ext_resource type="Texture2D" uid="uid://4wudvshb1q8t" path="res://2D_sheit/5469994761512419197.jpg" id="1_3cuaj"]
+[ext_resource type="Script" uid="uid://b7xqs5y7px3t0" path="res://Scripts/Network/MultiplayerLobby.cs" id="1_r3fab"]
+[ext_resource type="PackedScene" uid="uid://btdkxbbmmrrsg" path="res://Scenes/Network/multiplayer_world.tscn" id="2_1cfyx"]
+[ext_resource type="Texture2D" uid="uid://dng85lrdhirur" path="res://2D_sheit/Gigachad borisio.png" id="2_64yrg"]
+[ext_resource type="PackedScene" uid="uid://xqtmm7veo5is" path="res://Scenes/Menus/main_menu.tscn" id="3_bvd0n"]
+[ext_resource type="Texture2D" uid="uid://dpe1nn5a0cuee" path="res://2D_sheit/romaman.jpg" id="3_xfde8"]
+[ext_resource type="Texture2D" uid="uid://dciaxpxkc5hyl" path="res://2D_sheit/sanya.png" id="4_r3fab"]
+[ext_resource type="Texture2D" uid="uid://dc6i3lj55hkd" path="res://2D_sheit/YEGOR.png" id="5_xfde8"]
+[ext_resource type="Texture2D" uid="uid://vkxj03qqueth" path="res://2D_sheit/5359470856259705276.jpg" id="6_r3fab"]
+[ext_resource type="Script" uid="uid://bw4vkr58opxmt" path="res://Scripts/Network/PlayerIconSpawner.cs" id="8_0o6io"]
+[ext_resource type="PackedScene" uid="uid://bwl6ylrxp50rn" path="res://Scenes/Network/player_lobby_icon.tscn" id="10_bvd0n"]
+
+[sub_resource type="AnimatedTexture" id="AnimatedTexture_0o6io"]
+frames = 6
+frame_0/texture = ExtResource("1_3cuaj")
+frame_1/texture = ExtResource("2_64yrg")
+frame_1/duration = 1.0
+frame_2/texture = ExtResource("3_xfde8")
+frame_2/duration = 1.0
+frame_3/texture = ExtResource("4_r3fab")
+frame_3/duration = 1.0
+frame_4/texture = ExtResource("5_xfde8")
+frame_4/duration = 1.0
+frame_5/texture = ExtResource("6_r3fab")
+frame_5/duration = 1.0
+
+[node name="MultiplayerLobby" type="Node3D" unique_id=998579888 node_paths=PackedStringArray("StartGameButton")]
+script = ExtResource("1_r3fab")
+MultiplayerWorldScene = ExtResource("2_1cfyx")
+MainMenuScene = ExtResource("3_bvd0n")
+StartGameButton = NodePath("CanvasLayer/Control/HBoxContainer/GameManagerPanel/VBoxContainer/StartGameBtn")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1634295684]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=503426386]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control" unique_id=418170125]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control" unique_id=1784239581]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="PlayerListPanel" type="Panel" parent="CanvasLayer/Control/HBoxContainer" unique_id=898017816]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PlayerListPanel" unique_id=1900862804]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MiddlePanel" type="Panel" parent="CanvasLayer/Control/HBoxContainer" unique_id=2028489345]
+custom_minimum_size = Vector2(742, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/HBoxContainer/MiddlePanel" unique_id=1751962697]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("AnimatedTexture_0o6io")
+expand_mode = 3
+
+[node name="GameManagerPanel" type="Panel" parent="CanvasLayer/Control/HBoxContainer" unique_id=1164568709]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer/GameManagerPanel" unique_id=1564650217]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ExitBtn" type="Button" parent="CanvasLayer/Control/HBoxContainer/GameManagerPanel/VBoxContainer" unique_id=878590854]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Exit to Main Menu"
+
+[node name="StartGameBtn" type="Button" parent="CanvasLayer/Control/HBoxContainer/GameManagerPanel/VBoxContainer" unique_id=38073602]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 10
+text = "Start Game"
+
+[node name="PlayerIconSpawner" type="MultiplayerSpawner" parent="." unique_id=762555931]
+_spawnable_scenes = PackedStringArray("uid://bwl6ylrxp50rn")
+spawn_path = NodePath("../CanvasLayer/Control/HBoxContainer/PlayerListPanel/VBoxContainer")
+script = ExtResource("8_0o6io")
+player_icon_scene = ExtResource("10_bvd0n")
+
+[connection signal="pressed" from="CanvasLayer/Control/HBoxContainer/GameManagerPanel/VBoxContainer/ExitBtn" to="." method="MainMenuBtnPressed"]
+[connection signal="pressed" from="CanvasLayer/Control/HBoxContainer/GameManagerPanel/VBoxContainer/StartGameBtn" to="." method="StartGameBtnPressed"]
