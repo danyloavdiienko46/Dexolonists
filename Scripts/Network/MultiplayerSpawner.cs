@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Godot;
 
 public partial class MultiplayerSpawner : Godot.MultiplayerSpawner
@@ -10,7 +12,7 @@ public partial class MultiplayerSpawner : Godot.MultiplayerSpawner
         
         if (network_player != null)
         {
-            Node3D player = network_player.Instantiate<Node3D>();
+            NormalGamePlayer player = network_player.Instantiate<NormalGamePlayer>();
             player.Name = id.ToString();
             player.Position = new Vector3(0, 10.551f, 7.765f);
 

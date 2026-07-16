@@ -12,15 +12,16 @@ public partial class MultiplayerLobby : Node3D
 
     private List<long> _players = new List<long>();
 
+
     public override void _Ready()
     {
         _player_icon_spawner = GetNode<PlayerIconSpawner>("PlayerIconSpawner");
 
         if (Multiplayer.IsServer())
         {
-            _players.Add(1);
             _player_icon_spawner.SpawnPlayerIcon(1);
 			StartGameButton.Visible = true;
+            _players.Add(1);
         }
         else
         {
@@ -67,12 +68,8 @@ public partial class MultiplayerLobby : Node3D
 
         if (!_players.Contains(clientId))
         {
+            _player_icon_spawner.SpawnPlayerIcon(clientId);
             _players.Add(clientId);
-
-            if (_player_icon_spawner != null)
-            {
-                _player_icon_spawner.SpawnPlayerIcon(clientId);
-            }
         }
     }
 
@@ -96,6 +93,7 @@ public partial class MultiplayerLobby : Node3D
 
         var players = new Godot.Collections.Array<long>(_players);
         Rpc(nameof(RpcStartGame), players);
+
 	}
 
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]

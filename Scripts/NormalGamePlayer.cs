@@ -1,21 +1,39 @@
 using Godot;
 using System;
 
+using System.Collections.Generic;
+
 public partial class NormalGamePlayer : Node3D
 {
     [Export] public float MoveSpeed = 0.6f;
     [Export] public float RotateKeysSpeed = 1.5f;
     [Export] public float MouseSensitivity = 5.0f;
+    private readonly List<Color> _player_colors = new()
+    {
+        Colors.Red,
+        Colors.Blue,
+        Colors.Green,
+        Colors.Yellow,
+        Colors.Purple,
+        Colors.Orange
+    };
 
+    private MultiplayerWorld _mp_world;
+
+    private int _color_index = -1;
     private Vector3 _move_target;
     private float _rotate_y_target;
     private float _rotate_x_target;
+
+    public long player_ID = -1;
 
     public override void _EnterTree()
     {
         int id = 0;
 		Int32.TryParse(Name, out id);
 		SetMultiplayerAuthority(id);
+
+        player_ID = id;
     }
 
     public override void _Ready()
@@ -29,6 +47,31 @@ public partial class NormalGamePlayer : Node3D
         {
             camera.MakeCurrent(); 
         }
+
+        if (Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer)
+        {
+            _mp_world = GetParent().GetParent<MultiplayerWorld>();
+            _color_index = _mp_world.GetColourID(player_ID);
+        }
+        
+        ChangeBodyMeshColour();
+
+    }
+
+    public void ChangeBodyMeshColour()
+    {
+        if (_color_index < 0 || _color_index >= _player_colors.Count) 
+        {
+            GD.Print("Wrong index for colouring, brother!");
+            return;
+        }
+
+        MeshInstance3D body_mesh = GetNode<MeshInstance3D>("BodyMesh");
+        StandardMaterial3D mat = new StandardMaterial3D();
+        mat.AlbedoColor = _player_colors[_color_index];
+        body_mesh.MaterialOverride = mat;
+
+        GD.Print("Changed color for player #" + player_ID);
     }
 
     public override void _UnhandledInput(InputEvent @event)

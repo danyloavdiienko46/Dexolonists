@@ -18,7 +18,6 @@ public partial class NormalGameUi : Control
 
 	public override void _Input(InputEvent @event)
     {
-		//if(!IsMultiplayerAuthority()) return;
 		if (Input.IsActionJustPressed("RMB_click"))
 		{
 			ObjectListDeselect();

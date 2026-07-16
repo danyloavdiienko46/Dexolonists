@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+using System.Collections.Generic;
+
 public partial class PlayerIconSpawner : Godot.MultiplayerSpawner
 {
 	[Export] public PackedScene player_icon_scene;

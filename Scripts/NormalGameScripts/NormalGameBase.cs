@@ -256,7 +256,6 @@ public partial class NormalGameBase : Node3D
 					GD.Print("Choosing house!");
 					foreach(Tile tile in _tile_list)
 					{
-						GD.Print("Choosing house inside tile!");
 						tile.last_chosen_item_type = ItemType.House;
 						tile.ItemPlacePointsChangeMaterial(ItemType.House);
 					}
@@ -268,7 +267,6 @@ public partial class NormalGameBase : Node3D
 					GD.Print("Choosing road!");
 					foreach(Tile tile in _tile_list)
 					{
-						GD.Print("Choosing road inside tile!");
 						tile.last_chosen_item_type = ItemType.Road;
 						tile.RoadPlacePointsChangeMaterial();
 					}

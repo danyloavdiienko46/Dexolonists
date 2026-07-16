@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using HelperScripts;
 
 public partial class MultiplayerWorld : Node3D
 {
@@ -9,11 +10,26 @@ public partial class MultiplayerWorld : Node3D
 
     public Queue<long> players_turn = new Queue<long>();
     private List<long> _players;
+    private Shuffler _shuffler = new Shuffler();
 
     public void SetPlayers(Godot.Collections.Array<long> playerList)
     {
         _players = new List<long>(playerList);
+        
+        long[] new_players = _players.ToArray();
+        _shuffler.ShuffleArray(new_players);
+
+        foreach(long id in new_players)
+        {
+            players_turn.Append(id);
+        }
     }
+
+    public int GetColourID(long id)
+    {
+        return _players.IndexOf(id);
+    }
+
 
     public override void _Ready()
     {
