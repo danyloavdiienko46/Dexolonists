@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using HelperScripts;
 
 public partial class House : StaticBody3D
 {
@@ -12,15 +13,7 @@ public partial class House : StaticBody3D
 	private MeshInstance3D _house_base;
 	private MeshInstance3D _house_roof;
 
-	private readonly List<Color> _player_colors = new()
-    {
-        Colors.Red,
-        Colors.Blue,
-        Colors.Green,
-        Colors.Yellow,
-        Colors.Purple,
-        Colors.Orange
-    };
+	private ColourList _colour_list = new ColourList();
 
 	public override void _Ready()
 	{
@@ -60,7 +53,7 @@ public partial class House : StaticBody3D
 	public void ChangeObjectMeshColour(int colour_index)
 	{
         StandardMaterial3D mat = new StandardMaterial3D();
-        mat.AlbedoColor = _player_colors[colour_index];
+        mat.AlbedoColor = _colour_list.player_colors[colour_index];
 		if(_house_base != null) _house_base.MaterialOverride = mat;
 		else GD.Print("House Base is null!");
 

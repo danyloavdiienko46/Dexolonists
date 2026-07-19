@@ -5,6 +5,9 @@
 [ext_resource type="Texture2D" uid="uid://dky7j8o67etnc" path="res://Scenes/Objects/ObjectIcons/HouseIcon.png" id="2_mrjq0"]
 [ext_resource type="Texture2D" uid="uid://uokg2an182rp" path="res://Scenes/Objects/ObjectIcons/RoadIcon.png" id="3_es64j"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_34grn"]
+bg_color = Color(0, 0, 0, 0.42745098)
+
 [sub_resource type="BoxMesh" id="BoxMesh_34grn"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_34grn"]
@@ -98,12 +101,15 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -100.0
-offset_top = -100.0
-offset_right = 100.0
+offset_left = -100.25
+offset_top = -102.0
+offset_right = 99.75
+offset_bottom = -2.0
 grow_horizontal = 2
 grow_vertical = 0
 scale = Vector2(1.0356925, 0.9735987)
+theme_override_colors/font_color = Color(12.623979, 12.623979, 12.623979, 1)
+theme_override_styles/panel = SubResource("StyleBoxFlat_34grn")
 allow_search = false
 item_count = 2
 max_columns = 2

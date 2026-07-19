@@ -2,20 +2,13 @@ using Godot;
 using System;
 
 using System.Collections.Generic;
+using HelperScripts;
 
 public partial class PlayerLobbyIcon : Panel
 {
 	private RichTextLabel _label;
-
-    private readonly List<Color> _player_colors = new()
-    {
-        Colors.Red,
-        Colors.Blue,
-        Colors.Green,
-        Colors.Yellow,
-        Colors.Purple,
-        Colors.Orange
-    };
+    
+    private ColourList _colour_list = new ColourList();
 
     public override void _Ready()
     {
@@ -23,7 +16,7 @@ public partial class PlayerLobbyIcon : Panel
 		_label.Text = $"Player#{Name}";
 
         int colour_index = GetIndex();
-        _label.Modulate = _player_colors[colour_index];
+        _label.Modulate = _colour_list.player_colors[colour_index];
     }
 
 }

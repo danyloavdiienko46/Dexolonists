@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://d4bq5mp6xwb54" path="res://Scenes/tile.tscn" id="7_cniy2"]
 [ext_resource type="PackedScene" uid="uid://mao2t3fpxpho" path="res://Scenes/Objects/house.tscn" id="8_tm88v"]
 [ext_resource type="PackedScene" uid="uid://b8ftqcaeonp1u" path="res://Scenes/Objects/road.tscn" id="9_mi4gu"]
+[ext_resource type="PackedScene" uid="uid://cccon3qp35730" path="res://Scenes/Network/multiplayer_game_ui.tscn" id="10_cniy2"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ult23"]
 
@@ -23,6 +24,8 @@ map_data = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 
 [node name="MultiplayerWorld" type="Node3D" unique_id=231822336]
 script = ExtResource("1_jmo3y")
+
+[node name="MultiplayerGameUI" parent="." unique_id=1204488631 instance=ExtResource("10_cniy2")]
 
 [node name="PlayerSpawner" type="MultiplayerSpawner" parent="." unique_id=200990842]
 _spawnable_scenes = PackedStringArray("uid://do2p3a8l1w002")

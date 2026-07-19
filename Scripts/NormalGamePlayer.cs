@@ -1,4 +1,5 @@
 using Godot;
+using HelperScripts;
 using System;
 
 using System.Collections.Generic;
@@ -8,15 +9,7 @@ public partial class NormalGamePlayer : Node3D
     [Export] public float MoveSpeed = 0.6f;
     [Export] public float RotateKeysSpeed = 1.5f;
     [Export] public float MouseSensitivity = 5.0f;
-    private readonly List<Color> _player_colors = new()
-    {
-        Colors.Red,
-        Colors.Blue,
-        Colors.Green,
-        Colors.Yellow,
-        Colors.Purple,
-        Colors.Orange
-    };
+    private ColourList _colour_list = new ColourList();
 
     private MultiplayerWorld _mp_world;
 
@@ -62,7 +55,7 @@ public partial class NormalGamePlayer : Node3D
 
     public void ChangeBodyMeshColour()
     {
-        if (_color_index < 0 || _color_index >= _player_colors.Count) 
+        if (_color_index < 0 || _color_index >= _colour_list.player_colors.Count) 
         {
             GD.Print("Wrong index for colouring, brother!");
             return;
@@ -70,7 +63,7 @@ public partial class NormalGamePlayer : Node3D
 
         MeshInstance3D body_mesh = GetNode<MeshInstance3D>("BodyMesh");
         StandardMaterial3D mat = new StandardMaterial3D();
-        mat.AlbedoColor = _player_colors[_color_index];
+        mat.AlbedoColor = _colour_list.player_colors[_color_index];
         body_mesh.MaterialOverride = mat;
 
         GD.Print("Changed color for player #" + player_ID);
