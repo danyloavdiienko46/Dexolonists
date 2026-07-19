@@ -14,7 +14,6 @@ public partial class MultiplayerSpawner : Godot.MultiplayerSpawner
         {
             NormalGamePlayer player = network_player.Instantiate<NormalGamePlayer>();
             player.Name = id.ToString();
-            player.Position = new Vector3(0, 10.551f, 7.765f);
 
             Node spawn = GetNode(SpawnPath);
             spawn.AddChild(player, true);

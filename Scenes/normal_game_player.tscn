@@ -114,6 +114,20 @@ item_0/icon = ExtResource("2_mrjq0")
 item_1/text = "Road"
 item_1/icon = ExtResource("3_es64j")
 
+[node name="NextTurnBtn" type="Button" parent="NormalGameUI" unique_id=301831787]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -148.0
+offset_top = -50.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 30
+text = "Next turn"
+
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1620501494]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.555182)
 
@@ -144,3 +158,4 @@ replication_config = SubResource("SceneReplicationConfig_34grn")
 [connection signal="pressed" from="NormalGameUI/ControlButtons/LoadMapBtn" to="NormalGameUI" method="LoadGameBtnPressed"]
 [connection signal="pressed" from="NormalGameUI/ControlButtons/ExitNGBtn" to="NormalGameUI" method="ExitNGBtnPressed"]
 [connection signal="item_selected" from="NormalGameUI/ObjectList" to="NormalGameUI" method="ObjectListItemChosen"]
+[connection signal="pressed" from="NormalGameUI/NextTurnBtn" to="NormalGameUI" method="NextTurnBtnPressed"]

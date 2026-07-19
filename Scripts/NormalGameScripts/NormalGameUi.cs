@@ -5,14 +5,26 @@ public partial class NormalGameUi : Control
 {
 	[Export] public ItemList ObjectList;
 	private NormalGame _normal_game;
-	private MultiplayerWorld _multiplayer_world;
+	//private MultiplayerWorld _multiplayer_world;
+	private NormalGamePlayer _normal_game_player;
 	private bool _is_item_chosen = false;
+	private long _player_ID = 0;
 
     public override void _Ready()
     {
+		_normal_game_player = GetParent<NormalGamePlayer>();
         _normal_game = GetParent().GetParent<NormalGame>();
-		_multiplayer_world = GetNodeOrNull<MultiplayerWorld>("/root/MultiplayerWorld");
+		//_multiplayer_world = GetNodeOrNull<MultiplayerWorld>("/root/MultiplayerWorld");
 
+		_player_ID = _normal_game_player.player_ID;
+
+		if(_player_ID != Multiplayer.GetUniqueId())
+		{
+			QueueFree();
+			return;
+		}
+
+		GD.Print("My player id is " + _player_ID);
     }
 
 
@@ -40,11 +52,16 @@ public partial class NormalGameUi : Control
 		_normal_game.ExitToMainMenu();
 	}
 
+	public void NextTurnBtnPressed()
+	{
+		_normal_game.NextTurn();
+	}
+
 	public void ObjectListItemChosen(int index)
 	{
 		_is_item_chosen = true;
-		GD.Print("Chosen item is " + index);
-		_normal_game.ItemChosen(index);
+		GD.Print("Player " + _player_ID + " has chosen item with index " + index);
+		_normal_game.ItemChosen(index, _player_ID);
 	}
 
 	public void ObjectListDeselect()

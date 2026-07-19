@@ -125,27 +125,28 @@ public partial class NormalGameBase : Node3D
 		int point_index = tile.last_hovered_point;
 		Vector3 placement_position = tile.new_item_pos;
 		int rpp_index = tile.last_hovered_RPP_ind;
+		long placing_player_ID = _placing_player_id;
 
 		if (Multiplayer.IsServer())
 		{
-			ServerProcessPlacement(item_to_place, tile_path, point_index, placement_position, rpp_index);
+			ServerProcessPlacement(item_to_place, tile_path, point_index, placement_position, rpp_index, placing_player_ID);
 		}
 		else
 		{
-			RpcId(1, nameof(RpcRequestItemPlacement), item_to_place, tile_path, point_index, placement_position, rpp_index);
+			RpcId(1, nameof(RpcRequestItemPlacement), item_to_place, tile_path, point_index, placement_position, rpp_index, placing_player_ID);
 			_chosen_item = -1;
 			LocalClearPlacementUI();
 		}
 	}
 
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false)]
-	public void RpcRequestItemPlacement(int chosen_item, NodePath tile_path, int point_index, Vector3 placement_position, int rpp_index)
+	public void RpcRequestItemPlacement(int chosen_item, NodePath tile_path, int point_index, Vector3 placement_position, int rpp_index, long placing_player_id)
 	{
 		if (!Multiplayer.IsServer()) return;
-		ServerProcessPlacement(chosen_item, tile_path, point_index, placement_position, rpp_index);
+		ServerProcessPlacement(chosen_item, tile_path, point_index, placement_position, rpp_index, placing_player_id);
 	}
 
-	private void ServerProcessPlacement(int chosen_item, NodePath tile_path, int point_index, Vector3 placement_position, int rpp_index)
+	private void ServerProcessPlacement(int chosen_item, NodePath tile_path, int point_index, Vector3 placement_position, int rpp_index, long placing_player_ID)
 	{
 		Tile tile = GetNodeOrNull<Tile>(tile_path);
 		if(tile == null)
@@ -184,7 +185,7 @@ public partial class NormalGameBase : Node3D
 					break;
 				}
 		}
-		Rpc(nameof(RpcBroadcastSpawnItem), chosen_item, tile_path, point_index, placement_position, node_name, final_road_rotation);
+		Rpc(nameof(RpcBroadcastSpawnItem), chosen_item, tile_path, point_index, placement_position, node_name, final_road_rotation, placing_player_ID);
 		Rpc(nameof(RpcBroadcastClearUI));
 
 		tile.new_item_signal = false;
@@ -194,7 +195,7 @@ public partial class NormalGameBase : Node3D
 	}
 
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)] // CallLocal = true forces host + clients to run this
-	public void RpcBroadcastSpawnItem(int chosen_item, NodePath tile_path, int point_index, Vector3 placement_position, string node_name, float road_rotation)
+	public void RpcBroadcastSpawnItem(int chosen_item, NodePath tile_path, int point_index, Vector3 placement_position, string node_name, float road_rotation, long placing_player_ID)
 	{
 		Tile tile = GetNodeOrNull<Tile>(tile_path);
 		if (tile != null)
@@ -202,20 +203,26 @@ public partial class NormalGameBase : Node3D
 			tile.DeactivatePointLocally(chosen_item == 0, point_index);
 		}
 
-		if (chosen_item == 0)
+		int colour_id = _normal_game.GetColourID(placing_player_ID);
+
+		GD.Print("Placing player id is " + placing_player_ID + ", that means colour id is " + colour_id);
+
+		if (chosen_item == 0) //house
 		{
-			StaticBody3D new_item = HouseScene.Instantiate<StaticBody3D>();
+			House new_item = HouseScene.Instantiate<House>();
 			new_item.Position = placement_position;
 			new_item.Name = node_name;
+			new_item.colour_index = colour_id;
 
 			PlacedItems.AddChild(new_item);
 		}
-		else if (chosen_item == 1)
+		else if (chosen_item == 1) //road
 		{
-			StaticBody3D new_item = RoadScene.Instantiate<StaticBody3D>();
+			Road new_item = RoadScene.Instantiate<Road>();
 			new_item.Position = placement_position;
 			new_item.Name = node_name;
 			new_item.Rotate(new Vector3(0, 1, 0), Mathf.DegToRad(road_rotation));
+			new_item.colour_index = colour_id;
 
 			PlacedRoads.AddChild(new_item);
 		}
@@ -247,8 +254,9 @@ public partial class NormalGameBase : Node3D
 		}
     }
 
-	public void ItemChosenHandler(int index)
+	public void ItemChosenHandler(int index, long player_ID = 0)
 	{
+		_placing_player_id = player_ID;
 		switch (index)
 		{
 			case 0:

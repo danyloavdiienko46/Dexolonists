@@ -31,13 +31,15 @@ public partial class NormalGamePlayer : Node3D
     {
         int id = 0;
 		Int32.TryParse(Name, out id);
-		SetMultiplayerAuthority(id);
+		SetMultiplayerAuthority(id, recursive: true);
 
         player_ID = id;
     }
 
     public override void _Ready()
     {
+        Position = new Vector3(0, 10.551f, 7.765f);
+
         _move_target = Position;
         _rotate_y_target = RotationDegrees.Y;
         _rotate_x_target = RotationDegrees.X;
