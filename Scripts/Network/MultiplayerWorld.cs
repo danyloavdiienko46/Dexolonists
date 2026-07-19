@@ -39,7 +39,7 @@ public partial class MultiplayerWorld : Node3D
         long player = players_turn.Dequeue();
         players_turn.Enqueue(player);
 
-        GD.Print("------- The state of player turns is: -------");
+        GD.Print("------- The state of player turns is: -------"); //bababooi
 
         for(int i = 0; i < players_turn.Count; i++)
         {
