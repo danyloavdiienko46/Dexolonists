@@ -70,9 +70,16 @@ public partial class NormalGameUi : Control
 
 	public void ObjectListItemChosen(int index)
 	{
-		_is_item_chosen = true;
-		GD.Print("Player " + _player_ID + " has chosen item with index " + index);
-		_normal_game.ItemChosen(index, _player_ID);
+		if(Multiplayer.MultiplayerPeer is OfflineMultiplayerPeer || _normal_game.GetCurrentTurnID() == _player_ID)
+		{
+			_is_item_chosen = true;
+			GD.Print("Player " + _player_ID + " has chosen item with index " + index);
+			_normal_game.ItemChosen(index, _player_ID);
+		}
+		else
+		{
+			GD.Print("Not your turn, brother in Christ!");
+		}
 	}
 
 	public void ObjectListDeselect()

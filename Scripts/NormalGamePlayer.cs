@@ -20,6 +20,8 @@ public partial class NormalGamePlayer : Node3D
 
     public long player_ID = -1;
 
+    public PlayerInformationHolder player_info_holder;
+
     public override void _EnterTree()
     {
         int id = 0;
@@ -50,7 +52,8 @@ public partial class NormalGamePlayer : Node3D
         }
         
         ChangeBodyMeshColour();
-
+        
+        player_info_holder = GetNode<PlayerInformationHolder>("PlayerInformationHolder");
     }
 
     public void ChangeBodyMeshColour()

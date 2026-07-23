@@ -9,7 +9,8 @@ public partial class MultiplayerWorld : Node3D
     private MultiplayerSpawner _spawnerInstance;
 
     public Queue<long> players_turn = new Queue<long>();
-    private List<long> _players;
+    public List<long> players_IDs;
+    public List<NormalGamePlayer> normal_game_players = new List<NormalGamePlayer>();
     private Shuffler _shuffler = new Shuffler();
     private ColourList _colour_list = new ColourList();
 
@@ -17,8 +18,8 @@ public partial class MultiplayerWorld : Node3D
 
     public void SetPlayers(Godot.Collections.Array<long> player_list)
     {
-        _players = new List<long>(player_list);
-        long[] new_players = _players.ToArray();
+        players_IDs = new List<long>(player_list);
+        long[] new_players = players_IDs.ToArray();
         _shuffler.ShuffleArray(new_players);
 
         foreach(long id in new_players)
@@ -38,6 +39,11 @@ public partial class MultiplayerWorld : Node3D
         }
 
         _mp_game_ui.ChangeTurnRectColour(_colour_list.player_colors[GetColourID(players_turn.ElementAt(0))]);
+    }
+
+    public long CurrentTurnID()
+    {
+        return players_turn.ElementAt(0);
     }
 
     public void NextTurn()
@@ -65,7 +71,7 @@ public partial class MultiplayerWorld : Node3D
 
     public int GetColourID(long id)
     {
-        return _players.IndexOf(id);
+        return players_IDs.IndexOf(id);
     }
 
 
@@ -77,16 +83,16 @@ public partial class MultiplayerWorld : Node3D
 
         if (Multiplayer.IsServer())
         {
-            foreach (long clientId in _players)
+            foreach (long clientId in players_IDs)
             {
                 if (_spawnerInstance != null)
                 {
-                    _spawnerInstance.SpawnPlayer(clientId);
+                    normal_game_players.Add(_spawnerInstance.SpawnPlayer(clientId));
                     GD.Print($"Server authoritative spawn successful for player ID: {clientId}");
                 }
             }
+
+            Rpc(nameof(RpcSetPlayers), players_turn.ToArray());
         }
-        
-        if(Multiplayer.IsServer()) Rpc(nameof(RpcSetPlayers), players_turn.ToArray());
     }
 }

@@ -2,8 +2,9 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using HelperScripts;
+using dexolonists.Scripts.Enums;
 
-public partial class House : StaticBody3D
+public partial class House : Item
 {
 	[Export] public PackedScene HouseBlockingAreaScene;
 	public int colour_index = -1;
@@ -14,6 +15,9 @@ public partial class House : StaticBody3D
 	private MeshInstance3D _house_roof;
 
 	private ColourList _colour_list = new ColourList();
+
+	private int[] _building_cost = [0, 0, 0, 0, 0];
+	public int point_addition = 1;
 
 	public override void _Ready()
 	{
@@ -26,7 +30,23 @@ public partial class House : StaticBody3D
 		_house_blocking_area = HouseBlockingAreaScene.Instantiate<Area3D>();
 		AddChild(_house_blocking_area);
 		_just_created = true;
+
+		SetBuildingCost();
 	}
+
+	private void SetBuildingCost()
+	{
+		_building_cost[(int)ResourceCardType.Wood] = 1;
+		_building_cost[(int)ResourceCardType.Brick] = 1;
+		_building_cost[(int)ResourceCardType.Wheat] = 1;
+		_building_cost[(int)ResourceCardType.Wool] = 1;
+		_building_cost[(int)ResourceCardType.Ore] = 0;
+	}
+
+	public override int[] GetBuildingCost()
+    {
+        return _building_cost;
+    }
 
 	public override void _PhysicsProcess(double delta)
     {
