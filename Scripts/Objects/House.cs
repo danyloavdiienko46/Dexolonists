@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using HelperScripts;
 using dexolonists.Scripts.Enums;
+using System.Drawing;
 
 public partial class House : Item
 {
@@ -17,12 +18,18 @@ public partial class House : Item
 	private ColourList _colour_list = new ColourList();
 
 	private int[] _building_cost = [0, 0, 0, 0, 0];
-	public int point_addition = 1;
+
+	public House()
+	{
+		SetBuildingCost();
+		point_addition = 1;
+	}
 
 	public override void _Ready()
 	{
 		_house_base = GetNode<MeshInstance3D>("Base");
 		_house_roof = GetNode<MeshInstance3D>("Roof");
+
 
 		ChangeObjectMeshColour(colour_index);
 
@@ -30,8 +37,6 @@ public partial class House : Item
 		_house_blocking_area = HouseBlockingAreaScene.Instantiate<Area3D>();
 		AddChild(_house_blocking_area);
 		_just_created = true;
-
-		SetBuildingCost();
 	}
 
 	private void SetBuildingCost()
@@ -55,7 +60,6 @@ public partial class House : Item
 			var IPPs_for_house_placement_deactivation = _house_blocking_area.GetOverlappingAreas();
 			if(IPPs_for_house_placement_deactivation.Count >= 2)
 			{
-				GD.Print("Deactivating IPPs for house placement!");
 				for(int i = 0; i < IPPs_for_house_placement_deactivation.Count; i++)
 				{
 					if(IPPs_for_house_placement_deactivation[i] is ItemPlacePoint IPP)
@@ -64,7 +68,6 @@ public partial class House : Item
 					}
 				}
 				_just_created = false;
-				GD.Print("Finished deactivating IPPs for house placement!");
 			}
 
 		}

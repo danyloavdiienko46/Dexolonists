@@ -9,6 +9,7 @@ namespace HelperScripts
         public Dictionary<int, float> RPP_ind_to_rot_degrees = new Dictionary<int, float>();
         public Dictionary<int, int> Tile_number_to_chances = new Dictionary<int, int>();
         public Dictionary<TileType, string> TileType_to_colour_code = new Dictionary<TileType, string>(); 
+        public Dictionary<ItemType, Item> ItemType_to_Item = new Dictionary<ItemType, Item>();
         public Dictionaries()
         {
             TPP_ind_to_pos.Add(0, new Vector3(-1.65f, 0, -2.74f));
@@ -46,6 +47,9 @@ namespace HelperScripts
             TileType_to_colour_code.Add(TileType.Ore, "#A9A9A9");
             TileType_to_colour_code.Add(TileType.Desert, "#BDB76B");
             TileType_to_colour_code.Add(TileType.Gold, "#DAA520");
+
+            ItemType_to_Item.Add(ItemType.House, new House());
+            ItemType_to_Item.Add(ItemType.Road, new Road());
         }
     }
 }

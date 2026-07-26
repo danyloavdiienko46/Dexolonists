@@ -30,7 +30,6 @@ public partial class NormalGame : Node3D
 
 	public void ItemChosen(int index, long player_ID = 0)
 	{
-		GD.Print("Trying to choose item with index " + index);
 		NormalGameBaseNode.ItemChosenHandler(index, player_ID);
 	}
 
@@ -54,30 +53,20 @@ public partial class NormalGame : Node3D
 
 	//GameMechanics
 
-	public bool CanPlayerBuildItem(long player_ID, Item item)
-	{
-		int[] building_cost = item.GetBuildingCost();
-
-		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
-		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
-
-		for(int i = 0; i < building_cost.Length; i++)
-		{
-			if(building_cost[i] == 0) continue;
-
-			if(!player_info_holder.IsEnoughResource((ResourceCardType)i, building_cost[i]))
-				return false;
-		}
-		
-		return true;
-	}
-
 	public int GetPlayerCardCount(long player_ID)
 	{
 		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
 		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
 
 		return player_info_holder.GetAllResourcesNumber();
+	}
+
+	public int GetPlayerPoints(long player_ID)
+	{
+		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
+		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
+
+		return player_info_holder.points;
 	}
 
 	public void ChangePlayerCardNumber(long player_ID, ResourceCardType resource_type, int number, bool subtracting = false)
@@ -115,12 +104,31 @@ public partial class NormalGame : Node3D
 
 		for(int i = 0; i < building_cost.Length; i++)
 		{
-			if(building_cost[i] == 0) continue;
+			if(building_cost[i] == 0) 
+			{
+				continue;
+			}
 			player_info_holder.AddOrSubtractResource((ResourceCardType)i, building_cost[i], subtracting: true);
 			
 		}
 
 		ChangePlayerPoints(player_info_holder, item.point_addition);
+	}
+
+	public int[] GetPlayerDeck(long player_ID)
+	{
+		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
+		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
+
+		return player_info_holder.GetCardArray();
+	}
+
+	public void AddIPPToPlayer(long player_ID, ItemPlacePoint IPP)
+	{
+		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
+		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
+		
+		player_info_holder.IPPs_in_jurisdiction.Add(IPP);
 	}
 
 }

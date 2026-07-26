@@ -22,6 +22,8 @@ public partial class NormalGamePlayer : Node3D
 
     public PlayerInformationHolder player_info_holder;
 
+    private NormalGameUi _normal_game_ui;
+
     public override void _EnterTree()
     {
         int id = 0;
@@ -54,6 +56,24 @@ public partial class NormalGamePlayer : Node3D
         ChangeBodyMeshColour();
         
         player_info_holder = GetNode<PlayerInformationHolder>("PlayerInformationHolder");
+        _normal_game_ui = GetNode<NormalGameUi>("NormalGameUI");
+        UpdateDeckPanelUI();
+    }
+
+    public void UpdateDeckPanelUI()
+    {
+        if (_normal_game_ui != null && GodotObject.IsInstanceValid(_normal_game_ui))
+        {
+            _normal_game_ui.UpdateDeckPanel();
+        }
+    }
+
+    public void UpdatePointsPanelUI()
+    {
+        if (_normal_game_ui != null && GodotObject.IsInstanceValid(_normal_game_ui))
+        {
+            _normal_game_ui.UpdatePointsPanel();
+        }
     }
 
     public void ChangeBodyMeshColour()

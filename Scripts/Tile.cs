@@ -163,8 +163,6 @@ public partial class Tile : StaticBody3D
 	
 	private void AddNewItem()
 	{
-		GD.Print("Placing new Item for Tile: " + this.Name);
-
 		if(_hovered_IPP_index != -1)
 		{
 			last_hovered_point = _hovered_IPP_index;

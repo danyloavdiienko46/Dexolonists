@@ -49,6 +49,16 @@ public partial class MultiplayerWorld : Node3D
     public void NextTurn()
     {
         Rpc(nameof(RpcNextTurn));
+        RpcId(1, nameof(RpcGainResources));
+    }
+
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+    private void RpcGainResources()
+    {
+        foreach(NormalGamePlayer player in normal_game_players)
+        {
+            player.player_info_holder.GetTurnResources();
+        }
     }
 
     [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]

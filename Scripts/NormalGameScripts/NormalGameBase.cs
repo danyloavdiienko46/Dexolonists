@@ -1,3 +1,4 @@
+using dexolonists.Scripts.Enums;
 using Godot;
 using HelperScripts;
 using System;
@@ -148,6 +149,18 @@ public partial class NormalGameBase : Node3D
 
 	private void ServerProcessPlacement(int chosen_item, NodePath tile_path, int point_index, Vector3 placement_position, int rpp_index, long placing_player_ID)
 	{
+		ItemType chosen_item_type = (ItemType)chosen_item;
+
+		_normal_game.PlayerBuildItem(placing_player_ID, _dict.ItemType_to_Item[chosen_item_type]); //Subtract resources needed for building
+
+		GD.Print("#" + placing_player_ID + "'s current card situation:");
+		int[] player_deck = _normal_game.GetPlayerDeck(placing_player_ID);
+		for(int i = 0; i < player_deck.Length; i++)
+		{
+			GD.Print((ResourceCardType)i + " - " + player_deck[i]);
+		}
+		GD.Print("Player has " + _normal_game.GetPlayerPoints(placing_player_ID) + " points");
+
 		Tile tile = GetNodeOrNull<Tile>(tile_path);
 		if(tile == null)
 		{
@@ -164,6 +177,9 @@ public partial class NormalGameBase : Node3D
 			{
 				int index = PlacedItems.GetChildren().Count;
 				node_name = $"House_{index}";
+
+				_normal_game.AddIPPToPlayer(placing_player_ID, tile.ItemPlacePoints.GetChild<ItemPlacePoint>(point_index));
+
 				break;
 			}
 		case 1:
@@ -204,8 +220,6 @@ public partial class NormalGameBase : Node3D
 		}
 
 		int colour_id = _normal_game.GetColourID(placing_player_ID);
-
-		GD.Print("Placing player id is " + placing_player_ID + ", that means colour id is " + colour_id);
 
 		if (chosen_item == 0) //house
 		{

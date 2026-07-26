@@ -13,12 +13,15 @@ public partial class Road : Item
 
     private int[] _building_cost = [0, 0, 0, 0, 0];
 
+    public Road()
+    {
+        SetBuildingCost();
+    }
+
     public override void _Ready()
     {
         _road_mesh = GetNode<MeshInstance3D>("MeshInstance3D");
 		ChangeObjectMeshColour(colour_index);
-
-        SetBuildingCost();
     }
 
     private void SetBuildingCost()

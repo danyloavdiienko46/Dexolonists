@@ -7,6 +7,8 @@ using HelperScripts;
 public partial class NormalGameUi : Control
 {
 	[Export] public ItemList ObjectList;
+	[Export] public Panel DeckPanel;
+	[Export] public Panel PointsPanel;
 	private NormalGame _normal_game;
 	private MultiplayerWorld _multiplayer_world;
 	private NormalGamePlayer _normal_game_player;
@@ -14,6 +16,7 @@ public partial class NormalGameUi : Control
 	private long _player_ID = 0;
 
 	private ColourList _colour_list = new ColourList();
+	private Dictionaries _dict = new Dictionaries();
 	
 
     public override void _Ready()
@@ -72,6 +75,13 @@ public partial class NormalGameUi : Control
 	{
 		if(Multiplayer.MultiplayerPeer is OfflineMultiplayerPeer || _normal_game.GetCurrentTurnID() == _player_ID)
 		{
+			if (!_normal_game_player.player_info_holder.CanPlayerBuildItem(_dict.ItemType_to_Item[(ItemType)index]))
+			{
+				GD.Print("Player #" + _player_ID + " has no enough resources to build that item!");
+				ObjectListDeselect();
+				return;
+			}
+
 			_is_item_chosen = true;
 			GD.Print("Player " + _player_ID + " has chosen item with index " + index);
 			_normal_game.ItemChosen(index, _player_ID);
@@ -80,6 +90,22 @@ public partial class NormalGameUi : Control
 		{
 			GD.Print("Not your turn, brother in Christ!");
 		}
+	}
+
+	public void UpdateDeckPanel()
+	{
+		int[] deck = _normal_game_player.player_info_holder.GetCardArray();
+
+		DeckPanel.GetNode<VBoxContainer>("TreeCards").GetNode<Label>("Label").Text = deck[0].ToString();
+		DeckPanel.GetNode<VBoxContainer>("BrickCards").GetNode<Label>("Label").Text = deck[1].ToString();
+		DeckPanel.GetNode<VBoxContainer>("WheatCards").GetNode<Label>("Label").Text = deck[2].ToString();
+		DeckPanel.GetNode<VBoxContainer>("SheepCards").GetNode<Label>("Label").Text = deck[3].ToString();
+		DeckPanel.GetNode<VBoxContainer>("OreCards").GetNode<Label>("Label").Text = deck[4].ToString();
+	}
+
+	public void UpdatePointsPanel()
+	{
+		PointsPanel.GetNode<Label>("PointsLabel").Text = _normal_game_player.player_info_holder.GetPoints().ToString();
 	}
 
 	public void ObjectListDeselect()

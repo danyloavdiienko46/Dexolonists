@@ -4,6 +4,12 @@
 [ext_resource type="Script" uid="uid://dy6xo1kc7wltr" path="res://Scripts/NormalGamePlayer.cs" id="1_mrjq0"]
 [ext_resource type="Texture2D" uid="uid://dky7j8o67etnc" path="res://Scenes/Objects/ObjectIcons/HouseIcon.png" id="2_mrjq0"]
 [ext_resource type="Texture2D" uid="uid://uokg2an182rp" path="res://Scenes/Objects/ObjectIcons/RoadIcon.png" id="3_es64j"]
+[ext_resource type="Texture2D" uid="uid://yhid4bw21hcg" path="res://2D_sheit/tree.png" id="5_es64j"]
+[ext_resource type="Script" uid="uid://b1jurykyp6qcq" path="res://Scripts/PlayerInformationHolder.cs" id="5_mrjq0"]
+[ext_resource type="Texture2D" uid="uid://drgb3diiihmlf" path="res://2D_sheit/brick-wall-texture-png-9.jpg" id="6_pjqo1"]
+[ext_resource type="Texture2D" uid="uid://bko0ecqw0l0ff" path="res://2D_sheit/wheat.png" id="7_on7qq"]
+[ext_resource type="Texture2D" uid="uid://c8lqmna8k5dq2" path="res://2D_sheit/sheep.png" id="8_3faso"]
+[ext_resource type="Texture2D" uid="uid://2gbdcaeb7mmc" path="res://2D_sheit/ore.png" id="9_lo4yv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_34grn"]
 bg_color = Color(0, 0, 0, 0.42745098)
@@ -41,12 +47,20 @@ properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mrjq0"]
+properties/0/path = NodePath(".:_resource_card_array")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:points")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
 [node name="NormalGamePlayer" type="Node3D" unique_id=172421570]
 script = ExtResource("1_mrjq0")
 MoveSpeed = 0.45
 MouseSensitivity = 0.23
 
-[node name="NormalGameUI" type="Control" parent="." unique_id=1128286715 node_paths=PackedStringArray("ObjectList")]
+[node name="NormalGameUI" type="Control" parent="." unique_id=1128286715 node_paths=PackedStringArray("ObjectList", "DeckPanel", "PointsPanel")]
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
@@ -64,6 +78,8 @@ size_flags_vertical = 8
 mouse_filter = 1
 script = ExtResource("1_34grn")
 ObjectList = NodePath("ObjectList")
+DeckPanel = NodePath("DeckPanel")
+PointsPanel = NodePath("PointsPanel")
 
 [node name="ControlButtons" type="VBoxContainer" parent="NormalGameUI" unique_id=2015951924]
 layout_mode = 1
@@ -134,6 +150,154 @@ grow_vertical = 0
 theme_override_font_sizes/font_size = 30
 text = "Next turn"
 
+[node name="DeckPanel" type="Panel" parent="NormalGameUI" unique_id=1436953]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -121.0
+offset_right = 407.5
+offset_bottom = 5.0
+grow_vertical = 0
+
+[node name="TreeCards" type="VBoxContainer" parent="NormalGameUI/DeckPanel" unique_id=709140087]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 10.5
+offset_right = 81.0
+offset_bottom = 1.0
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="NormalGameUI/DeckPanel/TreeCards" unique_id=921694579]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+texture = ExtResource("5_es64j")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="NormalGameUI/DeckPanel/TreeCards" unique_id=1489688171]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+
+[node name="BrickCards" type="VBoxContainer" parent="NormalGameUI/DeckPanel" unique_id=4895728]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.21717791
+anchor_top = 0.007936508
+anchor_right = 0.21717791
+anchor_bottom = 1.0158731
+offset_right = 70.5
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="NormalGameUI/DeckPanel/BrickCards" unique_id=1428951955]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+texture = ExtResource("6_pjqo1")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="NormalGameUI/DeckPanel/BrickCards" unique_id=232245685]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+
+[node name="WheatCards" type="VBoxContainer" parent="NormalGameUI/DeckPanel" unique_id=274794864]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.41104296
+anchor_right = 0.41104296
+anchor_bottom = 1.0079365
+offset_right = 70.5
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="NormalGameUI/DeckPanel/WheatCards" unique_id=1113055324]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+texture = ExtResource("7_on7qq")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="NormalGameUI/DeckPanel/WheatCards" unique_id=587413426]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+
+[node name="SheepCards" type="VBoxContainer" parent="NormalGameUI/DeckPanel" unique_id=1752809512]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.6
+anchor_right = 0.6
+anchor_bottom = 1.0079365
+offset_right = 70.5
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="NormalGameUI/DeckPanel/SheepCards" unique_id=459321986]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+texture = ExtResource("8_3faso")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="NormalGameUI/DeckPanel/SheepCards" unique_id=807960512]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+
+[node name="OreCards" type="VBoxContainer" parent="NormalGameUI/DeckPanel" unique_id=635260217]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.79141104
+anchor_right = 0.79141104
+anchor_bottom = 1.0079365
+offset_right = 70.5
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="NormalGameUI/DeckPanel/OreCards" unique_id=1141908395]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+texture = ExtResource("9_lo4yv")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="NormalGameUI/DeckPanel/OreCards" unique_id=1994673354]
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+
+[node name="PointsPanel" type="Panel" parent="NormalGameUI" unique_id=974644110]
+layout_mode = 0
+offset_left = -1.5
+offset_top = 235.0
+offset_right = 94.5
+offset_bottom = 294.0
+
+[node name="Label" type="Label" parent="NormalGameUI/PointsPanel" unique_id=67426689]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Your points"
+horizontal_alignment = 1
+
+[node name="PointsLabel" type="Label" parent="NormalGameUI/PointsPanel" unique_id=376920780]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -7.5
+offset_right = 20.0
+offset_bottom = 26.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "0"
+horizontal_alignment = 1
+
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1620501494]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.555182)
 
@@ -160,6 +324,12 @@ surface_material_override/0 = SubResource("StandardMaterial3D_es64j")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1788225831]
 replication_config = SubResource("SceneReplicationConfig_34grn")
+
+[node name="PlayerInformationHolder" type="Node" parent="." unique_id=799555457]
+script = ExtResource("5_mrjq0")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="PlayerInformationHolder" unique_id=796350528]
+replication_config = SubResource("SceneReplicationConfig_mrjq0")
 
 [connection signal="pressed" from="NormalGameUI/ControlButtons/LoadMapBtn" to="NormalGameUI" method="LoadGameBtnPressed"]
 [connection signal="pressed" from="NormalGameUI/ControlButtons/ExitNGBtn" to="NormalGameUI" method="ExitNGBtnPressed"]
