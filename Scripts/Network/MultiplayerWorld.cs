@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -13,6 +14,8 @@ public partial class MultiplayerWorld : Node3D
     public List<NormalGamePlayer> normal_game_players = new List<NormalGamePlayer>();
     private Shuffler _shuffler = new Shuffler();
     private ColourList _colour_list = new ColourList();
+
+    private Random _rand = new Random();
 
     private MultiplayerGameUi _mp_game_ui;
 
@@ -48,26 +51,39 @@ public partial class MultiplayerWorld : Node3D
 
     public void NextTurn()
     {
-        Rpc(nameof(RpcNextTurn));
-        RpcId(1, nameof(RpcGainResources));
+        RpcId(1, nameof(RpcNextTurnHandler));
     }
 
     [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-    private void RpcGainResources()
+    private void RpcNextTurnHandler()
+    {
+        int first_roll_number = _rand.Next(1, 7);
+        int second_roll_number = _rand.Next(1, 7);
+
+        int roll_number = first_roll_number + second_roll_number;
+
+        Rpc(nameof(RpcNextTurn), roll_number);
+        RpcId(1, nameof(RpcGainResources), roll_number);
+    }
+
+
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+    private void RpcGainResources(int roll_number)
     {
         foreach(NormalGamePlayer player in normal_game_players)
         {
-            player.player_info_holder.GetTurnResources();
+            player.player_info_holder.GetTurnResources(roll_number);
         }
     }
 
     [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-    private void RpcNextTurn()
+    private void RpcNextTurn(int roll_number)
     {
         long player = players_turn.Dequeue();
         players_turn.Enqueue(player);
 
         _mp_game_ui.ChangeTurnRectColour(_colour_list.player_colors[GetColourID(players_turn.ElementAt(0))]);
+        _mp_game_ui.UpdateDiceRollLabel(roll_number);
 
         if (Multiplayer.IsServer())
         {

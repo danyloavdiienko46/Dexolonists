@@ -10,9 +10,11 @@ public partial class NormalGameBase : Node3D
 	[Export] public Node3D Tiles;
 	[Export] public Node3D PlacedItems;
 	[Export] public Node3D PlacedRoads;
+	[Export] public Node3D RoadPlacePoints;
 	[Export] public PackedScene TileScene;
 	[Export] public PackedScene HouseScene;
 	[Export] public PackedScene RoadScene;
+	[Export] public PackedScene RoadPlacePointScene;
 
 	private NormalGame _normal_game;
 	private List<Tile> _tile_list = new List<Tile>();
@@ -20,6 +22,8 @@ public partial class NormalGameBase : Node3D
 	public bool is_item_placed = false;
 	private Dictionaries _dict = new Dictionaries();
 	private long _placing_player_id = -1;
+
+	private Godot.Collections.Array<RoadPlacePoint> _road_place_points = new Godot.Collections.Array<RoadPlacePoint>();
 
 	private Random _rand = new Random();
 

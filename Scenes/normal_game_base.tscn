@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://d4bq5mp6xwb54" path="res://Scenes/tile.tscn" id="2_8x201"]
 [ext_resource type="PackedScene" uid="uid://mao2t3fpxpho" path="res://Scenes/Objects/house.tscn" id="3_dc0q4"]
 [ext_resource type="PackedScene" uid="uid://b8ftqcaeonp1u" path="res://Scenes/Objects/road.tscn" id="4_i3d34"]
+[ext_resource type="PackedScene" uid="uid://bwavvdydeinr7" path="res://Scenes/road_place_point.tscn" id="5_0okic"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ult23"]
 
@@ -16,14 +17,16 @@ map_width = 28
 map_depth = 20
 map_data = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
-[node name="NormalGameBase" type="Node3D" unique_id=127469201 node_paths=PackedStringArray("Tiles", "PlacedItems", "PlacedRoads")]
+[node name="NormalGameBase" type="Node3D" unique_id=127469201 node_paths=PackedStringArray("Tiles", "PlacedItems", "PlacedRoads", "RoadPlacePoints")]
 script = ExtResource("1_24o5e")
 Tiles = NodePath("Tiles")
 PlacedItems = NodePath("PlacedItems")
 PlacedRoads = NodePath("PlacedRoads")
+RoadPlacePoints = NodePath("RoadPlacePoints")
 TileScene = ExtResource("2_8x201")
 HouseScene = ExtResource("3_dc0q4")
 RoadScene = ExtResource("4_i3d34")
+RoadPlacePointScene = ExtResource("5_0okic")
 
 [node name="Table" type="Area3D" parent="." unique_id=459419659]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
@@ -37,6 +40,8 @@ surface_material_override/0 = SubResource("StandardMaterial3D_m0mlk")
 shape = SubResource("HeightMapShape3D_cxaje")
 
 [node name="Tiles" type="Node3D" parent="." unique_id=428547947]
+
+[node name="RoadPlacePoints" type="Node3D" parent="." unique_id=1388549634]
 
 [node name="PlacedItems" type="Node3D" parent="." unique_id=1458995859]
 

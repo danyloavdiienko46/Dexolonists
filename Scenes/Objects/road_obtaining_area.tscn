@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://bcq21d4uwad7o"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_m3iw1"]
+height = 0.2
+radius = 1.0
+
+[node name="RoadObtainingArea" type="Area3D" unique_id=2038570148]
+collision_layer = 0
+collision_mask = 2
+input_ray_pickable = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=171154137]
+shape = SubResource("CylinderShape3D_m3iw1")
+debug_color = Color(0.7292594, 0.4731896, 0.07633784, 0.41960785)

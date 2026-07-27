@@ -10,7 +10,11 @@ public partial class ItemPlacePoint : Area3D
 
 	[Export] public bool IsHousePlacementPermitted {get; set;} = true;
 
+	[Export] public Area3D RoadObtainingArea;
+
 	public List<ResourceCardType> resource_gain_list = new List<ResourceCardType>();
+	public List<int> resource_roll_number_list = new List<int>();
+	public List<RoadPlacePoint> connected_RPPs_list = new List<RoadPlacePoint>();
 	private bool _is_timer_created = false;
 	public bool gives_gold = false;
 
@@ -33,7 +37,17 @@ public partial class ItemPlacePoint : Area3D
 							tile.type != TileType.Empty)
 							{
 								resource_gain_list.Add((ResourceCardType)(tile.type-1));
+								resource_roll_number_list.Add(tile.number);
 							}
+					}
+				}
+
+				var areas = RoadObtainingArea.GetOverlappingAreas();
+				foreach(var area in areas)
+				{
+					if(area is RoadPlacePoint RPP)
+					{
+						connected_RPPs_list.Add(RPP);
 					}
 				}
 			};

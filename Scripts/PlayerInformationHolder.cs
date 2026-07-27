@@ -9,6 +9,7 @@ public partial class PlayerInformationHolder : Node
 	private int _points_memory = 0;
 
 	public List<ItemPlacePoint> IPPs_in_jurisdiction = new List<ItemPlacePoint>();
+	public List<RoadPlacePoint> RPPs_in_jurisdiction = new List<RoadPlacePoint>();
 	[Export] public int points
 	{
 		get => _points_memory;
@@ -105,13 +106,16 @@ public partial class PlayerInformationHolder : Node
 		return true;
 	}
 
-	public void GetTurnResources()
+	public void GetTurnResources(int roll_number)
 	{
 		foreach(ItemPlacePoint IPP in IPPs_in_jurisdiction)
 		{
-			foreach(ResourceCardType resource in IPP.resource_gain_list)
+			for(int i = 0; i < IPP.resource_gain_list.Count; i++)
 			{
-				AddOrSubtractResource(resource, 1);
+				if(IPP.resource_roll_number_list[i] == roll_number)
+				{
+					AddOrSubtractResource(IPP.resource_gain_list[i], 1);
+				}
 			}
 		}
 	}

@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c11xnywym6sco" path="res://Scripts/ItemPlacePoint.cs" id="1_sdfse"]
 [ext_resource type="Material" uid="uid://bwc0qfc6rp3sp" path="res://Materials/item_place_point_invisible_mat.tres" id="1_uxgxj"]
+[ext_resource type="PackedScene" uid="uid://bcq21d4uwad7o" path="res://Scenes/Objects/road_obtaining_area.tscn" id="3_85h0j"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_s4a2y"]
 
@@ -17,10 +18,11 @@ properties/1/path = NodePath(".:IsHousePlacementPermitted")
 properties/1/spawn = true
 properties/1/replication_mode = 2
 
-[node name="ItemPlacePoint" type="Area3D" unique_id=1043497836]
+[node name="ItemPlacePoint" type="Area3D" unique_id=1043497836 node_paths=PackedStringArray("RoadObtainingArea")]
 collision_layer = 2
 collision_mask = 3
 script = ExtResource("1_sdfse")
+RoadObtainingArea = NodePath("RoadObtainingArea")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=228214862]
 transform = Transform3D(0.62357473, 0, 0, 0, 0.08032228, 0, 0, 0, 0.6230486, 0, 0, 0)
@@ -32,3 +34,5 @@ shape = SubResource("CylinderShape3D_kq70j")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=1932721472]
 replication_config = SubResource("SceneReplicationConfig_sdfse")
+
+[node name="RoadObtainingArea" parent="." unique_id=2038570148 instance=ExtResource("3_85h0j")]
