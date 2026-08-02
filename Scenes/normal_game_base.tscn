@@ -5,6 +5,10 @@
 [ext_resource type="PackedScene" uid="uid://mao2t3fpxpho" path="res://Scenes/Objects/house.tscn" id="3_dc0q4"]
 [ext_resource type="PackedScene" uid="uid://b8ftqcaeonp1u" path="res://Scenes/Objects/road.tscn" id="4_i3d34"]
 [ext_resource type="PackedScene" uid="uid://bwavvdydeinr7" path="res://Scenes/road_place_point.tscn" id="5_0okic"]
+[ext_resource type="PackedScene" uid="uid://bjrbjynp86amg" path="res://Scenes/item_place_point.tscn" id="5_rkus0"]
+[ext_resource type="Material" uid="uid://blm6gyqjtpf8l" path="res://Materials/item_place_point_visible_mat.tres" id="7_i3kx0"]
+[ext_resource type="Material" uid="uid://bwc0qfc6rp3sp" path="res://Materials/item_place_point_invisible_mat.tres" id="8_2tgbg"]
+[ext_resource type="Material" uid="uid://dv4i6m6rljr63" path="res://Materials/tile_place_point_active_hovered_mat.tres" id="9_trys1"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ult23"]
 
@@ -17,16 +21,21 @@ map_width = 28
 map_depth = 20
 map_data = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
-[node name="NormalGameBase" type="Node3D" unique_id=127469201 node_paths=PackedStringArray("Tiles", "PlacedItems", "PlacedRoads", "RoadPlacePoints")]
+[node name="NormalGameBase" type="Node3D" unique_id=127469201 node_paths=PackedStringArray("Tiles", "PlacedItems", "PlacedRoads", "ItemPlacePoints", "RoadPlacePoints")]
 script = ExtResource("1_24o5e")
 Tiles = NodePath("Tiles")
 PlacedItems = NodePath("PlacedItems")
 PlacedRoads = NodePath("PlacedRoads")
+ItemPlacePoints = NodePath("ItemPlacePoints")
 RoadPlacePoints = NodePath("RoadPlacePoints")
 TileScene = ExtResource("2_8x201")
 HouseScene = ExtResource("3_dc0q4")
 RoadScene = ExtResource("4_i3d34")
+ItemPlacePointScene = ExtResource("5_rkus0")
 RoadPlacePointScene = ExtResource("5_0okic")
+ItemPlacePointsVisibleMat = ExtResource("7_i3kx0")
+ItemPlacePointsInvisibleMat = ExtResource("8_2tgbg")
+ItemPlacePointHighlightedMat = ExtResource("9_trys1")
 
 [node name="Table" type="Area3D" parent="." unique_id=459419659]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
@@ -40,6 +49,8 @@ surface_material_override/0 = SubResource("StandardMaterial3D_m0mlk")
 shape = SubResource("HeightMapShape3D_cxaje")
 
 [node name="Tiles" type="Node3D" parent="." unique_id=428547947]
+
+[node name="ItemPlacePoints" type="Node3D" parent="." unique_id=2043437687]
 
 [node name="RoadPlacePoints" type="Node3D" parent="." unique_id=1388549634]
 

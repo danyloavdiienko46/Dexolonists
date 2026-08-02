@@ -1,6 +1,7 @@
 using dexolonists.Scripts.Enums;
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Transactions;
@@ -129,6 +130,46 @@ public partial class NormalGame : Node3D
 		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
 		
 		player_info_holder.IPPs_in_jurisdiction.Add(IPP);
+		foreach(RoadPlacePoint RPP in IPP.connected_RPPs_list)
+		{
+			player_info_holder.RPPs_in_jurisdiction.Add(RPP);
+		}
+
+		Rpc(nameof(RpcSyncPlayerIPPs), player_info_holder.GetPath(), IPP.GetPath());
+	}
+
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false)]
+	private void RpcSyncPlayerIPPs(NodePath player_info_path, NodePath ipp_path)
+	{
+		PlayerInformationHolder player_info_holder = GetNode<PlayerInformationHolder>(player_info_path);
+		ItemPlacePoint IPP = GetNode<ItemPlacePoint>(ipp_path);
+
+		player_info_holder.IPPs_in_jurisdiction.Add(IPP);
+		foreach(RoadPlacePoint RPP in IPP.connected_RPPs_list)
+		{
+			player_info_holder.RPPs_in_jurisdiction.Add(RPP);
+		}
+	}
+
+	public int[] GetPlayerRPPsIDs(long player_ID)
+	{
+		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
+
+		if(player_index == -1)
+		{
+			GD.Print("Couldn't find player with ID: " + player_ID);
+			return [];
+		}
+		
+		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
+		
+		List<int> RPPsIDs = [];
+		foreach(RoadPlacePoint RPP in player_info_holder.RPPs_in_jurisdiction)
+		{
+			RPPsIDs.Add(RPP.ID_in_game_list);
+		}
+
+		return RPPsIDs.ToArray();
 	}
 
 }

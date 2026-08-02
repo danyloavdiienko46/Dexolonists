@@ -11,7 +11,7 @@ public partial class MultiplayerWorld : Node3D
 
     public Queue<long> players_turn = new Queue<long>();
     public List<long> players_IDs;
-    public List<NormalGamePlayer> normal_game_players = new List<NormalGamePlayer>();
+    public Godot.Collections.Array<NormalGamePlayer> normal_game_players = [];
     private Shuffler _shuffler = new Shuffler();
     private ColourList _colour_list = new ColourList();
 
@@ -40,6 +40,8 @@ public partial class MultiplayerWorld : Node3D
         {
             players_turn.Enqueue(id);
         }
+
+        PopulatePlayersListFromExistingIDs();
 
         _mp_game_ui.ChangeTurnRectColour(_colour_list.player_colors[GetColourID(players_turn.ElementAt(0))]);
     }
@@ -109,6 +111,7 @@ public partial class MultiplayerWorld : Node3D
 
         if (Multiplayer.IsServer())
         {
+
             foreach (long clientId in players_IDs)
             {
                 if (_spawnerInstance != null)
@@ -119,6 +122,25 @@ public partial class MultiplayerWorld : Node3D
             }
 
             Rpc(nameof(RpcSetPlayers), players_turn.ToArray());
+        }
+    }
+
+    public void PopulatePlayersListFromExistingIDs()
+    {
+        normal_game_players.Clear();
+
+        foreach (long id in players_IDs)
+        {
+            var playerNode = GetNodeOrNull<NormalGamePlayer>($"NormalGameMultiplayer/{id}");
+
+            if (playerNode != null)
+            {
+                normal_game_players.Add(playerNode);
+            }
+            else
+            {
+                GD.PrintErr($"Client could not find spawned player node for ID: {id}");
+            }
         }
     }
 }

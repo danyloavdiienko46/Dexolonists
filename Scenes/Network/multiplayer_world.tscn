@@ -5,22 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://do2p3a8l1w002" path="res://Scenes/normal_game_player.tscn" id="3_0gwti"]
 [ext_resource type="Script" uid="uid://ba0uanf05bw1u" path="res://Scripts/NormalGameScripts/NormalGame.cs" id="4_6ruhp"]
 [ext_resource type="PackedScene" uid="uid://xqtmm7veo5is" path="res://Scenes/Menus/main_menu.tscn" id="5_0gwti"]
-[ext_resource type="Script" uid="uid://bypjwukoxjbgy" path="res://Scripts/NormalGameScripts/NormalGameBase.cs" id="6_miijc"]
-[ext_resource type="PackedScene" uid="uid://d4bq5mp6xwb54" path="res://Scenes/tile.tscn" id="7_cniy2"]
-[ext_resource type="PackedScene" uid="uid://mao2t3fpxpho" path="res://Scenes/Objects/house.tscn" id="8_tm88v"]
-[ext_resource type="PackedScene" uid="uid://b8ftqcaeonp1u" path="res://Scenes/Objects/road.tscn" id="9_mi4gu"]
+[ext_resource type="PackedScene" uid="uid://dh4umatsciep6" path="res://Scenes/normal_game_base.tscn" id="7_8ktxl"]
 [ext_resource type="PackedScene" uid="uid://cccon3qp35730" path="res://Scenes/Network/multiplayer_game_ui.tscn" id="10_cniy2"]
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_ult23"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m0mlk"]
-albedo_color = Color(0.29097468, 0.17519645, 0.29097468, 1)
-roughness = 0.9
-
-[sub_resource type="HeightMapShape3D" id="HeightMapShape3D_cxaje"]
-map_width = 28
-map_depth = 20
-map_data = PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
 [node name="MultiplayerWorld" type="Node3D" unique_id=231822336]
 script = ExtResource("1_jmo3y")
@@ -33,40 +19,9 @@ spawn_path = NodePath("../NormalGameMultiplayer")
 script = ExtResource("2_6ruhp")
 network_player = ExtResource("3_0gwti")
 
-[node name="TileSpawner" type="MultiplayerSpawner" parent="." unique_id=572332639]
-_spawnable_scenes = PackedStringArray("uid://d4bq5mp6xwb54")
-spawn_path = NodePath("../NormalGameMultiplayer/NormalGameBase/Tiles")
-
 [node name="NormalGameMultiplayer" type="Node3D" parent="." unique_id=654280888 node_paths=PackedStringArray("NormalGameBaseNode")]
 script = ExtResource("4_6ruhp")
 NormalGameBaseNode = NodePath("NormalGameBase")
 MainMenuScene = ExtResource("5_0gwti")
 
-[node name="NormalGameBase" type="Node3D" parent="NormalGameMultiplayer" unique_id=127469201 node_paths=PackedStringArray("Tiles", "PlacedItems", "PlacedRoads")]
-script = ExtResource("6_miijc")
-Tiles = NodePath("Tiles")
-PlacedItems = NodePath("PlacedItems")
-PlacedRoads = NodePath("PlacedRoads")
-TileScene = ExtResource("7_cniy2")
-HouseScene = ExtResource("8_tm88v")
-RoadScene = ExtResource("9_mi4gu")
-
-[node name="Table" type="Area3D" parent="NormalGameMultiplayer/NormalGameBase" unique_id=459419659]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="NormalGameMultiplayer/NormalGameBase/Table" unique_id=1417727864]
-transform = Transform3D(13.161, 0, 0, 0, 1, 0, 0, 0, 9.304, 0, 0, 0)
-mesh = SubResource("PlaneMesh_ult23")
-surface_material_override/0 = SubResource("StandardMaterial3D_m0mlk")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NormalGameMultiplayer/NormalGameBase/Table" unique_id=2122805007]
-shape = SubResource("HeightMapShape3D_cxaje")
-
-[node name="Tiles" type="Node3D" parent="NormalGameMultiplayer/NormalGameBase" unique_id=428547947]
-
-[node name="PlacedItems" type="Node3D" parent="NormalGameMultiplayer/NormalGameBase" unique_id=1458995859]
-
-[node name="PlacedRoads" type="Node3D" parent="NormalGameMultiplayer/NormalGameBase" unique_id=1795564728]
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="NormalGameMultiplayer/NormalGameBase" unique_id=1247186187]
-transform = Transform3D(1, 0, 0, 0, -0.06975648, 0.9975641, 0, -0.9975641, -0.06975648, 0, 11.265189, 0)
+[node name="NormalGameBase" parent="NormalGameMultiplayer" unique_id=127469201 instance=ExtResource("7_8ktxl")]

@@ -162,7 +162,7 @@ public partial class TileBody : StaticBody3D
     {
         var data = new TileSave
         {
-            Position = Position,
+            Position = GlobalPosition,
             ScenePath = SceneFilePath,
 			Type = (int)type
         };
@@ -173,7 +173,7 @@ public partial class TileBody : StaticBody3D
 			data.item_place_point_saves.Add(new ItemPlacePointSave
 			{
 				point_node_name = IPP.Name,
-				point_node_position = IPP.Position
+				point_node_position = IPP.GlobalPosition
 			});
 		}
 
@@ -185,7 +185,7 @@ public partial class TileBody : StaticBody3D
 			data.road_place_point_saves.Add(new RoadPlacePointSave
 			{
 				point_node_name = RPP.Name,
-				point_node_position = RPP.Position,
+				point_node_position = RPP.GlobalPosition,
 				point_node_index = i
 			});
 		}

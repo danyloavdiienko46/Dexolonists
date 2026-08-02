@@ -16,5 +16,16 @@ namespace HelperScripts
                 (array[r], array[i]) = (array[i], array[r]);
             }
         }
+
+        public void ShuffleList<T>(List<T> list)
+        {
+            Random random = new Random();
+
+            for (int i = 0; i < list.Count - 1; ++i) 
+            {
+                int r = random.Next(i, list.Count);
+                (list[r], list[i]) = (list[i], list[r]);
+            }
+        }
     }
 }
