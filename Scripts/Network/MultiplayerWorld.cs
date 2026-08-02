@@ -10,6 +10,8 @@ public partial class MultiplayerWorld : Node3D
     private MultiplayerSpawner _spawnerInstance;
 
     public Queue<long> players_turn = new Queue<long>();
+
+    public Queue<long> players_global_turn = new Queue<long>();
     public List<long> players_IDs;
     public Godot.Collections.Array<NormalGamePlayer> normal_game_players = [];
     private Shuffler _shuffler = new Shuffler();
@@ -18,6 +20,9 @@ public partial class MultiplayerWorld : Node3D
     private Random _rand = new Random();
 
     private MultiplayerGameUi _mp_game_ui;
+
+    public bool has_normal_game_started = false;
+    private bool _ended_first_half_start_placement = false;
 
     public void SetPlayers(Godot.Collections.Array<long> player_list)
     {
@@ -28,6 +33,7 @@ public partial class MultiplayerWorld : Node3D
         foreach(long id in new_players)
         {
             players_turn.Enqueue(id);
+            players_global_turn.Enqueue(id);
         }
     }
 
@@ -35,12 +41,13 @@ public partial class MultiplayerWorld : Node3D
     private void RpcSetPlayers(long[] shuffled_players)
     {
         players_turn = new Queue<long>();
+        players_global_turn = new Queue<long>();
 
         foreach(long id in shuffled_players)
         {
             players_turn.Enqueue(id);
+            players_global_turn.Enqueue(id);
         }
-
         PopulatePlayersListFromExistingIDs();
 
         _mp_game_ui.ChangeTurnRectColour(_colour_list.player_colors[GetColourID(players_turn.ElementAt(0))]);
@@ -59,13 +66,18 @@ public partial class MultiplayerWorld : Node3D
     [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
     private void RpcNextTurnHandler()
     {
-        int first_roll_number = _rand.Next(1, 7);
-        int second_roll_number = _rand.Next(1, 7);
+        int roll_number = 0;
 
-        int roll_number = first_roll_number + second_roll_number;
+        if (has_normal_game_started)
+        {
+            int first_roll_number = _rand.Next(1, 7);
+            int second_roll_number = _rand.Next(1, 7);
+            roll_number = first_roll_number + second_roll_number;
+            RpcId(1, nameof(RpcGainResources), roll_number);
+        }
 
         Rpc(nameof(RpcNextTurn), roll_number);
-        RpcId(1, nameof(RpcGainResources), roll_number);
+        
     }
 
 
@@ -81,20 +93,54 @@ public partial class MultiplayerWorld : Node3D
     [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
     private void RpcNextTurn(int roll_number)
     {
-        long player = players_turn.Dequeue();
-        players_turn.Enqueue(player);
-
-        _mp_game_ui.ChangeTurnRectColour(_colour_list.player_colors[GetColourID(players_turn.ElementAt(0))]);
-        _mp_game_ui.UpdateDiceRollLabel(roll_number);
-
-        if (Multiplayer.IsServer())
+        if (has_normal_game_started)
         {
-            GD.Print("------- The state of player turns is: -------");
-            for(int i = 0; i < players_turn.Count; i++)
+            long player = players_turn.Dequeue();
+            players_turn.Enqueue(player);
+
+            _mp_game_ui.ChangeTurnRectColour(_colour_list.player_colors[GetColourID(players_turn.ElementAt(0))]);
+            _mp_game_ui.UpdateDiceRollLabel(roll_number);
+
+            if (Multiplayer.IsServer())
             {
-                GD.Print(i+1 + ". " + _colour_list.player_colors[GetColourID(players_turn.ElementAt(i))]);
+                GD.Print("------- The state of player turns is: -------");
+                for(int i = 0; i < players_turn.Count; i++)
+                {
+                    GD.Print(i+1 + ". " + _colour_list.player_colors[GetColourID(players_turn.ElementAt(i))]);
+                }
             }
         }
+
+        else
+        {
+            long player = players_turn.Dequeue();
+            if(players_turn.Count != 0)
+            {
+                _mp_game_ui.ChangeTurnRectColour(_colour_list.player_colors[GetColourID(players_turn.ElementAt(0))]);
+            }
+            else
+            {
+                if (!_ended_first_half_start_placement)
+                {
+                    for(int i = players_global_turn.Count-1; i >= 0; i--)
+                    {
+                        players_turn.Enqueue(players_global_turn.ElementAt(i));
+                    }
+                    _ended_first_half_start_placement = true;
+                }
+                else
+                {
+                    for(int i = 0; i < players_global_turn.Count; i++)
+                    {
+                        players_turn.Enqueue(players_global_turn.ElementAt(i));
+                    }
+                    has_normal_game_started = true;
+                }
+                
+            }
+            
+        }
+        
     }
 
     public int GetColourID(long id)

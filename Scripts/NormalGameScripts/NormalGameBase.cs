@@ -48,6 +48,8 @@ public partial class NormalGameBase : Node3D
 	private List<int> _tile_types_list = [];
 	private int _tile_number = 0;
 
+	private bool _has_normal_game_started = false;
+
     public override void _Ready()
     {
         _normal_game = GetParent<NormalGame>();
@@ -55,6 +57,18 @@ public partial class NormalGameBase : Node3D
 		Tiles.ChildEnteredTree += OnTileChildEnteredTree;
     	Tiles.ChildExitingTree += OnTileChildExitingTree;
     }
+
+	public void StartNormalGame()
+	{
+		Rpc(nameof(RpcStartNormalGame));
+	}
+
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+	private void RpcStartNormalGame()
+	{
+		_has_normal_game_started = true;
+	}
+
 
 	private void OnTileChildEnteredTree(Node node)
 	{
@@ -205,6 +219,7 @@ public partial class NormalGameBase : Node3D
 				new_IPP.Position = IPPSave.point_node_position;
 
 				int index = IPP_ind;
+				new_IPP.ID_in_game_list = index;
 				new_IPP.MouseEntered += () => ItemPlacePointMouseHighlight(true, index);
 				new_IPP.MouseExited += () => ItemPlacePointMouseHighlight(false, index);
 
@@ -302,6 +317,8 @@ public partial class NormalGameBase : Node3D
 					rot_degree_val = 0.0f;
 
 				final_road_rotation = rot_degree_val + fluctuation;
+
+				_normal_game.AddIPPFromRPPToPlayer(placing_player_ID, RoadPlacePoints.GetChild<RoadPlacePoint>(point_index));
 				break;
 			}
 			default:
@@ -415,6 +432,12 @@ public partial class NormalGameBase : Node3D
 			(!_item_place_points[IPP_ind].IsHousePlacementPermitted
 				&& _chosen_item == 0)) return;
 
+		if (_has_normal_game_started)
+		{
+			int[] IPPsIDs = _normal_game.GetPlayerTheoreticalIPPsIDs(Multiplayer.GetUniqueId());
+			if(!IPPsIDs.Contains(IPP_ind)) return;
+		}
+
 		if(IPP_ind >= _item_place_points.Count)
 		{
 			GD.Print("Wrong tile index! Max index is: " + (_item_place_points.Count-1));
@@ -474,6 +497,8 @@ public partial class NormalGameBase : Node3D
 	{
 		if(_is_RPP_active_for_placement)RoadPlacePointsChangeMaterial();
 
+		int[] IPPsIDs = _normal_game.GetPlayerTheoreticalIPPsIDs(_placing_player_id);
+
 		Material mat = null;
 		if (!_is_IPP_active_for_placement)
 		{
@@ -486,14 +511,29 @@ public partial class NormalGameBase : Node3D
 			_is_IPP_active_for_placement = false;
 		}
 
-		foreach(ItemPlacePoint IPP in _item_place_points)
+		if (!_has_normal_game_started)
 		{
-			if((!IPP.IsActive && _is_IPP_active_for_placement)
-				|| (item_type == ItemType.House && !IPP.IsHousePlacementPermitted 
-					&& _is_IPP_active_for_placement))
-					continue;
-			IPP.GetNode<MeshInstance3D>("MeshInstance3D").MaterialOverride = mat;
+			foreach(ItemPlacePoint IPP in _item_place_points)
+			{
+				if((!IPP.IsActive && _is_IPP_active_for_placement)
+					|| (item_type == ItemType.House && !IPP.IsHousePlacementPermitted 
+						&& _is_IPP_active_for_placement))
+						continue;
+				IPP.GetNode<MeshInstance3D>("MeshInstance3D").MaterialOverride = mat;
+			}
 		}
+		else
+		{
+			foreach(int IPP_id in IPPsIDs)
+			{
+				if((!_item_place_points[IPP_id].IsActive && _is_IPP_active_for_placement)
+					|| (item_type == ItemType.House && !_item_place_points[IPP_id].IsHousePlacementPermitted 
+						&& _is_IPP_active_for_placement))
+						continue;
+				_item_place_points[IPP_id].GetNode<MeshInstance3D>("MeshInstance3D").MaterialOverride = mat;
+			}
+		}
+		
 	}
 
 	public void RoadPlacePointsChangeMaterial()

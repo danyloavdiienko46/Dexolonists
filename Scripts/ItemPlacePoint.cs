@@ -18,6 +18,8 @@ public partial class ItemPlacePoint : Area3D
 	private bool _is_timer_created = false;
 	public bool gives_gold = false;
 
+	public int ID_in_game_list = -1;
+
     public override void _PhysicsProcess(double delta)
     {
 		if (!_is_timer_created)
@@ -48,6 +50,7 @@ public partial class ItemPlacePoint : Area3D
 					if(area is RoadPlacePoint RPP)
 					{
 						connected_RPPs_list.Add(RPP);
+						RPP.connected_IPPs_list.Add(this);
 					}
 				}
 			};

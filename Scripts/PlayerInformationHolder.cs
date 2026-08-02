@@ -9,6 +9,7 @@ public partial class PlayerInformationHolder : Node
 	private int _points_memory = 0;
 
 	public List<ItemPlacePoint> IPPs_in_jurisdiction = new List<ItemPlacePoint>();
+	public List<ItemPlacePoint> IPPs_in_theoretical_jurisdiction = new List<ItemPlacePoint>();
 	public List<RoadPlacePoint> RPPs_in_jurisdiction = new List<RoadPlacePoint>();
 	[Export] public int points
 	{
@@ -110,10 +111,13 @@ public partial class PlayerInformationHolder : Node
 	{
 		foreach(ItemPlacePoint IPP in IPPs_in_jurisdiction)
 		{
+			GD.Print("Entering foreach!");
 			for(int i = 0; i < IPP.resource_gain_list.Count; i++)
 			{
+				GD.Print("Entering for!");
 				if(IPP.resource_roll_number_list[i] == roll_number)
 				{
+					GD.Print("Adding resources!");
 					AddOrSubtractResource(IPP.resource_gain_list[i], 1);
 				}
 			}

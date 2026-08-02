@@ -3,8 +3,6 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Transactions;
 
 public partial class NormalGame : Node3D
 {
@@ -12,12 +10,24 @@ public partial class NormalGame : Node3D
 	[Export] public PackedScene MainMenuScene;
 
 	private MultiplayerWorld _mp_world;
+	private bool _has_game_started = false;
 
     public override void _Ready()
     {
 		if(Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer) _mp_world = GetParent<MultiplayerWorld>();
     }
 
+    public override void _PhysicsProcess(double delta)
+    {
+		if (!_has_game_started)
+		{
+			if (_mp_world.has_normal_game_started)
+			{
+				_has_game_started = true;
+				NormalGameBaseNode.StartNormalGame();
+			}
+		}
+    }
 
 	public void LoadMapBase(string file_path)
 	{
@@ -138,6 +148,41 @@ public partial class NormalGame : Node3D
 		Rpc(nameof(RpcSyncPlayerIPPs), player_info_holder.GetPath(), IPP.GetPath());
 	}
 
+	public void AddIPPFromRPPToPlayer(long player_ID, RoadPlacePoint RPP)
+	{
+		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
+		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
+		
+		Rpc(nameof(RpcSyncPlayerRPPs), player_info_holder.GetPath(), RPP.GetPath());
+	}
+
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+	private void RpcSyncPlayerRPPs(NodePath player_info_path, NodePath rpp_path)
+	{
+		PlayerInformationHolder player_info_holder = GetNode<PlayerInformationHolder>(player_info_path);
+		RoadPlacePoint RPP = GetNode<RoadPlacePoint>(rpp_path);
+
+		foreach(ItemPlacePoint IPP in RPP.connected_IPPs_list)
+		{
+			if (!player_info_holder.IPPs_in_jurisdiction.Contains(IPP))
+			{
+				if (!player_info_holder.IPPs_in_theoretical_jurisdiction.Contains(IPP))
+				{
+					player_info_holder.IPPs_in_theoretical_jurisdiction.Add(IPP);
+				}
+
+				foreach(RoadPlacePoint road_place_point in IPP.connected_RPPs_list)
+				{
+					if (!player_info_holder.RPPs_in_jurisdiction.Contains(road_place_point))
+					{
+						player_info_holder.RPPs_in_jurisdiction.Add(road_place_point);
+					}
+				}
+				
+			}
+		}
+	}
+
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false)]
 	private void RpcSyncPlayerIPPs(NodePath player_info_path, NodePath ipp_path)
 	{
@@ -147,7 +192,8 @@ public partial class NormalGame : Node3D
 		player_info_holder.IPPs_in_jurisdiction.Add(IPP);
 		foreach(RoadPlacePoint RPP in IPP.connected_RPPs_list)
 		{
-			player_info_holder.RPPs_in_jurisdiction.Add(RPP);
+			if(!player_info_holder.RPPs_in_jurisdiction.Contains(RPP))
+				player_info_holder.RPPs_in_jurisdiction.Add(RPP);
 		}
 	}
 
@@ -170,6 +216,27 @@ public partial class NormalGame : Node3D
 		}
 
 		return RPPsIDs.ToArray();
+	}
+
+	public int[] GetPlayerTheoreticalIPPsIDs(long player_ID)
+	{
+		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
+
+		if(player_index == -1)
+		{
+			GD.Print("Couldn't find player with ID: " + player_ID);
+			return [];
+		}
+		
+		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
+		
+		List<int> IPPsIDs = [];
+		foreach(ItemPlacePoint IPP in player_info_holder.IPPs_in_theoretical_jurisdiction)
+		{
+			IPPsIDs.Add(IPP.ID_in_game_list);
+		}
+
+		return IPPsIDs.ToArray();
 	}
 
 }

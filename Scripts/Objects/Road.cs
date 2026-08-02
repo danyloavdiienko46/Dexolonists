@@ -24,6 +24,7 @@ public partial class Road : Item
 		ChangeObjectMeshColour(colour_index);
     }
 
+
     private void SetBuildingCost()
 	{
 		_building_cost[(int)ResourceCardType.Wood] = 1;
