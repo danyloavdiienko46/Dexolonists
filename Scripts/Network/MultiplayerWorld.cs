@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using HelperScripts;
+using dexolonists.HelperScripts;
 
 public partial class MultiplayerWorld : Node3D
 {
@@ -22,7 +23,35 @@ public partial class MultiplayerWorld : Node3D
     private MultiplayerGameUi _mp_game_ui;
 
     public bool has_normal_game_started = false;
+    private bool _has_normal_game_started_dice_roll = false;
     private bool _ended_first_half_start_placement = false;
+
+    public bool has_map_just_loaded = false;
+
+    private List<SetupStep> _setup_steps = new List<SetupStep>();
+    private int _current_setup_step_index = 0;
+
+    public override void _PhysicsProcess(double delta)
+    {
+        if (has_map_just_loaded)
+        {
+            has_map_just_loaded = false;
+
+            _ = HandleMapLoadedAsync();
+        }
+    }
+
+    private async System.Threading.Tasks.Task HandleMapLoadedAsync()
+    {
+        await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
+        await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
+
+        if (!has_normal_game_started && _setup_steps.Count > 0)
+        {
+            TriggerCurrentSetupStep();
+        }
+    }
+
 
     public void SetPlayers(Godot.Collections.Array<long> player_list)
     {
@@ -51,15 +80,32 @@ public partial class MultiplayerWorld : Node3D
         PopulatePlayersListFromExistingIDs();
 
         _mp_game_ui.ChangeTurnRectColour(_colour_list.player_colors[GetColourID(players_turn.ElementAt(0))]);
+
+        BuildSetupSequence();
+
+        if (_setup_steps.Count > 0)
+        {
+            _mp_game_ui.ChangeTurnRectColour(_colour_list.player_colors[GetColourID(_setup_steps[0].PlayerId)]);
+        }
     }
 
     public long CurrentTurnID()
     {
+        if (!has_normal_game_started)
+        {
+            if (_setup_steps.Count > 0 && _current_setup_step_index < _setup_steps.Count)
+            {
+                return _setup_steps[_current_setup_step_index].PlayerId;
+            }
+            return -1;
+        }
+
         return players_turn.ElementAt(0);
     }
 
     public void NextTurn()
     {
+        if (!has_normal_game_started) return;
         RpcId(1, nameof(RpcNextTurnHandler));
     }
 
@@ -68,13 +114,10 @@ public partial class MultiplayerWorld : Node3D
     {
         int roll_number = 0;
 
-        if (has_normal_game_started)
-        {
-            int first_roll_number = _rand.Next(1, 7);
-            int second_roll_number = _rand.Next(1, 7);
-            roll_number = first_roll_number + second_roll_number;
-            RpcId(1, nameof(RpcGainResources), roll_number);
-        }
+        int first_roll_number = _rand.Next(1, 7);
+        int second_roll_number = _rand.Next(1, 7);
+        roll_number = first_roll_number + second_roll_number;
+        RpcId(1, nameof(RpcGainResources), roll_number);
 
         Rpc(nameof(RpcNextTurn), roll_number);
         
@@ -93,52 +136,19 @@ public partial class MultiplayerWorld : Node3D
     [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
     private void RpcNextTurn(int roll_number)
     {
-        if (has_normal_game_started)
+        long player = players_turn.Dequeue();
+        players_turn.Enqueue(player);
+
+        _mp_game_ui.ChangeTurnRectColour(_colour_list.player_colors[GetColourID(players_turn.ElementAt(0))]);
+        _mp_game_ui.UpdateDiceRollLabel(roll_number);
+
+        if (Multiplayer.IsServer())
         {
-            long player = players_turn.Dequeue();
-            players_turn.Enqueue(player);
-
-            _mp_game_ui.ChangeTurnRectColour(_colour_list.player_colors[GetColourID(players_turn.ElementAt(0))]);
-            _mp_game_ui.UpdateDiceRollLabel(roll_number);
-
-            if (Multiplayer.IsServer())
+            GD.Print("------- The state of player turns is: -------");
+            for(int i = 0; i < players_turn.Count; i++)
             {
-                GD.Print("------- The state of player turns is: -------");
-                for(int i = 0; i < players_turn.Count; i++)
-                {
-                    GD.Print(i+1 + ". " + _colour_list.player_colors[GetColourID(players_turn.ElementAt(i))]);
-                }
+                GD.Print(i+1 + ". " + _colour_list.player_colors[GetColourID(players_turn.ElementAt(i))]);
             }
-        }
-
-        else
-        {
-            long player = players_turn.Dequeue();
-            if(players_turn.Count != 0)
-            {
-                _mp_game_ui.ChangeTurnRectColour(_colour_list.player_colors[GetColourID(players_turn.ElementAt(0))]);
-            }
-            else
-            {
-                if (!_ended_first_half_start_placement)
-                {
-                    for(int i = players_global_turn.Count-1; i >= 0; i--)
-                    {
-                        players_turn.Enqueue(players_global_turn.ElementAt(i));
-                    }
-                    _ended_first_half_start_placement = true;
-                }
-                else
-                {
-                    for(int i = 0; i < players_global_turn.Count; i++)
-                    {
-                        players_turn.Enqueue(players_global_turn.ElementAt(i));
-                    }
-                    has_normal_game_started = true;
-                }
-                
-            }
-            
         }
         
     }
@@ -187,6 +197,82 @@ public partial class MultiplayerWorld : Node3D
             {
                 GD.PrintErr($"Client could not find spawned player node for ID: {id}");
             }
+        }
+    }
+
+    public void NextSetupStep()
+    {
+        if (!Multiplayer.IsServer()) return;
+
+        int next_ind = _current_setup_step_index + 1;
+        Rpc(nameof(RpcSyncSetupStep), next_ind);
+    }
+
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+    private void RpcSyncSetupStep(int stepIndex)
+    {
+        _current_setup_step_index = stepIndex;
+
+        if (_current_setup_step_index >= _setup_steps.Count)
+        {
+            has_normal_game_started = true;
+            
+            foreach (NormalGamePlayer normal_player in normal_game_players)
+            {
+                normal_player.player_info_holder.forced_building_type = null;
+                normal_player.player_info_holder.is_forced_building_enabled = false;
+
+                normal_player.EnableItemChoosement();
+            }
+
+            _mp_game_ui.ChangeTurnRectColour(_colour_list.player_colors[GetColourID(CurrentTurnID())]);
+            GD.Print("--- SETUP PHASE COMPLETE. NORMAL GAME STARTED ---");
+            return;
+        }
+
+        SetupStep curr_step = _setup_steps[_current_setup_step_index];
+        _mp_game_ui.ChangeTurnRectColour(_colour_list.player_colors[GetColourID(curr_step.PlayerId)]);
+
+        TriggerCurrentSetupStep();
+    }
+
+    private void TriggerCurrentSetupStep()
+    {
+        if (_current_setup_step_index >= _setup_steps.Count) return;
+
+        SetupStep step = _setup_steps[_current_setup_step_index];
+        
+        if (step.PlayerId == Multiplayer.GetUniqueId())
+        {
+            int player_index = players_IDs.IndexOf(step.PlayerId);
+            if (player_index != -1 && normal_game_players.Count > player_index)
+            {
+                var player = normal_game_players.ElementAt(player_index);
+                player.player_info_holder.forced_building_type = step.ItemType;
+                player.ForceItemSelection(step.ItemType);
+            }
+        }
+    }
+
+    private void BuildSetupSequence()
+    {
+        _setup_steps.Clear();
+        _current_setup_step_index = 0;
+
+        // Round 1: Forward (P1 -> P2 -> P3 -> ...)
+        foreach (long id in players_global_turn)
+        {
+            _setup_steps.Add(new SetupStep { PlayerId = id, ItemType = ItemType.House });
+            _setup_steps.Add(new SetupStep { PlayerId = id, ItemType = ItemType.Road });
+        }
+
+        // Round 2: Reverse (... -> P3 -> P2 -> P1)
+        long[] reversed_players = players_global_turn.ToArray();
+        Array.Reverse(reversed_players);
+        foreach (long id in reversed_players)
+        {
+            _setup_steps.Add(new SetupStep { PlayerId = id, ItemType = ItemType.House });
+            _setup_steps.Add(new SetupStep { PlayerId = id, ItemType = ItemType.Road });
         }
     }
 }

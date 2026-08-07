@@ -41,24 +41,39 @@ public partial class NormalGameUi : Control
 		ObjectList.AddThemeStyleboxOverride("panel", style);
     }
 
+	public void EnableItemChoosement()
+	{
+		if(!IsInstanceValid(ObjectList)) return;
+
+		for(int i = 0; i < ObjectList.ItemCount; i++)
+		{
+			ObjectList.SetItemDisabled(i, false);
+		}
+		
+	}
 
 	public override void _Input(InputEvent @event)
     {
+		if (_normal_game_player.player_info_holder.is_forced_building_enabled)
+		{
+			return;
+		}
+
 		if (Input.IsActionJustPressed("RMB_click"))
 		{
 			ObjectListDeselect();
 		}
 
+		/*
 		else if (Input.IsActionJustPressed("LMB_click") && _is_item_chosen == true)
 		{
 			ObjectListDeselect();
-		}
+		}*/
     }
 
 	public void LoadGameBtnPressed()
 	{
 		_normal_game.LoadMapBase("res://Dexolonists_map.bin");
-		
 	}
 
 	public void ExitNGBtnPressed()
@@ -75,7 +90,7 @@ public partial class NormalGameUi : Control
 	{
 		if(Multiplayer.MultiplayerPeer is OfflineMultiplayerPeer || _normal_game.GetCurrentTurnID() == _player_ID)
 		{
-			if (!_normal_game_player.player_info_holder.CanPlayerBuildItem(_dict.ItemType_to_Item[(ItemType)index]))
+			if (!_normal_game_player.player_info_holder.CanPlayerBuildItem(_dict.ItemType_to_Item[(ItemType)index], (ItemType)index))
 			{
 				GD.Print("Player #" + _player_ID + " has no enough resources to build that item!");
 				ObjectListDeselect();
@@ -88,7 +103,7 @@ public partial class NormalGameUi : Control
 		}
 		else
 		{
-			GD.Print("Not your turn, brother in Christ!");
+			GD.Print("Not your turn, brother in Christ! Current turn is for ID: " + _normal_game.GetCurrentTurnID());
 		}
 	}
 

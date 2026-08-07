@@ -248,7 +248,16 @@ public partial class NormalGameBase : Node3D
 			new_tile.Rpc(nameof(Tile.RpcSyncTileData), dict, tile_type, tile_number);
 		}
 
+		Rpc(nameof(RpcMapJustLoaded));
+		_normal_game.has_map_just_loaded = true;
+
 		GD.Print("Map loaded and spawned successfully!");
+	}
+
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false)]
+	private void RpcMapJustLoaded()
+	{
+		_normal_game.has_map_just_loaded = true;
 	}
 
 	private void ItemPlacementHandler()
@@ -282,7 +291,7 @@ public partial class NormalGameBase : Node3D
 	{
 		ItemType chosen_item_type = (ItemType)chosen_item;
 
-		_normal_game.PlayerBuildItem(placing_player_ID, _dict.ItemType_to_Item[chosen_item_type]); //Subtract resources needed for building
+		_normal_game.PlayerBuildItem(placing_player_ID, _dict.ItemType_to_Item[chosen_item_type], chosen_item_type); //Subtract resources needed for building
 
 		GD.Print("#" + placing_player_ID + "'s current card situation:");
 		int[] player_deck = _normal_game.GetPlayerDeck(placing_player_ID);
@@ -333,6 +342,8 @@ public partial class NormalGameBase : Node3D
 		_chosen_item = -1;
 
 		is_item_placed = true;
+
+		if(!_has_normal_game_started) _normal_game.NextStep();
 	}
 
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)] // CallLocal = true forces host + clients to run this
@@ -371,7 +382,7 @@ public partial class NormalGameBase : Node3D
 
 	public override void _Input(InputEvent @event)
     {
-		if (@event.IsActionPressed("RMB_click"))
+		if (@event.IsActionPressed("RMB_click") && !_normal_game.DoesPlayerHasForcedBuildingEnabled(_placing_player_id))
 		{
 			ForceClearAllPlacementMaterials();
 			_chosen_item = -1;
@@ -387,11 +398,13 @@ public partial class NormalGameBase : Node3D
 		{
 			AddNewItem();
 		}
+
+		/*
 		else if (@event.IsActionPressed("LMB_click") && 
 			_hovered_IPP_index == -1 && _hovered_RPP_index == -1)
 		{
 			ForceClearAllPlacementMaterials();
-		}
+		}*/
 
     }
 

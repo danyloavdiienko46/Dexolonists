@@ -133,8 +133,10 @@ icon_mode = 0
 icon_scale = 0.2
 item_0/text = "House"
 item_0/icon = ExtResource("2_mrjq0")
+item_0/disabled = true
 item_1/text = "Road"
 item_1/icon = ExtResource("3_es64j")
+item_1/disabled = true
 
 [node name="NextTurnBtn" type="Button" parent="NormalGameUI" unique_id=301831787]
 layout_mode = 1

@@ -76,6 +76,16 @@ public partial class NormalGamePlayer : Node3D
         }
     }
 
+    public void ForceItemSelection(ItemType item_type)
+    {
+        _normal_game_ui.ObjectListItemChosen((int)item_type);
+    }
+
+    public void EnableItemChoosement()
+    {
+        _normal_game_ui.EnableItemChoosement();
+    }
+
     public void ChangeBodyMeshColour()
     {
         if (_color_index < 0 || _color_index >= _colour_list.player_colors.Count) 

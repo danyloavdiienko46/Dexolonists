@@ -11,6 +11,10 @@ public partial class PlayerInformationHolder : Node
 	public List<ItemPlacePoint> IPPs_in_jurisdiction = new List<ItemPlacePoint>();
 	public List<ItemPlacePoint> IPPs_in_theoretical_jurisdiction = new List<ItemPlacePoint>();
 	public List<RoadPlacePoint> RPPs_in_jurisdiction = new List<RoadPlacePoint>();
+	public List<ItemType> free_items_to_build = new List<ItemType>();
+	public bool is_forced_building_enabled = true;
+	public ItemType? forced_building_type = ItemType.House;
+
 	[Export] public int points
 	{
 		get => _points_memory;
@@ -20,7 +24,7 @@ public partial class PlayerInformationHolder : Node
 			GetParent<NormalGamePlayer>().UpdatePointsPanelUI();
 		}	
 	}
-	private int[] _resource_card_memory = [5, 5, 5, 5, 5];
+	private int[] _resource_card_memory = [0, 0, 0, 0, 0];
 	[Export] public int[] _resource_card_array
 	{
 		get => _resource_card_memory;
@@ -36,6 +40,11 @@ public partial class PlayerInformationHolder : Node
     {
         GetNode<MultiplayerSynchronizer>("MultiplayerSynchronizer").SetMultiplayerAuthority(1);
 		_player = GetParent<NormalGamePlayer>();
+
+		free_items_to_build.Add(ItemType.House);
+		free_items_to_build.Add(ItemType.House);
+		free_items_to_build.Add(ItemType.Road);
+		free_items_to_build.Add(ItemType.Road);
     }
 
 
@@ -92,9 +101,16 @@ public partial class PlayerInformationHolder : Node
 		return _resource_card_array;
 	}
 
-	public bool CanPlayerBuildItem(Item item)
+	public bool CanPlayerBuildItem(Item item, ItemType item_type)
 	{
 		int[] building_cost = item.GetBuildingCost();
+
+		if (free_items_to_build.Contains(item_type))
+		{
+			GD.Print("Player has " + free_items_to_build.Count + " free itens");
+
+			return true;
+		}
 
 		for(int i = 0; i < building_cost.Length; i++)
 		{
@@ -111,13 +127,10 @@ public partial class PlayerInformationHolder : Node
 	{
 		foreach(ItemPlacePoint IPP in IPPs_in_jurisdiction)
 		{
-			GD.Print("Entering foreach!");
 			for(int i = 0; i < IPP.resource_gain_list.Count; i++)
 			{
-				GD.Print("Entering for!");
 				if(IPP.resource_roll_number_list[i] == roll_number)
 				{
-					GD.Print("Adding resources!");
 					AddOrSubtractResource(IPP.resource_gain_list[i], 1);
 				}
 			}

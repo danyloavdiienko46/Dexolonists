@@ -12,9 +12,15 @@ public partial class NormalGame : Node3D
 	private MultiplayerWorld _mp_world;
 	private bool _has_game_started = false;
 
+	public bool has_map_just_loaded = false;
+
     public override void _Ready()
     {
-		if(Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer) _mp_world = GetParent<MultiplayerWorld>();
+		if(Multiplayer.MultiplayerPeer is not OfflineMultiplayerPeer) {
+			_mp_world = GetParent<MultiplayerWorld>();
+			
+			LoadMapBase("res://Dexolonists_map.bin");
+		}
     }
 
     public override void _PhysicsProcess(double delta)
@@ -26,6 +32,13 @@ public partial class NormalGame : Node3D
 				_has_game_started = true;
 				NormalGameBaseNode.StartNormalGame();
 			}
+		}
+
+		if (has_map_just_loaded)
+		{
+			_mp_world.has_map_just_loaded = true;
+
+			has_map_just_loaded = false;
 		}
     }
 
@@ -106,12 +119,18 @@ public partial class NormalGame : Node3D
 		player_info_holder.AddOrSubtractPoints(number, subtracting);
 	}
 
-	public void PlayerBuildItem(long player_ID, Item item)
+	public void PlayerBuildItem(long player_ID, Item item, ItemType item_type)
 	{
-		int[] building_cost = item.GetBuildingCost();
-
 		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
 		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
+
+		if (player_info_holder.free_items_to_build.Contains(item_type))
+		{
+			Rpc(nameof(RpcSyncFreeItemsList), player_info_holder.GetPath(), (int)item_type, item.point_addition);
+			return;
+		}
+
+		int[] building_cost = item.GetBuildingCost();
 
 		for(int i = 0; i < building_cost.Length; i++)
 		{
@@ -124,6 +143,16 @@ public partial class NormalGame : Node3D
 		}
 
 		ChangePlayerPoints(player_info_holder, item.point_addition);
+	}
+
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+	private void RpcSyncFreeItemsList(NodePath player_info_path, int int_item_type, int point_addition)
+	{
+		PlayerInformationHolder player_info_holder = GetNode<PlayerInformationHolder>(player_info_path);
+		ItemType item_type = (ItemType)int_item_type;
+
+		player_info_holder.free_items_to_build.Remove(item_type);
+		ChangePlayerPoints(player_info_holder, point_addition);
 	}
 
 	public int[] GetPlayerDeck(long player_ID)
@@ -221,13 +250,6 @@ public partial class NormalGame : Node3D
 	public int[] GetPlayerTheoreticalIPPsIDs(long player_ID)
 	{
 		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
-
-		if(player_index == -1)
-		{
-			GD.Print("Couldn't find player with ID: " + player_ID);
-			return [];
-		}
-		
 		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
 		
 		List<int> IPPsIDs = [];
@@ -239,4 +261,16 @@ public partial class NormalGame : Node3D
 		return IPPsIDs.ToArray();
 	}
 
+	public bool DoesPlayerHasForcedBuildingEnabled(long player_ID)
+	{
+		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
+		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
+
+		return player_info_holder.is_forced_building_enabled;
+	}
+
+	public void NextStep()
+	{
+		_mp_world.NextSetupStep();
+	}
 }
