@@ -18,7 +18,6 @@ public partial class NormalGameUi : Control
 	private ColourList _colour_list = new ColourList();
 	private Dictionaries _dict = new Dictionaries();
 	
-
     public override void _Ready()
     {
 		_normal_game_player = GetParent<NormalGamePlayer>();
@@ -64,7 +63,7 @@ public partial class NormalGameUi : Control
 			ObjectListDeselect();
 		}
 
-		/*
+		/* really don't remember what it was for kek
 		else if (Input.IsActionJustPressed("LMB_click") && _is_item_chosen == true)
 		{
 			ObjectListDeselect();

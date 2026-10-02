@@ -24,12 +24,12 @@ public partial class MultiplayerWorld : Node3D
 
     public bool has_normal_game_started = false;
     private bool _has_normal_game_started_dice_roll = false;
-    private bool _ended_first_half_start_placement = false;
 
     public bool has_map_just_loaded = false;
 
     private List<SetupStep> _setup_steps = new List<SetupStep>();
     private int _current_setup_step_index = 0;
+    private bool _second_half_of_setup = false; 
 
     public override void _PhysicsProcess(double delta)
     {
@@ -103,14 +103,26 @@ public partial class MultiplayerWorld : Node3D
         return players_turn.ElementAt(0);
     }
 
+    public void StartGame()
+    {
+        if(!Multiplayer.IsServer()) return;
+        RpcId(1, nameof(RpcNextTurnHandler), true);
+    }
+
     public void NextTurn()
     {
         if (!has_normal_game_started) return;
-        RpcId(1, nameof(RpcNextTurnHandler));
+        RpcId(1, nameof(RpcNextTurnHandler), false);
+    }
+
+    public void GainStartingResources()
+    {
+        if(!Multiplayer.IsServer()) return;
+        RpcId(1, nameof(RpcGainStartingResources));
     }
 
     [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-    private void RpcNextTurnHandler()
+    private void RpcNextTurnHandler(bool just_started)
     {
         int roll_number = 0;
 
@@ -119,7 +131,7 @@ public partial class MultiplayerWorld : Node3D
         roll_number = first_roll_number + second_roll_number;
         RpcId(1, nameof(RpcGainResources), roll_number);
 
-        Rpc(nameof(RpcNextTurn), roll_number);
+        Rpc(nameof(RpcNextTurn), roll_number, just_started);
         
     }
 
@@ -134,10 +146,22 @@ public partial class MultiplayerWorld : Node3D
     }
 
     [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-    private void RpcNextTurn(int roll_number)
+    private void RpcGainStartingResources()
     {
-        long player = players_turn.Dequeue();
-        players_turn.Enqueue(player);
+        SetupStep step = _setup_steps[_current_setup_step_index-1];
+        int player_index = players_IDs.IndexOf(step.PlayerId);
+		PlayerInformationHolder player_info_holder = normal_game_players.ElementAt(player_index).player_info_holder;
+		player_info_holder.GetStartingResources();
+    }
+
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+    private void RpcNextTurn(int roll_number, bool just_started)
+    {
+        if (!just_started)
+        {
+            long player = players_turn.Dequeue();
+            players_turn.Enqueue(player);
+        }
 
         _mp_game_ui.ChangeTurnRectColour(_colour_list.player_colors[GetColourID(players_turn.ElementAt(0))]);
         _mp_game_ui.UpdateDiceRollLabel(roll_number);
@@ -156,6 +180,29 @@ public partial class MultiplayerWorld : Node3D
     public int GetColourID(long id)
     {
         return players_IDs.IndexOf(id);
+    }
+
+    public NormalGamePlayer GetPlayerNode(long player_ID)
+    {
+        int player_index = players_IDs.IndexOf(player_ID);
+        
+        // check if cached list valid
+        if (player_index != -1 && player_index < normal_game_players.Count 
+            && normal_game_players[player_index] != null 
+            && GodotObject.IsInstanceValid(normal_game_players[player_index]))
+        {
+            return normal_game_players[player_index];
+        }
+
+        // search scene tree if replication delayed
+        var playerNode = GetNodeOrNull<NormalGamePlayer>($"NormalGameMultiplayer/{player_ID}");
+        if (playerNode != null)
+        {
+            PopulatePlayersListFromExistingIDs();
+            return playerNode;
+        }
+
+        return null;
     }
 
 
@@ -212,6 +259,12 @@ public partial class MultiplayerWorld : Node3D
     private void RpcSyncSetupStep(int stepIndex)
     {
         _current_setup_step_index = stepIndex;
+        if(!_second_half_of_setup && _current_setup_step_index>=(normal_game_players.Count*2))
+        {
+            GD.Print("Making _second_half_of_setup = true because " + _current_setup_step_index + " is bigger than " + normal_game_players.Count);
+            _second_half_of_setup = true;
+        }
+            
 
         if (_current_setup_step_index >= _setup_steps.Count)
         {
@@ -225,7 +278,8 @@ public partial class MultiplayerWorld : Node3D
                 normal_player.EnableItemChoosement();
             }
 
-            _mp_game_ui.ChangeTurnRectColour(_colour_list.player_colors[GetColourID(CurrentTurnID())]);
+            StartGame();
+
             GD.Print("--- SETUP PHASE COMPLETE. NORMAL GAME STARTED ---");
             return;
         }
@@ -244,14 +298,19 @@ public partial class MultiplayerWorld : Node3D
         
         if (step.PlayerId == Multiplayer.GetUniqueId())
         {
-            int player_index = players_IDs.IndexOf(step.PlayerId);
-            if (player_index != -1 && normal_game_players.Count > player_index)
+            NormalGamePlayer player = GetPlayerNode(step.PlayerId);
+            if (player!=null)
             {
-                var player = normal_game_players.ElementAt(player_index);
                 player.player_info_holder.forced_building_type = step.ItemType;
                 player.ForceItemSelection(step.ItemType);
             }
+            else
+            {
+                GD.PrintErr($"Could not find local player node for ID: {step.PlayerId}");
+            }
         }
+        if(_second_half_of_setup && step.ItemType == ItemType.Road) //when house in 2 setup half is placed gain starting resources
+            GainStartingResources();
     }
 
     private void BuildSetupSequence()

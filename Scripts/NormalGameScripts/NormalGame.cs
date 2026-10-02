@@ -79,24 +79,24 @@ public partial class NormalGame : Node3D
 
 	public int GetPlayerCardCount(long player_ID)
 	{
-		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
-		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
+		var player = _mp_world.GetPlayerNode(player_ID);
+		PlayerInformationHolder player_info_holder = player.player_info_holder;
 
 		return player_info_holder.GetAllResourcesNumber();
 	}
 
 	public int GetPlayerPoints(long player_ID)
 	{
-		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
-		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
+		var player = _mp_world.GetPlayerNode(player_ID);
+		PlayerInformationHolder player_info_holder = player.player_info_holder;
 
 		return player_info_holder.points;
 	}
 
 	public void ChangePlayerCardNumber(long player_ID, ResourceCardType resource_type, int number, bool subtracting = false)
 	{
-		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
-		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
+		var player = _mp_world.GetPlayerNode(player_ID);
+		PlayerInformationHolder player_info_holder = player.player_info_holder;
 
 		player_info_holder.AddOrSubtractResource(resource_type, number, subtracting);
 	}
@@ -108,8 +108,8 @@ public partial class NormalGame : Node3D
 
 	public void ChangePlayerPoints(long player_ID, int number, bool subtracting = false)
 	{
-		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
-		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
+		var player = _mp_world.GetPlayerNode(player_ID);
+		PlayerInformationHolder player_info_holder = player.player_info_holder;
 
 		player_info_holder.AddOrSubtractPoints(number, subtracting);
 	}
@@ -121,8 +121,8 @@ public partial class NormalGame : Node3D
 
 	public void PlayerBuildItem(long player_ID, Item item, ItemType item_type)
 	{
-		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
-		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
+		var player = _mp_world.GetPlayerNode(player_ID);
+		PlayerInformationHolder player_info_holder = player.player_info_holder;
 
 		if (player_info_holder.free_items_to_build.Contains(item_type))
 		{
@@ -157,16 +157,16 @@ public partial class NormalGame : Node3D
 
 	public int[] GetPlayerDeck(long player_ID)
 	{
-		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
-		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
+		var player = _mp_world.GetPlayerNode(player_ID);
+		PlayerInformationHolder player_info_holder = player.player_info_holder;
 
 		return player_info_holder.GetCardArray();
 	}
 
 	public void AddIPPToPlayer(long player_ID, ItemPlacePoint IPP)
 	{
-		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
-		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
+		var player = _mp_world.GetPlayerNode(player_ID);
+		PlayerInformationHolder player_info_holder = player.player_info_holder;
 		
 		player_info_holder.IPPs_in_jurisdiction.Add(IPP);
 		foreach(RoadPlacePoint RPP in IPP.connected_RPPs_list)
@@ -179,8 +179,8 @@ public partial class NormalGame : Node3D
 
 	public void AddIPPFromRPPToPlayer(long player_ID, RoadPlacePoint RPP)
 	{
-		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
-		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
+		var player = _mp_world.GetPlayerNode(player_ID);
+		PlayerInformationHolder player_info_holder = player.player_info_holder;
 		
 		Rpc(nameof(RpcSyncPlayerRPPs), player_info_holder.GetPath(), RPP.GetPath());
 	}
@@ -210,7 +210,7 @@ public partial class NormalGame : Node3D
 				
 			}
 		}
-	}
+	} //
 
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false)]
 	private void RpcSyncPlayerIPPs(NodePath player_info_path, NodePath ipp_path)
@@ -228,15 +228,8 @@ public partial class NormalGame : Node3D
 
 	public int[] GetPlayerRPPsIDs(long player_ID)
 	{
-		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
-
-		if(player_index == -1)
-		{
-			GD.Print("Couldn't find player with ID: " + player_ID);
-			return [];
-		}
-		
-		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
+		var player = _mp_world.GetPlayerNode(player_ID);
+		PlayerInformationHolder player_info_holder = player.player_info_holder;
 		
 		List<int> RPPsIDs = [];
 		foreach(RoadPlacePoint RPP in player_info_holder.RPPs_in_jurisdiction)
@@ -249,8 +242,8 @@ public partial class NormalGame : Node3D
 
 	public int[] GetPlayerTheoreticalIPPsIDs(long player_ID)
 	{
-		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
-		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
+		var player = _mp_world.GetPlayerNode(player_ID);
+		PlayerInformationHolder player_info_holder = player.player_info_holder;
 		
 		List<int> IPPsIDs = [];
 		foreach(ItemPlacePoint IPP in player_info_holder.IPPs_in_theoretical_jurisdiction)
@@ -263,8 +256,8 @@ public partial class NormalGame : Node3D
 
 	public bool DoesPlayerHasForcedBuildingEnabled(long player_ID)
 	{
-		int player_index = _mp_world.players_IDs.IndexOf(player_ID);
-		PlayerInformationHolder player_info_holder = _mp_world.normal_game_players.ElementAt(player_index).player_info_holder;
+		var player = _mp_world.GetPlayerNode(player_ID);
+		PlayerInformationHolder player_info_holder = player.player_info_holder;
 
 		return player_info_holder.is_forced_building_enabled;
 	}

@@ -3,6 +3,7 @@ using Godot;
 using System;
 
 using System.Collections.Generic;
+using System.Linq;
 
 public partial class PlayerInformationHolder : Node
 {	
@@ -56,6 +57,8 @@ public partial class PlayerInformationHolder : Node
 		int[] updated_array = (int[])_resource_card_array.Clone();
         updated_array[(int)type] += num;
         _resource_card_array = updated_array;
+
+		GD.Print("Added " + number + " resources of type " + type + " to player " + _player.player_ID);
 
 		_player.UpdateDeckPanelUI();
 	}
@@ -134,6 +137,15 @@ public partial class PlayerInformationHolder : Node
 					AddOrSubtractResource(IPP.resource_gain_list[i], 1);
 				}
 			}
+		}
+	}
+
+	public void GetStartingResources()
+	{
+		ItemPlacePoint IPP = IPPs_in_jurisdiction.Last();
+		for(int i = 0; i < IPP.resource_gain_list.Count; i++)
+		{
+			AddOrSubtractResource(IPP.resource_gain_list[i], 1);
 		}
 	}
 }

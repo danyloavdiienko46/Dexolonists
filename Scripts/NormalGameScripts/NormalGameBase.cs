@@ -104,6 +104,8 @@ public partial class NormalGameBase : Node3D
 		}
 
 		_tile_list.Clear();
+		_item_place_points.Clear();
+    	_road_place_points.Clear();
 	}
 
 	public void LoadMap(string file_path)
@@ -411,6 +413,7 @@ public partial class NormalGameBase : Node3D
 	public void ItemChosenHandler(int index, long player_ID = 0)
 	{
 		_placing_player_id = player_ID;
+		ForceClearAllPlacementMaterials(); //I should later change ChangeMaterial methods xD
 		switch (index)
 		{
 			case 0:
