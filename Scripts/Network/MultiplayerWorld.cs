@@ -311,6 +311,9 @@ public partial class MultiplayerWorld : Node3D
         }
         if(_second_half_of_setup && step.ItemType == ItemType.Road) //when house in 2 setup half is placed gain starting resources
             GainStartingResources();
+        
+        if(step.ItemType == ItemType.House) //disabling previous rpps for setup phase 
+            DisableRoadPlacementForSetupPhase();
     }
 
     private void BuildSetupSequence()
@@ -332,6 +335,17 @@ public partial class MultiplayerWorld : Node3D
         {
             _setup_steps.Add(new SetupStep { PlayerId = id, ItemType = ItemType.House });
             _setup_steps.Add(new SetupStep { PlayerId = id, ItemType = ItemType.Road });
+        }
+    }
+
+    private void DisableRoadPlacementForSetupPhase() //used for disabling rpps from first half of setup
+    {
+        var player = GetPlayerNode(CurrentTurnID());
+        PlayerInformationHolder info = player.player_info_holder;
+
+        foreach(RoadPlacePoint RPP in info.RPPs_in_jurisdiction)
+        {
+            RPP.CanBeUsedInSetup = false;
         }
     }
 }

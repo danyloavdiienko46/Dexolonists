@@ -9,9 +9,9 @@ public partial class PlayerInformationHolder : Node
 {	
 	private int _points_memory = 0;
 
-	public List<ItemPlacePoint> IPPs_in_jurisdiction = new List<ItemPlacePoint>();
-	public List<ItemPlacePoint> IPPs_in_theoretical_jurisdiction = new List<ItemPlacePoint>();
-	public List<RoadPlacePoint> RPPs_in_jurisdiction = new List<RoadPlacePoint>();
+	public List<ItemPlacePoint> IPPs_in_jurisdiction = new List<ItemPlacePoint>(); //where you've placed your house
+	public List<ItemPlacePoint> IPPs_in_theoretical_jurisdiction = new List<ItemPlacePoint>(); //where you can place your house (if nothing blocks it)
+	public List<RoadPlacePoint> RPPs_in_jurisdiction = new List<RoadPlacePoint>(); //where you can place a road
 	public List<ItemType> free_items_to_build = new List<ItemType>();
 	public bool is_forced_building_enabled = true;
 	public ItemType? forced_building_type = ItemType.House;

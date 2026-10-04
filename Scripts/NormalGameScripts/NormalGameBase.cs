@@ -493,6 +493,8 @@ public partial class NormalGameBase : Node3D
 		}
 		if (!_is_RPP_active_for_placement) return;
 
+		if(!_has_normal_game_started && !_road_place_points[RPP_ind].CanBeUsedInSetup) return;
+
 		if (toogle_on)
 		{
 			if(_road_place_points[RPP_ind] is Area3D RPP)
@@ -572,11 +574,25 @@ public partial class NormalGameBase : Node3D
 			_is_RPP_active_for_placement = false;
 		}
 
-		foreach(int RPP_ID in RPPsIDs)
+		if (_has_normal_game_started)
 		{
-			if(!_road_place_points[RPP_ID].IsActive && _is_RPP_active_for_placement)continue;
-			_road_place_points[RPP_ID].GetNode<MeshInstance3D>("MeshInstance3D").MaterialOverride = mat;
+			foreach(int RPP_ID in RPPsIDs)
+			{
+				var RPP = _road_place_points[RPP_ID];
+				if(!RPP.IsActive && _is_RPP_active_for_placement)continue;
+				RPP.GetNode<MeshInstance3D>("MeshInstance3D").MaterialOverride = mat;
+			}
 		}
+		else
+		{
+			foreach(int RPP_ID in RPPsIDs)
+			{
+				var RPP = _road_place_points[RPP_ID];
+				if((!RPP.IsActive && _is_RPP_active_for_placement) || !RPP.CanBeUsedInSetup)continue;
+				RPP.GetNode<MeshInstance3D>("MeshInstance3D").MaterialOverride = mat;
+			}
+		}
+		
 	}
 
 	private void AddNewItem()
